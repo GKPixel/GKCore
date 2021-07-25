@@ -1,0 +1,66 @@
+Messages:
+  systemName: '&8【&aGKCore】'
+  startListeningInput: '&a請輸入文字 &e輸入&ccancel&e取消'
+  cancelledSuccessfully: '&acancelled input detection successfully'
+  topSplitter: '&e------------------------------------'
+  editorNameLine: '&e--------------&6[%name%&6]&e---------------'
+  bottomSplitter: '&e------------------------------------'
+  addSign: '&a[+]'
+  removeSign: '&c[X]'
+  backSign: '&6[<--]'
+  days: '&e天'
+  hours: '&e小時'
+  minutes: '&e分鐘'
+  seconds: '&e秒'
+  remainingTime: '&c剩餘時間: %time%'
+  display: '&eDisplay'
+  lore: '&eLore'
+  lorePin: ' &e-&f '
+  price: '&ePrice'
+  cooldown: '&eCooldown'
+  mana: '&bMana'
+  changeItemStack: '&e[change ItemStack to your main hand Item]'
+  edit: '&eEdit'
+  back: '&cBack'
+  add: '&eAdd'
+  remove: '&cRemove'
+  clickToChangeItemStack: '&b[clickToChangeItemStack]'
+  clickToGetItemStack: '&b[Get]'
+  loreEditor: '&eLore Editor'
+  buttonEditorName: '&aButton Editor'
+  buttonIDLore: '&6[&b%buttonID%&6]'
+  cannotSetButtonError: '&4Cannot set button &c[Reason: no item in hand]'
+  leftClickToEdit: '&aLeft Click: &eEdit'
+  dragItemToReplace: '&aDrag Item: &eReplace'
+helpList:
+- '---------------------------------------------------'
+- '&6/gk version &7顯示GKCore版本'
+- '&6/gk help &7顯示幫助頁面'
+- '&6/gk info &7顯示所有GK插件'
+- '&6/gk reloadAllPlugins &7重載所有GK插件'
+- '&6/gk edit &7(編輯手上物件的簡述)'
+lobbyName: mlobby
+testkey: g7ishandsome
+Buttons:
+  PreviousPage:
+    ==: org.bukkit.inventory.ItemStack
+    type: ARROW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: §a<<<
+  NextPage:
+    ==: org.bukkit.inventory.ItemStack
+    type: ARROW
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: §a>>>
+  Back:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOL
+    damage: 14
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: §cBack
