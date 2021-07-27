@@ -25,10 +25,10 @@ public class MySQL {
         MySQL.disconnect(false);
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=" + MYSQLConfig.getSSL(), user, password);
-            GKCore.debug(GKCore.instance.configSystem.getMessage("SQLConnected"));
+            GKCore.debug(GKCore.instance.messageSystem.get("SQLConnected"));
         }
         catch (Exception e) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("SQLConnectError")+e.getMessage());
+            GKCore.debug(GKCore.instance.messageSystem.get("SQLConnectError")+e.getMessage());
         }
     }
 
@@ -45,15 +45,15 @@ public class MySQL {
         if (MySQL.isConnected()) {
         	
         } else if (host.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("HostIsEmpty"));
+            GKCore.debug(GKCore.instance.messageSystem.get("HostIsEmpty"));
         } else if (user.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("UserIsEmpty"));
+            GKCore.debug(GKCore.instance.messageSystem.get("UserIsEmpty"));
         } else if (password.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("PasswordIsEmpty"));
+            GKCore.debug(GKCore.instance.messageSystem.get("PasswordIsEmpty"));
         } else if (database.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("DatabaseIsEmpty"));
+            GKCore.debug(GKCore.instance.messageSystem.get("DatabaseIsEmpty"));
         } else if (port.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.configSystem.getMessage("PortIsEmpty"));
+            GKCore.debug(GKCore.instance.messageSystem.get("PortIsEmpty"));
         } else {
             MySQL.setConnection(host, user, password, database, port);
         }
@@ -69,15 +69,15 @@ public class MySQL {
                 if (MySQL.isConnected()) {
                     con.close();
                     if (message) {
-                        GKCore.debug(GKCore.instance.configSystem.getMessage("SQLdisconnected"));
+                        GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnected"));
                     }
                 } else if (message) {
-                    GKCore.debug(GKCore.instance.configSystem.getMessage("SQLdisconnectError"));
+                    GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError"));
                 }
             }
             catch (Exception e) {
                 if (!message) break block6;
-                GKCore.debug(GKCore.instance.configSystem.getMessage("SQLdisconnectError")+e.getMessage());
+                GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError")+e.getMessage());
             }
         }
         con = null;
@@ -94,7 +94,7 @@ public class MySQL {
                 return !con.isClosed();
             }
             catch (Exception e) {
-                GKCore.debug(GKCore.instance.configSystem.getMessage("Error")+e.getMessage());
+                GKCore.debug(GKCore.instance.messageSystem.get("Error")+e.getMessage());
             }
         }
         return false;

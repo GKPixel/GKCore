@@ -1,8 +1,5 @@
 package me.GK.core.mysql;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
-
 import me.GK.core.main.GKCore;
 
 public class MYSQLConfig {
@@ -32,8 +29,12 @@ public class MYSQLConfig {
     }
 
     public static void reload() {
-        GKCore.plugin.reloadConfig();
+        GKCore.instance.configSystem.reload();
         MYSQLConfig.create();
+    }
+
+    public static String getHost() {
+        return MYSQLConfig.get(host);
     }
 
     public static void setHost(String s) {
@@ -42,10 +43,18 @@ public class MYSQLConfig {
         }
     }
 
+    public static String getUser() {
+        return MYSQLConfig.get(user);
+    }
+
     public static void setUser(String s) {
         if (!MYSQLConfig.getUser().equalsIgnoreCase(s)) {
             MYSQLConfig.set(user, s, false);
         }
+    }
+
+    public static String getPassword() {
+        return MYSQLConfig.get(password);
     }
 
     public static void setPassword(String s) {
@@ -54,10 +63,18 @@ public class MYSQLConfig {
         }
     }
 
+    public static String getDatabase() {
+        return MYSQLConfig.get(database);
+    }
+
     public static void setDatabase(String s) {
         if (!MYSQLConfig.getDatabase().equalsIgnoreCase(s)) {
             MYSQLConfig.set(database, s, false);
         }
+    }
+
+    public static String getPort() {
+        return MYSQLConfig.get(port);
     }
 
     public static void setPort(String s) {
@@ -66,38 +83,18 @@ public class MYSQLConfig {
         }
     }
 
+    public static boolean getSSL() {
+        return MYSQLConfig.getBoolean(ssl);
+    }
+
     public static void setSSL(boolean b) {
         if (MYSQLConfig.getSSL() != b) {
             MYSQLConfig.set(ssl, b, false);
         }
     }
 
-    public static String getHost() {
-        return MYSQLConfig.get(host);
-    }
-
-    public static String getUser() {
-        return MYSQLConfig.get(user);
-    }
-
-    public static String getPassword() {
-        return MYSQLConfig.get(password);
-    }
-
-    public static String getDatabase() {
-        return MYSQLConfig.get(database);
-    }
-
-    public static String getPort() {
-        return MYSQLConfig.get(port);
-    }
-
-    public static boolean getSSL() {
-        return MYSQLConfig.getBoolean(ssl);
-    }
-
     private static void set(String name, Object value, boolean checkIfExists) {
-    	if (name == null || value == null || checkIfExists && GKCore.instance.configSystem.config.contains(name)) {
+        if (name == null || value == null || checkIfExists && GKCore.instance.configSystem.config.contains(name)) {
             return;
         }
         GKCore.instance.configSystem.set(name, value);
