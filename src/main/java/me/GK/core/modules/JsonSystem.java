@@ -63,14 +63,10 @@ public class JsonSystem{
 			.excludeFieldsWithoutExposeAnnotation()
 			.disableHtmlEscaping()
 			.setPrettyPrinting()
-			.registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ConfigurationSerializableAdapter())
-			//.registerTypeHierarchyAdapter(Pattern.class, new PatternAdaptor())
-			.registerTypeHierarchyAdapter(BannerMeta.class, new BannerMetaAdaptor())
 			;
 	
 	public Gson gson = builder.create();
 	public <T> void registerAbstractClass(Class<T> c) {
-		builder.registerTypeAdapter(c, new InterfaceAdapter<T>());
 		gson=builder.create();
 		GKCore.debug("registered abstract class : "+c.getSimpleName()+"  successfully");
 	}

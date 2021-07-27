@@ -42,7 +42,7 @@ Messages:
   cancelHover: "&7cancel the editor"
   cloneButton: "&7[&bClone&7]"
   cloneHover: "&7clone from original"
-  errorNotYetFinishLoading: "&c[Error] &aNot yet finished loading"
+  errorHaventFinishedLoading: "&c[Error] &aNot yet finished loading"
 helpList:
 - ---------------------------------------------------
 - "&6/gk version &7show the GKCore version"

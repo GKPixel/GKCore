@@ -1,6 +1,6 @@
 package me.GK.core.modules.MessagePackage;
 
-import org.bukkit.Bukkit;
+import net.md_5.bungee.api.ProxyServer;
 
 enum ServerPackage {
 
@@ -14,7 +14,7 @@ enum ServerPackage {
     }
 
     public static String getServerVersion() {
-        return Bukkit.getServer().getClass().getPackage().getName().substring(23);
+        return ProxyServer.getInstance().getVersion();
     }
 
     @Override

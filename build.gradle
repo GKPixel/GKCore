@@ -14,8 +14,8 @@ buildscript {
     }
 }
 plugins {
-  id 'java'
-  id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 group = pluginGroup
@@ -30,28 +30,24 @@ targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    //maven { url = 'https://mvnrepository.com/artifact/org.objenesis/objenesis' }
-    
-    //maven { url "https://jitpack.io/" }
-    jcenter()
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
 }
 
 
 dependencies {
     compile 'org.objenesis:objenesis:3.1'
-    compileOnly 'me.clip:placeholderapi:2.10.9'
-  
+    compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    
-    //compileOnly group: "com.github.dmulloy2", name: "ProtocolLib", version: "4.5.1";
-    //compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.5.1";
-    compileOnly files('libs/ProtocolLib.jar')
-    compileOnly files('libs/spigot-1.8.jar')
-    compileOnly files('libs/craftbukkit-1.12.2.jar')
-
+    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }
 
 shadowJar {

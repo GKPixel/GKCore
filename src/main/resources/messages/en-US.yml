@@ -1,0 +1,4 @@
+days: day(s)
+hours: hour(s)
+minutes: minute(s)
+errorHaventFinishedLoading: "&c[Error] &aHaven't finished loading yet"
