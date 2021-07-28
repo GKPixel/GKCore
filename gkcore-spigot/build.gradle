@@ -59,7 +59,9 @@ publishing {
                 gpr(MavenPublication) {
                     from(components.java)
                     pom.with {
-                        version(project.version)
+                        groupId 'me.gk'
+                        artifactId 'gkcore-spigot'
+                        version project.version
                     }
                 }
             }

@@ -48,7 +48,9 @@ publishing {
                 gpr(MavenPublication) {
                     from(components.java)
                     pom.with {
-                        version(project.version + "-bungee")
+                        groupId 'me.gk'
+                        artifactId 'gkcore-bungee'
+                        version project.version
                     }
                 }
             }
