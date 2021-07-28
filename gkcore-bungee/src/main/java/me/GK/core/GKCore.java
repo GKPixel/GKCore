@@ -70,7 +70,7 @@ public class GKCore extends Plugin {
     }
 
     public static boolean versionIsBetween(String thisPluginName, String r1, String r2) {
-        boolean result = (GKCore.version.isGreaterThan(r1) && GKCore.version.isSmallerThan(r2));
+        boolean result = ((GKCore.version.isGreaterThan(r1) || GKCore.version.isEquals(r1)) && GKCore.version.isSmallerThan(r2));
         if (result) {
         } else {
             System.out.println("[ERROR] Cannot load " + thisPluginName + ", please use GKCore between " + r1 + "-" + r2 + ", or update both " + thisPluginName + " and GKCore to latest version");

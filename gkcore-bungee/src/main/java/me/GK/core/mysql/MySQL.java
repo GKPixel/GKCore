@@ -98,7 +98,7 @@ public class MySQL {
                 String message = e.getMessage();
                 if (message == null) break block3;
                 debug("---------------------------------------");
-                debug("------------[FAILED UPDATED]------------");
+                debug("------------[FAILED TO UPDATE]------------");
                 debug("Error: " + message);
                 debug("Command: " + command);
                 debug("---------------------------------------");
@@ -131,7 +131,7 @@ public class MySQL {
                 String message = e.getMessage();
                 if (message == null) break block3;
                 debug("--------------------------------------");
-                debug("------------[FAILED QUERIED]------------");
+                debug("------------[FAILED TO QUERY]------------");
                 debug("Error: " + message);
                 debug("Command: " + command);
                 debug("---------------------------------------");
