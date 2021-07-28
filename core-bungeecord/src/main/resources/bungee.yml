@@ -1,4 +1,0 @@
-name: Core
-version: @version@
-main: me.GK.core.GKCore
-description: A core library for all the plugins on the server GKPixel

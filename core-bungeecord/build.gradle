@@ -1,11 +1,23 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'maven-publish'
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id 'maven-publish'
+    id "net.minecrell.plugin-yml.bungee" version "0.4.0"
+}
+
+bungee {
+    name = "GKCore"
+    version = project.version
+    main = "me.GK.core.GKCore"
+    description = "A core library for all the plugins on the server GKPixel"
+}
 
 repositories {
     maven {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+
+    mavenCentral()
 }
 
 dependencies {

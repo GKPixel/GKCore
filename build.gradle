@@ -9,7 +9,6 @@ buildscript {
 }
 
 group = 'me.GK'
-version = '3.2.0'
 
 subprojects {
     apply plugin: 'java'
