@@ -40,10 +40,10 @@ publishing {
             }
             publications {
                 gpr(MavenPublication) {
-                    groupId = 'me.GK.core'
-                    artifactId = 'GKCore'
-                    version(project.version + "-bungee")
                     from(components.java)
+                    pom.with {
+                        version(project.version + "-bungee")
+                    }
                 }
             }
         }
