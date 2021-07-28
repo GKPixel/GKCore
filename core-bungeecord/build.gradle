@@ -1,4 +1,5 @@
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'maven-publish'
 
 repositories {
     maven {
@@ -25,6 +26,27 @@ processResources {
 shadowJar {
     dependencies {
         include(dependency(':core-common'))
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackageRegistry"
+            url = "https://maven.pkg.github.com/GKPixel/GKCore"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+            publications {
+                gpr(MavenPublication) {
+                    from(components.java)
+                    pom.with {
+                        version(project.version + "-bungee")
+                    }
+                }
+            }
+        }
     }
 }
 
