@@ -19,6 +19,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Publish with Gradle
+        env:
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew publish
       - uses: actions/upload-artifact@v2
         name: Upload result
