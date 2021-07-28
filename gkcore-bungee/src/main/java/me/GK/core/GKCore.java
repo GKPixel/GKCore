@@ -1,6 +1,7 @@
 package me.GK.core;
 
 import lombok.SneakyThrows;
+import me.GK.core.listeners.ListenerRegistry;
 import me.GK.core.modules.ConfigSystem;
 import me.GK.core.modules.GKPlayerDatabase;
 import me.GK.core.modules.JsonSystem;
@@ -118,6 +119,7 @@ public class GKCore extends Plugin {
     public void initiate() {
         configSystem = new ConfigSystem(this);
         messageSystem = new MessageSystem(this);
+        ListenerRegistry.register(this);
         initiateDebugSystem();
         System.out.print("GKCore verified");
         ProxyServer.getInstance().getScheduler().runAsync(this, this::initiateMySQL);
