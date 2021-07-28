@@ -33,7 +33,6 @@ repositories {
 compileJava.options.encoding = 'UTF-8'
 
 dependencies {
-    compile project(':core-common')
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     compile 'org.objenesis:objenesis:3.2'
     compileOnly 'me.clip:placeholderapi:2.10.9'

@@ -22,7 +22,6 @@ repositories {
 }
 
 dependencies {
-    compile project(':core-common')
     compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
