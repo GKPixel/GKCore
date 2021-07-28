@@ -21,7 +21,7 @@ public class SQL {
                 return true;
             }
         } catch (Exception connection) {
-            // empty catch block
+            // Intentionally empty
         }
         return false;
     }
@@ -95,14 +95,14 @@ public class SQL {
     }
 
     public static boolean set(String selected, Object object, String[] where_arguments, String table) {
-        String arguments = "";
+        StringBuilder arguments = new StringBuilder();
         for (String argument : where_arguments) {
-            arguments = arguments + argument + " AND ";
+            arguments.append(argument).append(" AND ");
         }
         if (arguments.length() <= 5) {
             return false;
         }
-        arguments = arguments.substring(0, arguments.length() - 5);
+        arguments = new StringBuilder(arguments.substring(0, arguments.length() - 5));
         if (object != null) {
             object = "'" + object + "'";
         }
@@ -110,14 +110,14 @@ public class SQL {
     }
 
     public static Object get(String selected, String[] where_arguments, String table) {
-        String arguments = "";
+        StringBuilder arguments = new StringBuilder();
         for (String argument : where_arguments) {
-            arguments = arguments + argument + " AND ";
+            arguments.append(argument).append(" AND ");
         }
         if (arguments.length() <= 5) {
             return false;
         }
-        arguments = arguments.substring(0, arguments.length() - 5);
+        arguments = new StringBuilder(arguments.substring(0, arguments.length() - 5));
         try {
             ResultSet rs = MySQL.query("SELECT * FROM " + table + " WHERE " + arguments + ";");
             if (rs.next()) {
@@ -131,14 +131,14 @@ public class SQL {
 
     public static ArrayList<Object> listGet(String selected, String[] where_arguments, String table) {
         ArrayList<Object> array = new ArrayList<Object>();
-        String arguments = "";
+        StringBuilder arguments = new StringBuilder();
         for (String argument : where_arguments) {
-            arguments = arguments + argument + " AND ";
+            arguments.append(argument).append(" AND ");
         }
         if (arguments.length() <= 5) {
             return array;
         }
-        arguments = arguments.substring(0, arguments.length() - 5);
+        arguments = new StringBuilder(arguments.substring(0, arguments.length() - 5));
         try {
             ResultSet rs = MySQL.query("SELECT * FROM " + table + " WHERE " + arguments + ";");
             while (rs.next()) {

@@ -34,10 +34,6 @@ public class Extensions extends Plugin {
         return d.toMillis();
     }
 
-    public static String millisToString(long millis) {
-        return millisToString(millis, "en-US");
-    }
-
     public static String millisToString(long millis, String lang) {
         Duration d = Duration.ofMillis(millis);
         int days = (int) d.toDays();
@@ -50,8 +46,6 @@ public class Extensions extends Plugin {
                 minutes, GKCore.instance.messageSystem.get(lang, "minutes"));
     }
 
-    ////////////////////////////////////////////////////////
-    //List and Map
     public static List<String> mapToList(LinkedHashMap<String, String> map) {
         List<String> result = new ArrayList<>();
         for (String key : map.keySet()) {
@@ -74,8 +68,6 @@ public class Extensions extends Plugin {
         return result;
     }
 
-    ////////////////////////////////////////////////////////
-    //Misc
     public static boolean intToBoolean(int i) {
         if (i == 0) {
             return false;

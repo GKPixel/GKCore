@@ -10,11 +10,13 @@ import java.sql.Statement;
 
 public class MySQL {
     private static Connection con;
+
     public static void debug(Object obj) {
-    	System.out.println(obj);
+        System.out.println(obj);
     }
+
     public static Connection getConnection() {
-    	if(con == null) connect();
+        if (con == null) connect();
         return con;
     }
 
@@ -22,53 +24,36 @@ public class MySQL {
         if (host == null || user == null || password == null || database == null) {
             return;
         }
-        MySQL.disconnect(false);
+        MySQL.disconnect();
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=" + MYSQLConfig.getSSL(), user, password);
             GKCore.debug(GKCore.instance.messageSystem.get("SQLConnected"));
-        }
-        catch (Exception e) {
-            GKCore.debug(GKCore.instance.messageSystem.get("SQLConnectError")+e.getMessage());
+        } catch (Exception e) {
+            GKCore.debug(GKCore.instance.messageSystem.get("SQLConnectError") + e.getMessage());
         }
     }
 
     public static void connect() {
-        MySQL.connect(true);
-    }
-
-    private static void connect(boolean message) {
         String host = MYSQLConfig.getHost();
         String user = MYSQLConfig.getUser();
         String password = MYSQLConfig.getPassword();
         String database = MYSQLConfig.getDatabase();
         String port = MYSQLConfig.getPort();
-        if (MySQL.isConnected()) {
-
-        } else {
+        if (!MySQL.isConnected()) {
             MySQL.setConnection(host, user, password, database, port);
         }
     }
 
     public static void disconnect() {
-        MySQL.disconnect(true);
-    }
-
-    private static void disconnect(boolean message) {
-        block6 : {
-            try {
-                if (MySQL.isConnected()) {
-                    con.close();
-                    if (message) {
-                        GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnected"));
-                    }
-                } else if (message) {
-                    GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError"));
-                }
+        try {
+            if (MySQL.isConnected()) {
+                con.close();
+                GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnected"));
+            } else {
+                GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError"));
             }
-            catch (Exception e) {
-                if (!message) break block6;
-                GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError")+e.getMessage());
-            }
+        } catch (Exception e) {
+            GKCore.debug(GKCore.instance.messageSystem.get("SQLdisconnectError") + e.getMessage());
         }
         con = null;
     }
@@ -82,9 +67,8 @@ public class MySQL {
         if (con != null) {
             try {
                 return !con.isClosed();
-            }
-            catch (Exception e) {
-                GKCore.debug(GKCore.instance.messageSystem.get("Error")+e.getMessage());
+            } catch (Exception e) {
+                GKCore.debug(GKCore.instance.messageSystem.get("Error") + e.getMessage());
             }
         }
         return false;
@@ -92,62 +76,62 @@ public class MySQL {
 
     public static boolean update(String command) {
         boolean result;
-        block3 : {
+        block3:
+        {
             if (command == null) {
                 return false;
             }
             result = false;
-            MySQL.connect(false);
+            MySQL.connect();
             try {
                 Statement st = MySQL.getConnection().createStatement();
                 st.executeUpdate(command);
                 st.close();
                 debug("---------------------------------------------");
-                debug("------------[SUCCESSFULLY UPDATE]------------");
+                debug("------------[SUCCESSFULLY UPDATED]------------");
                 debug("Command: " + command);
                 debug("---------------------------------------------");
                 debug("---------------------------------------------");
-                
+
                 result = true;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 String message = e.getMessage();
                 if (message == null) break block3;
                 debug("---------------------------------------");
-                debug("------------[FAILED UPDATE]------------");
+                debug("------------[FAILED UPDATED]------------");
                 debug("Error: " + message);
                 debug("Command: " + command);
                 debug("---------------------------------------");
                 debug("---------------------------------------");
-            
+
             }
         }
-        MySQL.disconnect(false);
+        MySQL.disconnect();
         return result;
     }
 
     public static ResultSet query(String command) {
         ResultSet rs;
-        block3 : {
+        block3:
+        {
             if (command == null) {
                 return null;
             }
-            MySQL.connect(false);
+            MySQL.connect();
             rs = null;
             try {
                 PreparedStatement st = MySQL.getConnection().prepareStatement(command);//.createStatement();
                 rs = st.executeQuery();
-            	debug("--------------------------------------------");
-                debug("------------[SUCCESSFULLY QUERY]------------");
+                debug("--------------------------------------------");
+                debug("------------[SUCCESSFULLY QUERIED]------------");
                 debug("Command: " + command);
-            	debug("--------------------------------------------");
-            	debug("--------------------------------------------");
-            }
-            catch (Exception e) {
+                debug("--------------------------------------------");
+                debug("--------------------------------------------");
+            } catch (Exception e) {
                 String message = e.getMessage();
                 if (message == null) break block3;
                 debug("--------------------------------------");
-                debug("------------[FAILED QUERY]------------");
+                debug("------------[FAILED QUERIED]------------");
                 debug("Error: " + message);
                 debug("Command: " + command);
                 debug("---------------------------------------");

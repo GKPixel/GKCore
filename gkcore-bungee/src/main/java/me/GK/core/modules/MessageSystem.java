@@ -3,6 +3,10 @@ package me.GK.core.modules;
 import com.google.common.io.ByteStreams;
 import lombok.SneakyThrows;
 import me.GK.core.GKCore;
+import me.GK.core.main.Extensions;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -99,6 +103,11 @@ public class MessageSystem {
 
     public boolean contains(String lang, String key) {
         return ((Configuration) message.get(lang).values().toArray()[0]).contains(key);
+    }
+
+    public void send(CommandSender player, String key) {
+        player.sendMessage(TextComponent.fromLegacyText(Extensions.color(
+                get(ProxyServer.getInstance().getPlayer(player.getName()).getUniqueId().toString(), key))));
     }
 
     @SneakyThrows

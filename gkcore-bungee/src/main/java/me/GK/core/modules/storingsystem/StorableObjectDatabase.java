@@ -31,19 +31,12 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class StorableObjectDatabase<T extends StorableObject> {
     public DatabaseType type = DatabaseType.FOLDER;
-
-    //---GLOBAL Settings---
     @Getter
     public Plugin plugin;
     public String databaseName = "";
-    ///////////////
     public boolean finishedLoading = false;
-
-    //---FOLDER Settings---
     @Getter
     public String folderName = "";
-
-    //---MYSQL Settings---
     public String tableName = "";
     public HashMap<String, T> database = new HashMap<String, T>();
 
@@ -117,13 +110,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         return this;
     }
 
-
-    ////////
-    //Need to be changed
-    //(Nothing)
-    ////////
-    //Getting
-
     @SuppressWarnings("unchecked")
     public Class<T> getItemClass() {
         Type sooper = getClass().getGenericSuperclass();
@@ -131,9 +117,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         return (Class<T>) t;
     }
 
-
-    //[Setup]
-    //---FOLDER---
     private void setupFolder() {
         //System.out.print("setup database folder "+getPlugin().getDataFolder());
         File folder = new File(getPlugin().getDataFolder(), getFolderName());
@@ -142,14 +125,11 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         }
     }
 
-    //---MYSQL---
     private void setupTable() {
         MySQL.update("create table " + tableName + " (id varchar(255), data longtext) CHARACTER SET utf8 COLLATE utf8_general_ci;");
         debug("setup table");
     }
 
-
-    //[loadAll]
     public boolean isFinishedLoading() {
         return finishedLoading;
     }
@@ -174,7 +154,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         }
     }
 
-    //---FOLDER---
     private void loadAllInFolder(String folderName) {
         clear();
         File folder = new File(getPlugin().getDataFolder(), folderName);
@@ -195,7 +174,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         });
     }
 
-    //---MYSQL---
     @SneakyThrows
     private void loadAllByMySQL(Runnable callback) {
         reset();
@@ -243,18 +221,13 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         });
     }
 
-
-    //clear the database
     public void clear() {
         database.clear();
     }
 
-
-    //[load]
     public void load(String ID) {
         load(ID, null);
     }
-
 
     public void load(String ID, Callback callback) {
         switch (type) {
@@ -474,8 +447,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         });
     }
 
-
-    //add a storableObject
+    //Adds a storableObject
     @SuppressWarnings("unchecked")
     public void addNew(T storableObject) {
         save(storableObject);
@@ -487,7 +459,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     }
 
 
-    //remove a storableObject
+    //Removes a storableObject
     public void remove(T storableObject) {
         remove(storableObject.getID());
     }
@@ -519,7 +491,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     }
 
 
-    //find a storableObject
+    //Finds a storableObject
     @SuppressWarnings("unchecked")
     public T find(String ID) {
         //load(ID);
@@ -530,7 +502,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     }
 
 
-    //check if storableObject exists
+    //Checks if a StorableObject exists within the database
     public boolean contains(String ID) {
         if (!isFinishedLoading()) {
             showNotYetFinishLoadingError("check containing " + ID);
@@ -538,8 +510,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         return database.containsKey(ID);
     }
 
-
-    //Transfer
     public boolean transfer(DatabaseType type) {
         return transfer(null, type);
     }
@@ -567,7 +537,8 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     @SuppressWarnings("deprecation")
     public boolean transfer(CommandSender sender, DatabaseType type) {
         if (this.type == type) {
-            if (sender != null) sender.sendMessage(GKCore.instance.messageSystem.get("databaseTransferFailedBecauseAlreadyIs"));
+            if (sender != null)
+                sender.sendMessage(GKCore.instance.messageSystem.get("databaseTransferFailedBecauseAlreadyIs"));
             return false;
         } else {
             ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> {

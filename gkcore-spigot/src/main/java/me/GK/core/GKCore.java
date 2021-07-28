@@ -30,12 +30,8 @@ import java.util.Properties;
 public class GKCore extends JavaPlugin {
     public static Plugin plugin;
     public static GKCore instance;
-    ///////////////////////////////////////////////////////
-    //Debug
     public static boolean debugging = true;
     public static Player G7 = Bukkit.getPlayer("hiIamG7");
-    ///////////////////////////////////////////////////////
-    //Version
     public static Version version;
     private static final int maxDebugPerFrame = 10;
     private static final List<String> tempDebugList = new ArrayList<String>();
@@ -43,8 +39,6 @@ public class GKCore extends JavaPlugin {
     public JsonSystem jsonSystem = JsonSystem.create();
     public ConfigSystem configSystem;
     public InventoryManager invManager;
-    ///////////////////////////////////////////////////////
-    //Manager (could be Upper case)
     public ItemStackManager ItemStackManager = new ItemStackManager();
     public GKPlayerManager GKPlayerManager = new GKPlayerManager();
 
@@ -88,7 +82,6 @@ public class GKCore extends JavaPlugin {
     public static String getUpdateLink() {
         return "http://gkpixel.com";
     }
-    ///////////////////////////////////////////////////////
 
     public static boolean versionIsBetween(String thisPluginName, String r1, String r2) {
         boolean result = (GKCore.version.isGreaterThan(r1) && GKCore.version.isSmallerThan(r2));
@@ -100,8 +93,6 @@ public class GKCore extends JavaPlugin {
         return result;
     }
 
-    //////////////////////////////////////////////////////////
-    //Placeholder API
     public static String setPlaceholders(Player player, String str) {
         return PlaceholderAPI.setBracketPlaceholders(player, str);
     }
@@ -123,26 +114,6 @@ public class GKCore extends JavaPlugin {
         }, 0, 1);
     }
 
-    ///////////////////////////////////////////////////////
-    //Other plugins' instance (could be Upper case)
-	/*public static boolean pluginOK(String str) {
-		return instance.getServer().getPluginManager().isPluginEnabled(str);
-	}
-	public static boolean GKPartyOK() {
-		return pluginOK("GKParty");
-	}
-	public static boolean GKRoomOK() {
-		return pluginOK("GKRoom");
-	}
-	public static boolean GKSkillOK() {
-		return pluginOK("GKSkill");
-	}
-	public static boolean GKStoreOK() {
-		return pluginOK("GKStore");
-	}
-	 */
-    ///////////////////////////////////////////////////////
-    //Verification
     public Properties getServerProperties() {
         BufferedReader is = null;
         try {
@@ -170,8 +141,6 @@ public class GKCore extends JavaPlugin {
     public String getProperty(String str) {
         return getServerProperties().getProperty(str);
     }
-    //////////////////////////////////////////////////////////
-    //Server
 
     public void initiateSmartInvs() {
         invManager = new InventoryManager(this);
@@ -209,7 +178,6 @@ public class GKCore extends JavaPlugin {
 
     }
 
-
     @Override
     public void onEnable() {
         plugin = this;
@@ -225,7 +193,4 @@ public class GKCore extends JavaPlugin {
         ItemStackManager = null;
         GKPlayerManager = null;
     }
-
-    //////////////////////////////////////////////////////////
-
 }

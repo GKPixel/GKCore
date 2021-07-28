@@ -11,21 +11,21 @@ public class MYSQLConfig {
     private static final String ssl = "use_SSL";
 
     public static void clear() {
-        MYSQLConfig.set(host, "", false);
-        MYSQLConfig.set(user, "", false);
-        MYSQLConfig.set(password, "", false);
-        MYSQLConfig.set(database, "", false);
-        MYSQLConfig.set(port, "3306", false);
-        MYSQLConfig.set(ssl, true, false);
+        set(host, "", false);
+        set(user, "", false);
+        set(password, "", false);
+        set(database, "", false);
+        set(port, "3306", false);
+        set(ssl, true, false);
     }
 
     public static void create() {
-        MYSQLConfig.set(host, "", true);
-        MYSQLConfig.set(user, "", true);
-        MYSQLConfig.set(password, "", true);
-        MYSQLConfig.set(database, "", true);
-        MYSQLConfig.set(port, "3306", true);
-        MYSQLConfig.set(ssl, true, true);
+        set(host, "", true);
+        set(user, "", true);
+        set(password, "", true);
+        set(database, "", true);
+        set(port, "3306", true);
+        set(ssl, true, true);
     }
 
     public static void reload() {
