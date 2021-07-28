@@ -111,7 +111,7 @@ public class GKCore extends Plugin {
         MYSQLConfig.create();
         MySQL.connect();
         // Start initializing database for GKPlayerDatabase
-        new GKPlayerDatabase().setupMySQL(this, "GKCore_players");
+        new GKPlayerDatabase().setupMySQL(this, "GKCore_players").finishedLoading = true;
         // End
     }
 
