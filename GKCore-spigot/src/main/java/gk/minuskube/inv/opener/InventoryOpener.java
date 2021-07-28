@@ -3,8 +3,6 @@ package gk.minuskube.inv.opener;
 import gk.minuskube.inv.ClickableItem;
 import gk.minuskube.inv.SmartInventory;
 import gk.minuskube.inv.content.InventoryContents;
-import me.GK.core.GKCore;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;

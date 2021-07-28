@@ -1,12 +1,12 @@
 package me.GK.core.mysql;
 
+import me.GK.core.GKCore;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
-import me.GK.core.GKCore;
 
 public class MySQL {
     private static Connection con;

@@ -1,7 +1,7 @@
 package me.GK.core.containers;
 
-import me.GK.core.main.Extensions;
 import me.GK.core.GKCore;
+import me.GK.core.main.Extensions;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
