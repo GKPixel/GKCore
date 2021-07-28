@@ -1,0 +1,7 @@
+name: GKCore
+version: @version@
+main: me.GK.core.GKCore
+prefix: [ GKCore ]
+softdepend: [ MySQL ]
+authors: [ RobotHanzo, G7 ]
+description: A core library for all the plugins on the server GKPixel

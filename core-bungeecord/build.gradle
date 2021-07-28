@@ -1,0 +1,31 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    compile project(':core-common')
+    compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'version': project.version
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency(':core-common'))
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
