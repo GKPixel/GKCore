@@ -26,7 +26,7 @@ public class ButtonEditor implements InventoryProvider {
 
     public static SmartInventory getEditor(ConfigSystem configSystem) {
         return SmartInventory.builder().id("ButtonEditor").provider(new ButtonEditor(configSystem)).size(6, 9)
-                .title(GKCore.instance.configSystem.getMessage("buttonEditorName")).closeable(true).build();
+                .title(GKCore.instance.messageSystem.get("buttonEditorName")).closeable(true).build();
     }
 
     @Override
@@ -35,9 +35,9 @@ public class ButtonEditor implements InventoryProvider {
         List<ClickableItem> list = new ArrayList<ClickableItem>();
         for (String buttonID : configSystem.buttons.keySet()) {
             ItemStack button = configSystem.buttons.get(buttonID).clone();
-            button = ItemStackManager.addLore(button, GKCore.instance.configSystem.getMessage("buttonIDLore").replace("%buttonID%", buttonID));
-            button = ItemStackManager.addLore(button, GKCore.instance.configSystem.getMessage("leftClickToEdit"));
-            button = ItemStackManager.addLore(button, GKCore.instance.configSystem.getMessage("dragItemToReplace"));
+            button = ItemStackManager.addLore(button, GKCore.instance.messageSystem.get("buttonIDLore").replace("%buttonID%", buttonID));
+            button = ItemStackManager.addLore(button, GKCore.instance.messageSystem.get("leftClickToEdit"));
+            button = ItemStackManager.addLore(button, GKCore.instance.messageSystem.get("dragItemToReplace"));
 
             list.add(ClickableItem.of(button, e -> {
                 //Add new gkitem with default item

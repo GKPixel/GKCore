@@ -1,13 +1,14 @@
 package me.GK.core;
 
 import gk.minuskube.inv.InventoryManager;
+import me.GK.core.commands.GKCoreCommands;
 import me.GK.core.containers.ListEditor;
 import me.GK.core.main.Event;
-import me.GK.core.main.commandClass;
 import me.GK.core.managers.GKPlayerManager;
 import me.GK.core.managers.ItemStackManager;
 import me.GK.core.modules.ConfigSystem;
 import me.GK.core.modules.JsonSystem;
+import me.GK.core.modules.MessageSystem;
 import me.GK.core.modules.Version;
 import me.GK.core.mysql.MYSQLConfig;
 import me.GK.core.mysql.MySQL;
@@ -28,16 +29,17 @@ import java.util.Properties;
 
 
 public class GKCore extends JavaPlugin {
+    private static final int maxDebugPerFrame = 10;
+    private static final List<String> tempDebugList = new ArrayList<String>();
     public static Plugin plugin;
     public static GKCore instance;
     public static boolean debugging = true;
     public static Player G7 = Bukkit.getPlayer("hiIamG7");
     public static Version version;
-    private static final int maxDebugPerFrame = 10;
-    private static final List<String> tempDebugList = new ArrayList<String>();
     private static ConsoleCommandSender consoleSender;
     public JsonSystem jsonSystem = JsonSystem.create();
     public ConfigSystem configSystem;
+    public MessageSystem messageSystem;
     public InventoryManager invManager;
     public ItemStackManager ItemStackManager = new ItemStackManager();
     public GKPlayerManager GKPlayerManager = new GKPlayerManager();
@@ -154,24 +156,16 @@ public class GKCore extends JavaPlugin {
 
     public void initiate() {
         configSystem = new ConfigSystem(this);
+        messageSystem = new MessageSystem(this);
+        GKCoreCommands.register(this);
         initiateDebugSystem();
         System.out.print("GKCore verified");
 
-        Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                initiateMySQL();
-            }
-
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(this, this::initiateMySQL);
 
         initiateSmartInvs();
 
         me.GK.core.managers.GKPlayerManager.addAllPlayers();
-
-        this.getCommand("gk").setExecutor(new commandClass());//setting commands
         Bukkit.getPluginManager().registerEvents(new Event(), this);
 
         ListEditor.initiate();

@@ -21,7 +21,7 @@ public class Extensions extends JavaPlugin {
 
 
     public static void sendCommandButton(String targetPlayerName, String text, String command) {
-        text = GKCore.instance.configSystem.getMessage("systemName") + text;
+        text = GKCore.instance.messageSystem.get("systemName") + text;
         String c = "tellraw " + targetPlayerName + " [\"\",{\"text\":\"" + text + "\",\"italic\":true,\"underlined\":true,\"color\":\"green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + command + "\"}}]";
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), c);
     }
@@ -106,10 +106,10 @@ public class Extensions extends JavaPlugin {
     public static String millisToStringTranslated(long millis) {
         String durationString = millisToString(millis);
         durationString = durationString
-                .replace("days", GKCore.instance.configSystem.getMessage("days"))
-                .replace("hours", GKCore.instance.configSystem.getMessage("hours"))
-                .replace("minutes", GKCore.instance.configSystem.getMessage("minutes"))
-                .replace("seconds", GKCore.instance.configSystem.getMessage("seconds"));
+                .replace("days", GKCore.instance.messageSystem.get("days"))
+                .replace("hours", GKCore.instance.messageSystem.get("hours"))
+                .replace("minutes", GKCore.instance.messageSystem.get("minutes"))
+                .replace("seconds", GKCore.instance.messageSystem.get("seconds"));
         return durationString;
     }
 
@@ -156,13 +156,13 @@ public class Extensions extends JavaPlugin {
             int displayHours = (int)minutes/60%24;
             int displayMinutes = (int)minutes%60;
             if(displayDays > 0) {
-                result+=displayDays+GKCore.instance.configSystem.getMessage("day");
+                result+=displayDays+GKCore.instance.messageSystem.get("day");
             }
             if(displayHours > 0) {
-                result+=displayHours+GKCore.instance.configSystem.getMessage("hour");
+                result+=displayHours+GKCore.instance.messageSystem.get("hour");
             }
             if(displayMinutes > 0) {
-                result+=displayMinutes+GKCore.instance.configSystem.getMessage("minute");
+                result+=displayMinutes+GKCore.instance.messageSystem.get("minute");
             }
             return result;
         }*/

@@ -22,7 +22,7 @@ import java.util.UUID;
  * You can find updates here https://gist.github.com/DevSrSouza
  */
 public class InputListener {
-    public static String defaultInputTipString = GKCore.instance.configSystem.getMessage("startListeningInput");
+    public static String defaultInputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     public UUID uid;
     public boolean listeningInput = false;
     public String inputTipString = "";
@@ -77,9 +77,9 @@ public class InputListener {
 
         listeningInput = true;
         //Cancel Button
-        String cancelString = GKCore.instance.configSystem.getMessage("cancelButton");
+        String cancelString = GKCore.instance.messageSystem.get("cancelButton");
         ClickEvent cancelEvent = new ClickEvent(Action.RUN_COMMAND, "cancel");
-        String cancelHover = GKCore.instance.configSystem.getMessage("cancelHover");
+        String cancelHover = GKCore.instance.messageSystem.get("cancelHover");
         BaseComponent[] resultLine = TextButtonSystem.generateTextButton(uid, cancelString, cancelEvent, cancelHover);
 
         if (latestInput.length() > 0) {//Clonable
@@ -88,9 +88,9 @@ public class InputListener {
             while (lastInput.startsWith("&f")) {
                 lastInput = lastInput.substring(2);
             }
-            String cloneString = GKCore.instance.configSystem.getMessage("cloneButton");
+            String cloneString = GKCore.instance.messageSystem.get("cloneButton");
             ClickEvent cloneEvent = new ClickEvent(Action.SUGGEST_COMMAND, lastInput);
-            String cloneHover = GKCore.instance.configSystem.getMessage("cloneHover");
+            String cloneHover = GKCore.instance.messageSystem.get("cloneHover");
             BaseComponent[] cloneButton = TextButtonSystem.generateTextButton(uid, cloneString, cloneEvent, cloneHover);
             resultLine = TextButtonSystem.joinComponent(resultLine, cloneButton);
         }
@@ -99,7 +99,7 @@ public class InputListener {
 
     public boolean checkInput(String input) {
         if (ChatColor.stripColor(input.toLowerCase()).equals("cancel")) {
-            GKCore.instance.configSystem.show(getPlayer(), "cancelledSuccessfully");
+            GKCore.instance.messageSystem.send(getPlayer(), "cancelledSuccessfully");
             listeningInput = false;
             return true;
         }

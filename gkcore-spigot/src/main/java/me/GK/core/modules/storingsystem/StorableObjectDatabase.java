@@ -572,7 +572,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
 
     //Error
     public void showNotYetFinishLoadingError(String action) {
-        GKCore.debugError(GKCore.instance.configSystem.getMessage("errorNotYetFinishLoading") + " Failed to: " + action);
+        GKCore.debugError(GKCore.instance.messageSystem.get("errorNotYetFinishLoading") + " Failed to: " + action);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -625,7 +625,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     @SuppressWarnings("deprecation")
     public boolean transfer(CommandSender sender, DatabaseType type) {
         if (this.type == type) {
-            if (sender != null) GKCore.instance.configSystem.show(sender, "databaseTransferFailedBecauseAlreadyIs");
+            if (sender != null) GKCore.instance.messageSystem.send(sender, "databaseTransferFailedBecauseAlreadyIs");
             return false;
         } else {
             new BukkitRunnable() {

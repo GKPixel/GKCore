@@ -106,7 +106,7 @@ public class ItemStackManager {
 
     public static void editLore(Player player, ItemStack stack, Runnable savingCallback) {
         List<String> lore = getLore(stack);
-        ListEditor.create(player, lore, GKCore.instance.configSystem.getMessage("loreEditor"), savingCallback).send();
+        ListEditor.create(player, lore, GKCore.instance.messageSystem.get("loreEditor"), savingCallback).send();
     }
     ////////////////////////////////////////////////////////
 

@@ -31,7 +31,7 @@ public class MessageSystem {
 
     public MessageSystem(Plugin plugin) {
         this.plugin = plugin;
-        config = new ConfigSystem(GKCore.instance);;
+        config = new ConfigSystem(GKCore.instance);
         initiate();
     }
 
@@ -87,7 +87,15 @@ public class MessageSystem {
 
     public String get(UUID playerUUID, String key) {
         GKPlayer player = GKPlayerDatabase.instance.find(playerUUID.toString());
-        if (player==null) {
+        if (player == null) {
+            return get(DEFAULT_LANGUAGE, key);
+        }
+        return get(player.selectedLanguage, key);
+    }
+
+    public String get(CommandSender sender, String key) {
+        GKPlayer player = GKPlayerDatabase.instance.find(ProxyServer.getInstance().getPlayer(sender.getName()).getUniqueId().toString());
+        if (player == null) {
             return get(DEFAULT_LANGUAGE, key);
         }
         return get(player.selectedLanguage, key);

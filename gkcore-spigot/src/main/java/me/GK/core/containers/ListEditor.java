@@ -26,7 +26,7 @@ import java.util.UUID;
  * You can find updates here https://gist.github.com/DevSrSouza
  */
 public class ListEditor {
-    public static String defaultInputTipString = GKCore.instance.configSystem.getMessage("startListeningInput");
+    public static String defaultInputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     /////////////////////////////////////////////////////////////////////////
     //static
     private static final String upSign = "[▲]";
@@ -39,7 +39,7 @@ public class ListEditor {
     public List<String> clipboard = new ArrayList<String>();
     public List<String> currentEditingList = new ArrayList<String>();
     public String editorName = "";
-    public String inputTipString = GKCore.instance.configSystem.getMessage("startListeningInput");
+    public String inputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     public Runnable savingCallback = null;//the saving callback after clicking the text
     public Runnable backCallback = null;//the callback runnable
     public int editingLine = -1;

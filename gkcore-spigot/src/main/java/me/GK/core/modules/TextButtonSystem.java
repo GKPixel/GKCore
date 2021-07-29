@@ -84,17 +84,17 @@ public class TextButtonSystem extends JavaPlugin {
 
     //Custom Button
     public static BaseComponent[] generateAddButton(Player player, ClickEvent clickEvent, String hoverMessage) {
-        String str = GKCore.instance.configSystem.getMessage("addSign");
+        String str = GKCore.instance.messageSystem.get("addSign");
         return generateTextButton(player, str, clickEvent, hoverMessage);
     }
 
     public static BaseComponent[] generateRemoveButton(Player player, ClickEvent clickEvent, String hoverMessage) {
-        String str = GKCore.instance.configSystem.getMessage("removeSign");
+        String str = GKCore.instance.messageSystem.get("removeSign");
         return generateTextButton(player, str, clickEvent, hoverMessage);
     }
 
     public static BaseComponent[] generateBackButton(Player player, ClickEvent clickEvent, String hoverMessage) {
-        String str = GKCore.instance.configSystem.getMessage("backSign");
+        String str = GKCore.instance.messageSystem.get("backSign");
         return generateTextButton(player, str, clickEvent, hoverMessage);
     }
 
