@@ -34,28 +34,12 @@ public class MySQL {
     }
 
     public static void connect() {
-        MySQL.connect(true);
-    }
-
-    private static void connect(boolean message) {
         String host = MYSQLConfig.getHost();
         String user = MYSQLConfig.getUser();
         String password = MYSQLConfig.getPassword();
         String database = MYSQLConfig.getDatabase();
         String port = MYSQLConfig.getPort();
-        if (MySQL.isConnected()) {
-
-        } else if (host.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.messageSystem.get("HostIsEmpty"));
-        } else if (user.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.messageSystem.get("UserIsEmpty"));
-        } else if (password.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.messageSystem.get("PasswordIsEmpty"));
-        } else if (database.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.messageSystem.get("DatabaseIsEmpty"));
-        } else if (port.equalsIgnoreCase("")) {
-            GKCore.debug(GKCore.instance.messageSystem.get("PortIsEmpty"));
-        } else {
+        if (!MySQL.isConnected()) {
             MySQL.setConnection(host, user, password, database, port);
         }
     }
@@ -108,7 +92,7 @@ public class MySQL {
                 return false;
             }
             result = false;
-            MySQL.connect(false);
+            MySQL.connect();
             try {
                 Statement st = MySQL.getConnection().createStatement();
                 st.executeUpdate(command);
@@ -143,7 +127,7 @@ public class MySQL {
             if (command == null) {
                 return null;
             }
-            MySQL.connect(false);
+            MySQL.connect();
             rs = null;
             try {
                 PreparedStatement st = MySQL.getConnection().prepareStatement(command);//.createStatement();

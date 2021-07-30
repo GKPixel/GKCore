@@ -31,10 +31,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         PluginCommand cmd = this.plugin.getCommand(baseCommand);
         cmd.setExecutor(this);
         cmd.setTabCompleter(this);
-        for (String alias : aliases) {
-            PluginCommand als = this.plugin.getCommand(alias);
-            als.setExecutor(this);
-            als.setTabCompleter(this);
+        if (aliases.length != 0) {
+            for (String alias : aliases) {
+                PluginCommand als = this.plugin.getCommand(alias);
+                als.setExecutor(this);
+                als.setTabCompleter(this);
+            }
         }
     }
 
@@ -80,7 +82,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     public void sendHelp(CommandSender sender, String[] args) {
         sender.sendMessage("");
-        sender.sendMessage(Extensions.color("&a" + plugin + " &2v" + getPlugin().getDescription().getVersion()));
+        sender.sendMessage(Extensions.color("&a" + plugin.getName() + " &2v" + getPlugin().getDescription().getVersion()));
         sender.sendMessage("");
 
         for (Base cmd : commands) {
@@ -126,7 +128,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             return createReturnList(subcommandNames, args[0], false);
         } else {
             for (Base command : commands) {
-                if (command.getName().equals(args[1]) && command.canExecute(sender, args))
+                if (command.getName().equals(args[0]) && command.canExecute(sender, args))
                     return command.onTabComplete(sender, args);
             }
             return ImmutableList.of();

@@ -7,6 +7,7 @@ import me.GK.core.main.Event;
 import me.GK.core.managers.GKPlayerManager;
 import me.GK.core.managers.ItemStackManager;
 import me.GK.core.modules.ConfigSystem;
+import me.GK.core.modules.GKPlayerDatabase;
 import me.GK.core.modules.JsonSystem;
 import me.GK.core.modules.MessageSystem;
 import me.GK.core.modules.Version;
@@ -152,6 +153,7 @@ public class GKCore extends JavaPlugin {
     public void initiateMySQL() {
         MYSQLConfig.create();
         MySQL.connect();
+        new GKPlayerDatabase().setupMySQL(this, "GKCore_players").finishedLoading = true;
     }
 
     public void initiate() {

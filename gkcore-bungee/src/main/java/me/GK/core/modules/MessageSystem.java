@@ -68,7 +68,6 @@ public class MessageSystem {
                 }
             });
         }
-        System.out.println(message);
     }
 
     @SneakyThrows
@@ -113,7 +112,7 @@ public class MessageSystem {
 
     public void send(CommandSender player, String key) {
         player.sendMessage(TextComponent.fromLegacyText(Extensions.color(
-                get(ProxyServer.getInstance().getPlayer(player.getName()).getUniqueId().toString(), key))));
+                get(ProxyServer.getInstance().getPlayer(player.getName()).getUniqueId(), key))));
     }
 
     @SneakyThrows

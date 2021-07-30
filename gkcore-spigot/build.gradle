@@ -11,7 +11,13 @@ bukkit {
     description = "A core library for all the plugins on the server GKPixel"
     softDepend = ["MySQL"]
     authors = ["G7", "RobotHanzo"]
-    prefix = "[GKCore]"
+    prefix = "GKCore"
+    commands {
+        gk {
+            description = 'GKPixel commands'
+            usage = '/gk <subcommand> [arguments]'
+        }
+    }
 }
 
 repositories {

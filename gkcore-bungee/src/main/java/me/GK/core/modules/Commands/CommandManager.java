@@ -113,7 +113,7 @@ public class CommandManager extends Command implements TabExecutor {
             return createReturnList(subcommandNames, args[0], false);
         } else {
             for (Base command : commands) {
-                if (command.getName().equals(args[1]) && command.canExecute(sender, args))
+                if (command.getName().equals(args[0]) && command.canExecute(sender, args))
                     return command.onTabComplete(sender, args);
             }
             return ImmutableList.of();

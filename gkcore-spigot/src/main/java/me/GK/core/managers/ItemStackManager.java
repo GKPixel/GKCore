@@ -2,6 +2,7 @@ package me.GK.core.managers;
 
 import me.GK.core.GKCore;
 import me.GK.core.containers.ListEditor;
+import me.GK.core.main.Extensions;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -106,7 +107,7 @@ public class ItemStackManager {
 
     public static void editLore(Player player, ItemStack stack, Runnable savingCallback) {
         List<String> lore = getLore(stack);
-        ListEditor.create(player, lore, GKCore.instance.messageSystem.get("loreEditor"), savingCallback).send();
+        ListEditor.create(player, lore, Extensions.color(GKCore.instance.messageSystem.get("loreEditor")), savingCallback).send();
     }
     ////////////////////////////////////////////////////////
 

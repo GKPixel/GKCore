@@ -203,18 +203,11 @@ public class ItemStackEditor {
     public void editLore() {
         Player player = getPlayer();
         List<String> lore = getLore();
-        ListEditor.create(player, lore, GKCore.instance.messageSystem.get("loreEditor"), new Runnable() {
-
-                    @Override
-                    public void run() {
-                        List<String> newLore = ListEditor.getEditingList(player);
-                        setLore(newLore);
-                        savingCallback.run();
-                    }
-
-                })
-                .onBack(new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorEdit"))
-                .send();
-	}
+        ListEditor.create(player, lore, Extensions.color(GKCore.instance.messageSystem.get("loreEditor")), () -> {
+            List<String> newLore = ListEditor.getEditingList(player);
+            setLore(newLore);
+            savingCallback.run();
+        }).onBack(new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorEdit")).send();
+    }
 
 }

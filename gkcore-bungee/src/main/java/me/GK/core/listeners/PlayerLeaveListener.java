@@ -15,6 +15,6 @@ public class PlayerLeaveListener implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerDisconnectEvent event) {
-        GKPlayerDatabase.instance.load(event.getPlayer().getUniqueId().toString());
+        GKPlayerDatabase.instance.unload(event.getPlayer().getUniqueId().toString());
     }
 }

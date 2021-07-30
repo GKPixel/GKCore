@@ -2,6 +2,7 @@ package me.GK.core.main;
 
 import me.GK.core.containers.GKPlayer;
 import me.GK.core.managers.GKPlayerManager;
+import me.GK.core.modules.GKPlayerDatabase;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,17 +15,19 @@ import java.util.UUID;
 
 public class Event implements Listener {
     @EventHandler
-    public void OnPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uid = player.getUniqueId();
         GKPlayerManager.addPlayer(uid);
+        GKPlayerDatabase.instance.load(uid.toString());
     }
 
     @EventHandler
-    public void OnPlayerDisconnect(PlayerQuitEvent event) {
+    public void onPlayerDisconnect(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uid = player.getUniqueId();
         GKPlayerManager.removePlayer(uid);
+        GKPlayerDatabase.instance.unload(uid.toString());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

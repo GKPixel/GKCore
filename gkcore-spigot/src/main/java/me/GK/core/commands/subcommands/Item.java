@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.StringJoiner;
 
 public class Item extends Base {
     public Item(JavaPlugin plugin, CommandManager cmd, String name, boolean hidden) {
@@ -22,9 +23,14 @@ public class Item extends Base {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (args[1].toLowerCase(Locale.ROOT).equals("name")) {
-            ItemStackManager.setDisplay(((Player) sender).getInventory().getItemInMainHand(), Extensions.color(args[2]));
+            StringJoiner joiner = new StringJoiner(" ");
+            for (String cs : Arrays.asList(args).subList(2, args.length)) {
+                joiner.add(cs);
+            }
+            ItemStackManager.setDisplay(((Player) sender).getInventory().getItemInMainHand(),
+                    Extensions.color(joiner.toString()));
         }
-        if (args[2].toLowerCase(Locale.ROOT).equals("lore")) {
+        if (args[1].toLowerCase(Locale.ROOT).equals("lore")) {
             Player player = (Player) sender;
             ItemStackManager.editLore(player, player.getInventory().getItemInMainHand(), () -> {
                 GKPlayer GKP = GKPlayer.fromUUID(player.getUniqueId());

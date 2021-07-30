@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class GKCoreCommands {
     public static void register(JavaPlugin plugin) {
-        CommandManager cmd = new CommandManager(plugin, "gk", "gkcore");
+        CommandManager cmd = new CommandManager(plugin, "gk");
         cmd.commands.add(new Reload(plugin, cmd, "reload", false));
         cmd.commands.add(new ReconnectSQL(plugin, cmd, "reconnect_sql", false));
         cmd.commands.add(new Placeholder(plugin, cmd, "placeholder", false));
