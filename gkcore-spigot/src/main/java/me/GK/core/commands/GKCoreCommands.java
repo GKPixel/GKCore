@@ -1,5 +1,7 @@
 package me.GK.core.commands;
 
+import me.GK.core.commands.subcommands.Item;
+import me.GK.core.commands.subcommands.Language;
 import me.GK.core.commands.subcommands.Placeholder;
 import me.GK.core.commands.subcommands.ReconnectSQL;
 import me.GK.core.commands.subcommands.Reload;
@@ -12,5 +14,7 @@ public class GKCoreCommands {
         cmd.commands.add(new Reload(plugin, cmd, "reload", false));
         cmd.commands.add(new ReconnectSQL(plugin, cmd, "reconnect_sql", false));
         cmd.commands.add(new Placeholder(plugin, cmd, "placeholder", false));
+        cmd.commands.add(new Item(plugin, cmd, "item", false));
+        cmd.commands.add(new Language(plugin, cmd, "language", false));
     }
 }

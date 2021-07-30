@@ -36,7 +36,7 @@ public class Item extends Base {
 
     @Override
     public String getDescription(CommandSender sender) {
-        return GKCore.instance.messageSystem.get(sender, "itemDescription");
+        return GKCore.instance.messageSystem.get(sender, "commands.itemDescription");
     }
 
     @Override

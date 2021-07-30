@@ -20,18 +20,16 @@ public class MessageSystem {
     public final String DEFAULT_LANGUAGE = "en-US";
     public List<String> languages;
     public HashMap<String, Map<File, FileConfiguration>> message = new HashMap<>();
-    ConfigSystem config;
     JavaPlugin plugin;
 
     public MessageSystem(JavaPlugin plugin) {
         this.plugin = plugin;
-        config = new ConfigSystem(GKCore.instance);
         initiate();
     }
 
     @SneakyThrows
     public void initiate() {
-        languages = config.config.getStringList("languages");
+        languages = GKCore.instance.configSystem.config.getStringList("languages");
         reload();
     }
 

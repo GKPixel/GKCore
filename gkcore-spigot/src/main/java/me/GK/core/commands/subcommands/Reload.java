@@ -15,6 +15,7 @@ public class Reload extends Base {
     public void onExecute(CommandSender sender, String[] args) {
         GKCore.instance.configSystem.reload();
         GKCore.instance.updateDebugModeFromConfig();
+        GKCore.instance.messageSystem.send(sender, "commands.done");
     }
 
     @Override

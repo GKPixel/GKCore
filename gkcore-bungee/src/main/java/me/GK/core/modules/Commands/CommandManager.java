@@ -71,13 +71,13 @@ public class CommandManager extends Command implements TabExecutor {
         return commandUsage;
     }
 
-    public void sendHelp(CommandSender sender) {
+    public void sendHelp(CommandSender sender, String[] args) {
         sender.sendMessage(TextComponent.fromLegacyText(""));
         sender.sendMessage(TextComponent.fromLegacyText(Extensions.color("&a" + plugin.getDescription().getName() + " &2v" + getPlugin().getDescription().getVersion())));
         sender.sendMessage(TextComponent.fromLegacyText(""));
 
         for (Base cmd : commands) {
-            if (!cmd.isHidden()) {
+            if (!cmd.isHidden() && cmd.canExecute(sender, args)) {
                 sender.sendMessage(Extensions.color("&7/" + baseCommand + " " + cmd.getName() + " &b") + cmd.getDescription(sender));
             }
         }
@@ -97,14 +97,20 @@ public class CommandManager extends Command implements TabExecutor {
                 }
             }
         } else {
-            sendHelp(sender);
+            sendHelp(sender, args);
         }
     }
 
     @Override
     public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            return createReturnList(getSubCommandNames(), args[0], false);
+            List<String> subcommandNames = new LinkedList<>();
+            for (Base subcommand : commands) {
+                if (subcommand.canExecute(sender, args)) {
+                    subcommandNames.add(subcommand.getName());
+                }
+            }
+            return createReturnList(subcommandNames, args[0], false);
         } else {
             for (Base command : commands) {
                 if (command.getName().equals(args[1]) && command.canExecute(sender, args))

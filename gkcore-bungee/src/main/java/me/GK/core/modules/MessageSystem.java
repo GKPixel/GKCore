@@ -26,18 +26,16 @@ public class MessageSystem {
     public final String DEFAULT_LANGUAGE = "en-US";
     public List<String> languages;
     public HashMap<String, Map<File, Configuration>> message = new HashMap<>();
-    ConfigSystem config;
     Plugin plugin;
 
     public MessageSystem(Plugin plugin) {
         this.plugin = plugin;
-        config = new ConfigSystem(GKCore.instance);
         initiate();
     }
 
     @SneakyThrows
     public void initiate() {
-        languages = config.config.getStringList("languages");
+        languages = GKCore.instance.configSystem.config.getStringList("languages");
         File dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) {
             dataFolder.mkdir();

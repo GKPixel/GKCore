@@ -37,7 +37,7 @@ public class Placeholder extends Base {
 
     @Override
     public String getDescription(CommandSender sender) {
-        return GKCore.instance.messageSystem.get(sender, "placeholderDescription");
+        return GKCore.instance.messageSystem.get(sender, "commands.placeholderDescription");
     }
 
     @Override
