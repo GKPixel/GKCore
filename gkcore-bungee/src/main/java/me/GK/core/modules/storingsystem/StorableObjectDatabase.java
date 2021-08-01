@@ -353,7 +353,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
                     checkSave(obj);
                 }
             }
-        }, 0, 20, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     public void checkSave(T storableObject) {

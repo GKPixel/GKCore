@@ -1,7 +1,11 @@
+# Do NOT touch configVersion, used for internal purposes
+configVersion: 0
+overrideMessages: true
 debugMode: false
 lobbyName: mlobby
+languages: [ en-US, zh-TW ]
 testkey: test
-Buttons: 
+Buttons:
   PreviousPage:
     ==: org.bukkit.inventory.ItemStack
     type: ARROW

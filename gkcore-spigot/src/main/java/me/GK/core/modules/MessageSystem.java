@@ -43,10 +43,11 @@ public class MessageSystem {
         if (!messagesFolder.exists()) {
             messagesFolder.mkdir();
         }
+        boolean overrideMessages = GKCore.instance.configSystem.config.getBoolean("overrideMessages");
         for (String lang : languages) {
             File langFile = new File(String.valueOf(Paths.get(String.valueOf(messagesFolder), lang + ".yml")));
-            if (!langFile.exists()) {
-                plugin.saveResource("messages/" + lang + ".yml", false);
+            if ((!langFile.exists()) || overrideMessages) {
+                plugin.saveResource("messages/" + lang + ".yml", overrideMessages);
             }
             FileConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
             langConfig.options().copyDefaults(true);
@@ -87,7 +88,12 @@ public class MessageSystem {
     }
 
     public String get(String lang, String key) {
-        return (((FileConfiguration) message.get(lang).values().toArray()[0]).getString(key));
+        String result = (((FileConfiguration) message.get(lang).values().toArray()[0]).getString(key));
+        if (result != null) {
+            return Extensions.color(result);
+        } else {
+            return null;
+        }
     }
 
     public String get(String key) {

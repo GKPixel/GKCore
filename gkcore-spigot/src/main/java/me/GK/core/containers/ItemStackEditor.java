@@ -6,8 +6,6 @@ import me.GK.core.managers.ItemStackManager;
 import me.GK.core.modules.TextButtonSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ClickEvent.Action;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,22 +24,14 @@ import java.util.UUID;
  * https://gist.github.com/DevSrSouza
  */
 public class ItemStackEditor {
-
-    public static String defaultInputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     public UUID uid;
     public ItemStack currentEditingItemStack = new ItemStack(Material.CHEST);
     public String editorName = "";
-    public String inputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     public Runnable savingCallback = null;// the saving callback after clicking the text
     public Runnable backCallback = null;
-    private ClickEvent onBack = null;// the editing callback after clicking the back sign
 
     public ItemStackEditor(UUID uid) {
         this.uid = uid;
-    }
-
-    private static ClickEvent getDefaultOnBack() {
-        return new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorRunBackCallback");
     }
 
     public static ItemStack getEditingItemStack(Player player) {
@@ -50,22 +40,16 @@ public class ItemStackEditor {
         return GKP.itemStackEditor.currentEditingItemStack;
     }
 
-    public static ItemStackEditor create(UUID uid, ItemStack itemStack, String editorName, String inputTipString, Runnable callback) {
+    public static ItemStackEditor create(UUID uid, ItemStack itemStack, String editorName, Runnable callback) {
         if (itemStack == null) itemStack = ItemStackManager.setDisplay(new ItemStack(Material.CHEST), "[ERROR] NULL");
         itemStack = itemStack.clone();
         GKPlayer GKP = GKPlayer.fromUUID(uid);
         if (GKP == null) return null;
-        GKP.itemStackEditor.onBack = getDefaultOnBack();
         GKP.itemStackEditor.savingCallback = callback;
         GKP.itemStackEditor.editorName = editorName;
-        GKP.itemStackEditor.inputTipString = inputTipString;
         GKP.itemStackEditor.currentEditingItemStack = itemStack;
 
         return GKP.itemStackEditor;
-    }
-
-    public static ItemStackEditor create(UUID uid, ItemStack itemStack, String editorName, Runnable callback) {
-        return create(uid, itemStack, editorName, defaultInputTipString, callback);
     }
 
     public static ItemStackEditor create(Player player, ItemStack itemStack, String editorName, Runnable callback) {
@@ -119,67 +103,70 @@ public class ItemStackEditor {
         send();
     }
 
-    //////////////////////////////////////////////////////////////
-// Editing
-/////////////////////////////////////////////////////
-//Send Text Button
     private void sendEditorName(Player player) {
-        player.sendMessage(GKCore.instance.messageSystem.get("editorNameLine").replace("%name%", editorName));
+        player.sendMessage(Extensions.color(GKCore.instance.messageSystem.get(player, "editorNameLine")).replace("%name%", editorName));
     }
 
     private void sendBackButton(Player player) {
-        TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("backSign"), onBack,
-                GKCore.instance.messageSystem.get("back"));
+        player.spigot().sendMessage(TextButtonSystem.instance.generateCallbackTextButton(player, this.backCallback, GKCore.instance.messageSystem.get(player, "backSign"),
+                GKCore.instance.messageSystem.get(player, "back")));
     }
 
     private void sendDisplayTextButton(Player player) {
-        ClickEvent clickEvent = new ClickEvent(Action.RUN_COMMAND,
-                "/gk itemStackEditorSetDisplay");
-        TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("display") + " : " + ChatColor.WHITE + getDisplay(),
-                clickEvent, GKCore.instance.messageSystem.get("edit"));
+        player.spigot().sendMessage(TextButtonSystem.instance.generateCallbackTextButton(player, () ->
+                        InputListener.create(uid, getDisplay(), GKCore.instance.messageSystem.get(player, "startListeningInput"), () -> {
+                            String input = InputListener.getInput(player);
+                            setDisplay(input);
+                        }).send(), GKCore.instance.messageSystem.get(player, "display") + " : " + ChatColor.WHITE + getDisplay(),
+                GKCore.instance.messageSystem.get(player, "edit")));
     }
 
     private void sendLoreTextButton(Player player) {
-        ClickEvent clickEvent = new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorEditLore");
-        ClickEvent copyEvent = new ClickEvent(Action.RUN_COMMAND, "/gk copyItemStackEditorEditLore");
-        ClickEvent pasteEvent = new ClickEvent(Action.RUN_COMMAND, "/gk pasteItemStackEditorEditLore");
-        BaseComponent[] b1 = TextButtonSystem.generateTextButton(player, GKCore.instance.messageSystem.get("lore") + " : ", clickEvent, GKCore.instance.messageSystem.get("edit"));
-        BaseComponent[] copy = TextButtonSystem.generateTextButton(player, GKCore.instance.messageSystem.get("copy") + " ", copyEvent, GKCore.instance.messageSystem.get("copy"));
-        BaseComponent[] paste = TextButtonSystem.generateTextButton(player, GKCore.instance.messageSystem.get("paste") + " ", pasteEvent, GKCore.instance.messageSystem.get("paste"));
-        BaseComponent[] loreLine = TextButtonSystem.joinComponent(TextButtonSystem.joinComponent(b1, copy), paste);
+        BaseComponent[] b1 = TextButtonSystem.instance.generateCallbackTextButton(player, this::editLore, GKCore.instance.messageSystem.get(player, "lore") + " : ", GKCore.instance.messageSystem.get(player, "edit"));
+        BaseComponent[] copy = TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
+            GKPlayer GKP = GKPlayer.fromUUID(uid);
+            GKP.listEditor.clipboard = GKP.itemStackEditor.getLore();
+            player.sendMessage(GKCore.instance.messageSystem.get(player, "copiedLore"));
+        }, GKCore.instance.messageSystem.get(player, "copy") + " ", GKCore.instance.messageSystem.get(player, "copy"));
+        BaseComponent[] paste = TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
+            GKPlayer GKP = GKPlayer.fromUUID(uid);
+            GKP.itemStackEditor.setLore(GKP.listEditor.clipboard);
+        }, GKCore.instance.messageSystem.get(player, "paste") + " ", GKCore.instance.messageSystem.get(player, "paste"));
+
+        BaseComponent[] loreLine = TextButtonSystem.joinComponent(b1, copy, paste);
         player.spigot().sendMessage(loreLine);
-        //TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("lore") + " : ", clickEvent,GKCore.instance.messageSystem.get("edit"));
+
         for (String line : getLore()) {
-            TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("lorePin") + line, clickEvent,
-                    GKCore.instance.messageSystem.get("edit"));
+            TextButtonSystem.instance.generateCallbackTextButton(player, this::editLore, GKCore.instance.messageSystem.get(player, "lorePin") + line,
+                    GKCore.instance.messageSystem.get(player, "edit"));
 
         }
     }
 
     private void sendChangeItemTextButton(Player player) {
-        ClickEvent clickEvent = new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorSetItemInHand");
-        TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("changeItemStack"), clickEvent,
-                GKCore.instance.messageSystem.get("clickToChangeItemStack"));
+        TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
+                    GKPlayer GKP = GKPlayer.fromUUID(uid);
+                    if (player.getInventory() == null ||
+                            player.getInventory().getItemInMainHand() == null ||
+                            player.getInventory().getItemInMainHand().getType() == Material.AIR)
+                        return;
+                    GKP.itemStackEditor.setItem(player.getInventory().getItemInMainHand());
+                }, GKCore.instance.messageSystem.get(player, "changeItemStack"),
+                GKCore.instance.messageSystem.get(player, "clickToChangeItemStack"));
 
     }
 
     private void sendGetItemTextButton(Player player) {
-        ClickEvent clickEvent = new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorGetItem");
-        TextButtonSystem.sendTextButton(player, GKCore.instance.messageSystem.get("clickToGetItemStack"), clickEvent,
-                GKCore.instance.messageSystem.get("clickToGetItemStack"));
+        TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
+                    giveItemStack(player);
+                    GKCore.instance.messageSystem.send(player, "commands.done");
+                }, GKCore.instance.messageSystem.get(player, "clickToGetItemStack"),
+                GKCore.instance.messageSystem.get(player, "clickToGetItemStack"));
 
-    }
-
-    /////////////////////////////////////////////////////
-//Events
-    public ItemStackEditor onBack(ClickEvent event) {
-        this.onBack = event;
-        return this;
     }
 
     public ItemStackEditor onBack(Runnable runnable) {
         this.backCallback = runnable;
-        this.onBack = getDefaultOnBack();
         return this;
     }
 
@@ -203,11 +190,11 @@ public class ItemStackEditor {
     public void editLore() {
         Player player = getPlayer();
         List<String> lore = getLore();
-        ListEditor.create(player, lore, Extensions.color(GKCore.instance.messageSystem.get("loreEditor")), () -> {
+        ListEditor.create(player, lore, Extensions.color(GKCore.instance.messageSystem.get(player, "loreEditor")), () -> {
             List<String> newLore = ListEditor.getEditingList(player);
             setLore(newLore);
             savingCallback.run();
-        }).onBack(new ClickEvent(Action.RUN_COMMAND, "/gk itemStackEditorEdit")).send();
+        }).onBack(() -> edit(player)).send();
     }
 
 }

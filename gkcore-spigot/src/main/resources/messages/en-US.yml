@@ -1,6 +1,6 @@
 systemName: '&8【&aGKCore&8】'
-startListeningInput: "&aplease enter the string. &etype &ccancel &eto cancel"
-cancelledSuccessfully: "&acancelled input detection successfully"
+startListeningInput: "&aPlease enter the string. &eType &ccancel &eto cancel"
+cancelledSuccessfully: "&aCancelled input successfully"
 topSplitter: '&e------------------------------------'
 editorNameLine: "&e--------------&6[%name%&6]&e---------------"
 bottomSplitter: '&e------------------------------------'
@@ -49,3 +49,4 @@ commands:
   itemDescription: "Changes the item on your main hand's name or lore"
   languageDescription: "Changes your language"
   languageNotFound: "&cThe language you want to change to doesn't exist"
+invalidCallback: "&cInvalid command callback, the interaction may have expired, please try again"

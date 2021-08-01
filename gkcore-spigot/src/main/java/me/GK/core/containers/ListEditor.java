@@ -2,11 +2,12 @@ package me.GK.core.containers;
 
 import me.GK.core.GKCore;
 import me.GK.core.main.Extensions;
+import me.GK.core.modules.TextButtonSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,15 +27,14 @@ import java.util.UUID;
  * You can find updates here https://gist.github.com/DevSrSouza
  */
 public class ListEditor {
-    public static String defaultInputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     /////////////////////////////////////////////////////////////////////////
     //static
-    private static final String upSign = "[▲]";
-    private static final String downSign = "[▼]";
-    private static final String addSign = "[+]";
-    private static final String removeSign = "  [X]";
-    private static final String backSign = "[<--]";
-    private static final String listSign = "-";
+    private static final String upSign = "&6&l[▲]";
+    private static final String downSign = "&6&l[▼]";
+    private static final String addSign = "&a&l[+]";
+    private static final String removeSign = "  &c&l[X]";
+    private static final String backSign = "&c&l[<--]";
+    public static String defaultInputTipString = GKCore.instance.messageSystem.get("startListeningInput");
     public UUID uid;
     public List<String> clipboard = new ArrayList<String>();
     public List<String> currentEditingList = new ArrayList<String>();
@@ -43,10 +43,10 @@ public class ListEditor {
     public Runnable savingCallback = null;//the saving callback after clicking the text
     public Runnable backCallback = null;//the callback runnable
     public int editingLine = -1;
-    private ClickEvent onEdit = null;//the editing callback after clicking the text
-    private ClickEvent onAdd = null;//the editing callback after clicking the add sign
-    private ClickEvent onRemove = null;//the editing callback after clicking the remove sign
-    private ClickEvent onBack = null;//the editing callback after clicking the back sign
+    private Runnable onEdit = null;//the editing callback after clicking the text
+    private Runnable onAdd = null;//the editing callback after clicking the add sign
+    private Runnable onRemove = null;//the editing callback after clicking the remove sign
+    private Runnable onBack = null;//the editing callback after clicking the back sign
 
     public ListEditor(UUID uid) {
         this.uid = uid;
@@ -55,14 +55,6 @@ public class ListEditor {
     public static void initiate() {
     }
 
-    ////////////////////////////////////////////////////////////
-
-    /////////////////////////////////////////////////////////////////////////
-    //useful public static
-    /*
-     * Example:
-     * 	ListEditor.create(uid, list, savingCallback).onEdit(editClickEvent).onAdd(addClickEvent).sendEditor();
-     */
     public static ListEditor create(UUID uid, List<String> list, String editorName, String inputTipString, Runnable callback) {
         if (list == null) list = new ArrayList<String>();
         GKPlayer GKP = GKPlayer.fromUUID(uid);
@@ -127,20 +119,14 @@ public class ListEditor {
             currentString = currentEditingList.get(editingLine);
             getPlayer().sendMessage("currentString: " + currentString);
         }
-        InputListener.create(uid, currentString, inputTipString, new Runnable() {
-            final GKPlayer GKP = GKPlayer.fromUUID(uid);
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                if (editingLine == currentEditingList.size()) currentEditingList.add("");
-                currentEditingList.set(editingLine, GKP.inputListener.latestInput);
-                //save current list
-                savingCallback.run();
-                send();
-            }
-
-        })
+        InputListener.create(uid, currentString, inputTipString, () -> {
+                    final GKPlayer GKP = GKPlayer.fromUUID(uid);
+                    if (editingLine == currentEditingList.size()) currentEditingList.add("");
+                    currentEditingList.set(editingLine, GKP.inputListener.latestInput);
+                    //save current list
+                    savingCallback.run();
+                    send();
+                })
                 .send();
         this.editingLine = editingLine;
     }
@@ -196,85 +182,53 @@ public class ListEditor {
 
     ///////////////////////////////////////////////////////////
     //get Components
-    private TextComponent getRemoveSignComponent(int lineID) {
-        TextComponent remove = new TextComponent(removeSign);
-        remove.setColor(ChatColor.RED);
-        remove.setBold(true);
-        remove.setClickEvent(getClickEvent(EditorEvent.REMOVE, lineID));
-        setHoverDescription(remove, "Remove", ChatColor.YELLOW);
-        return remove;
+    private BaseComponent[] getRemoveSignComponent(Player player, int lineID) {
+        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.REMOVE, lineID), removeSign, "&c&lRemove");
     }
 
-    private TextComponent getBackSignComponent() {
-        TextComponent remove = new TextComponent(backSign);
-        remove.setColor(ChatColor.RED);
-        remove.setBold(true);
-        remove.setClickEvent(getClickEvent(EditorEvent.BACK, 0));
-        setHoverDescription(remove, "Back", ChatColor.YELLOW);
-        return remove;
+    private BaseComponent[] getBackSignComponent(Player player) {
+        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.BACK, 0), backSign, "&cBack");
     }
 
-    private TextComponent getAddSignComponent(int lineID) {
-        TextComponent add = new TextComponent(addSign);
-        add.setColor(ChatColor.GREEN);
-        add.setBold(true);
-        add.setClickEvent(getClickEvent(EditorEvent.ADD, lineID));
-        setHoverDescription(add, "Add", ChatColor.YELLOW);
-        return add;
+    private BaseComponent[] getAddSignComponent(Player player, int lineID) {
+        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.ADD, lineID), addSign, "&aAdd");
     }
 
-    private TextComponent getEditLineComponent(int lineID, String str) {
-        TextComponent component = new TextComponent("");
+    private BaseComponent[] getEditLineComponent(Player player, int lineID, String str) {
         BaseComponent[] textLine = TextComponent.fromLegacyText(str);
+        BaseComponent[] result = {};
         for (BaseComponent text : textLine) {
-            text.setClickEvent(getClickEvent(EditorEvent.EDIT, lineID, str));
-            setHoverDescription(text, "Edit", ChatColor.YELLOW);
-            component.addExtra(text);
+            result = (BaseComponent[]) ArrayUtils.addAll(result, TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.EDIT, lineID), text.toLegacyText(), "&eEdit"));
         }
-        component.addExtra(getRemoveSignComponent(lineID));
-        return component;
+        return (BaseComponent[]) ArrayUtils.addAll(result, getRemoveSignComponent(player, lineID));
     }
     /////////////////////////////////////////////////////////////////////////
 
-    private TextComponent getUpTextComponent(int lineID) {
-        TextComponent up = new TextComponent(upSign);
-        up.setColor(ChatColor.GOLD);
-        up.setBold(true);
-        up.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk editinglistgoup " + lineID));
-        setHoverDescription(up, "go up", ChatColor.YELLOW);
-        return up;
+    private BaseComponent[] getUpTextComponent(Player player, int lineID) {
+        return TextButtonSystem.instance.generateCallbackTextButton(player, () -> listGoUp(lineID), upSign, "&eMove Up");
     }
 
-    private TextComponent getDownTextComponent(int lineID) {
-        TextComponent down = new TextComponent(downSign);
-        down.setColor(ChatColor.GOLD);
-        down.setBold(true);
-        down.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk editinglistgodown " + lineID));
-        setHoverDescription(down, "go down", ChatColor.YELLOW);
-        return down;
+    private BaseComponent[] getDownTextComponent(Player player, int lineID) {
+        return TextButtonSystem.instance.generateCallbackTextButton(player, () -> listGoDown(lineID), downSign, "&eMove Down");
     }
 
     ///////////////////////////////////////////////////////////
     //Sending
-    private BaseComponent[] getLine(int lineID, String str) {
+    private BaseComponent[] getLine(Player player, int lineID, String str) {
         debug("got line");
-        BaseComponent text = new TextComponent("");
-        BaseComponent up = getUpTextComponent(lineID);
-        BaseComponent down = getDownTextComponent(lineID);
-        TextComponent line = getEditLineComponent(lineID, str);
-        text.addExtra(up);
-        text.addExtra(down);
+        TextComponent text = new TextComponent("");
+        for (BaseComponent component : getUpTextComponent(player, lineID)) {
+            text.addExtra(component);
+        }
+        for (BaseComponent component : getDownTextComponent(player, lineID)) {
+            text.addExtra(component);
+        }
         text.addExtra(" ");
-        text.addExtra(line);
+        for (BaseComponent component : getEditLineComponent(player, lineID, str)) {
+            text.addExtra(component);
+        }
 
         return getBaseComponent(text);
-    }
-
-    private void sendLine(int lineID, String str) {
-        debug("sent line");
-        BaseComponent[] text = getLine(lineID, str);
-        getPlayer().spigot().sendMessage(text);
-
     }
 
     private BaseComponent[] getBaseComponent(BaseComponent b) {
@@ -286,13 +240,13 @@ public class ListEditor {
     public void sendEditor(Player player) {
         debug("sent editor");
         List<BaseComponent[]> componentList = new ArrayList<BaseComponent[]>();
-        componentList.add(getBaseComponent(getBackSignComponent()));
+        componentList.add(getBackSignComponent(player));
         for (int lineID = 0; lineID < currentEditingList.size(); lineID++) {
             String lineString = currentEditingList.get(lineID);
-            BaseComponent[] component = getLine(lineID, lineString);
+            BaseComponent[] component = getLine(player, lineID, lineString);
             componentList.add(component);
         }
-        componentList.add(getBaseComponent(getAddSignComponent(currentEditingList.size())));
+        componentList.add(getAddSignComponent(player, currentEditingList.size()));
         ListDisplayer.displayList(player, editorName, componentList);
     }
 
@@ -300,8 +254,6 @@ public class ListEditor {
         sendEditor(getPlayer());
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    //setting event (builder format)
     private void resetEvent() {
         this.onEdit = null;
         this.onAdd = null;
@@ -309,98 +261,20 @@ public class ListEditor {
         this.onBack = null;
     }
 
-    public ListEditor setTipString(String str) {
-        this.inputTipString = str;
-        return this;
-    }
-
-    public ListEditor onEdit(ClickEvent event) {
-        this.onEdit = event;
-        return this;
-    }
-
-    public ListEditor onAdd(ClickEvent event) {
-        this.onAdd = event;
-        return this;
-    }
-
-    public ListEditor onRemove(ClickEvent event) {
-        this.onRemove = event;
-        return this;
-    }
-
-    public ListEditor onBack(ClickEvent event) {
+    public ListEditor onBack(Runnable event) {
         this.onBack = event;
         return this;
     }
 
-    public ListEditor onBack(Runnable runnable) {
-        this.backCallback = runnable;
-        this.onBack = getDefaultEvent(EditorEvent.BACK, -1);
-        return this;
-    }
-
-    /////////////////////////////////////////////////////////////////////////
-    //default Event
-    private ClickEvent getClickEvent(EditorEvent eventType, int lineID) {
-        return getClickEvent(eventType, lineID, "");
-    }
-
-    private ClickEvent getClickEvent(EditorEvent eventType, int lineID, String line) {
-
-        switch (eventType) {
-            case ADD: {
-                if (onAdd == null) return getDefaultEvent(eventType, lineID);
-                return onAdd;
-            }
-            case EDIT: {
-                ClickEvent clickEvent;
-                if (onEdit == null) {
-                    clickEvent = getDefaultEvent(eventType, lineID);
-                } else {
-                    clickEvent = onEdit;
-                }
-                String newString = clickEvent.getValue().replace("%line%", line).replace("%text%", line).replace("{line}", line).replace("{text}", line);
-                ClickEvent result = new ClickEvent(clickEvent.getAction(), newString);
-
-                return result;
-            }
-            case REMOVE: {
-                ClickEvent clickEvent;
-                if (onRemove == null) {
-                    clickEvent = getDefaultEvent(eventType, lineID);
-                } else {
-                    clickEvent = onRemove;
-                }
-                String newString = clickEvent.getValue().replace("%line%", line).replace("%text%", line).replace("{line}", line).replace("{text}", line);
-                ClickEvent result = new ClickEvent(clickEvent.getAction(), newString);
-
-                return result;
-            }
-            case BACK: {
-                ClickEvent clickEvent;
-                if (onBack == null) {
-                    clickEvent = getDefaultEvent(eventType, lineID);
-                } else {
-                    clickEvent = onBack;
-                }
-
-                return clickEvent;
-            }
-        }
-        return null;
-    }
-
-    private ClickEvent getDefaultEvent(EditorEvent eventType, int lineID) {
+    private Runnable getDefaultEvent(EditorEvent eventType, int lineID) {
         switch (eventType) {
             case ADD:
-                return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk startlisteninginput " + lineID);
             case EDIT:
-                return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk startlisteninginput " + lineID);
+                return () -> startListeningEditInput(lineID);
             case REMOVE:
-                return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk listeditorremoveline " + lineID);
+                return () -> removeLine(lineID);
             case BACK:
-                return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk listEditorRunBackCallback");
+                return backCallback;
         }
         return null;
     }

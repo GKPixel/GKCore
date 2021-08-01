@@ -49,3 +49,4 @@ commands:
   itemDescription: "改變手上物品的名稱或說明"
   languageDescription: "更改你的語言"
   languageNotFound: "&c你欲更改成之語言不存在"
+invalidCallback: "&c無效的callback，互動可能已過期，請重新嘗試"

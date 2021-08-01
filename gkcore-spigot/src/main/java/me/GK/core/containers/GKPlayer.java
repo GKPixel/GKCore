@@ -4,6 +4,8 @@ import me.GK.core.managers.GKPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class GKPlayer {
@@ -12,6 +14,7 @@ public class GKPlayer {
     public ItemStackEditor itemStackEditor;
     public ListDisplayer listDisplayer;
     public InputListener inputListener;
+    public Map<String, String> data = new HashMap<>();
 
     public GKPlayer(UUID uid) {
         this.uid = uid;

@@ -41,7 +41,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     ///////////////////////////////////////////////////////////////////////////
     //---MYSQL Settings---
     public String tableName = "";
-    public HashMap<String, T> database = new HashMap<String, T>();
+    public HashMap<String, T> database = new HashMap<>();
 
     public static void debug(Object obj) {
         GKCore.debug(obj);
@@ -211,56 +211,37 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     //---MYSQL---
     private void loadAllByMySQL(Runnable callback) {
         reset();
-        new Runnable() {
-
-            @Override
-            public void run() {
-                setupTable();
-                MySQL.connect();
-                Statement st = null;
-                ResultSet rs = null;
+        setupTable();
+        MySQL.connect();
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT * FROM " + tableName + " WHERE 0='0';";
+            st = MySQL.getConnection().createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
                 try {
-                    String sql = "SELECT * FROM " + tableName + " WHERE 0='0';";
-                    st = MySQL.getConnection().createStatement();
-                    rs = st.executeQuery(sql);
-                    while (rs.next()) {
-                        try {
-                            Object json = rs.getObject("data");
-                            debug("received json: " + json);
-                            T obj = GKCore.instance.jsonSystem.gson.fromJson(json.toString(), getItemClass());
-                            add(obj);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
+                    Object json = rs.getObject("data");
+                    debug("received json: " + json);
+                    T obj = GKCore.instance.jsonSystem.gson.fromJson(json.toString(), getItemClass());
+                    add(obj);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                try {
-                    if (rs != null) rs.close();
-                    if (st != null) st.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-
-                //.createStatement();
-                //split here//
-                /*
-				ArrayList<Object> arrayList = SQL.listGet("data", "0", "=", "0", tableName); // Example
-				for(Object json : arrayList) {
-					//debug(json);
-					debug("received json: "+json);
-					T obj = GKCore.instance.jsonSystem.gson.fromJson(json.toString(), getItemClass());
-					//StorableObject obj = new Gson().fromJson(json.toString(), getItemClass());
-					add((T) obj);
-				}*/
-                finishedLoading = true;
-                if (callback != null) callback.run();
             }
-
-        }.run();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            if (rs != null) rs.close();
+            if (st != null) st.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        finishedLoading = true;
+        if (callback != null) callback.run();
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -295,28 +276,15 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             public void run() {
                 switch (type) {
                     case FOLDER: {
-                        loadByFolder(ID, new Callback<T>() {
-                            @Override
-                            public void run(T obj) {
-                                // TODO Auto-generated method stub
-                                if (obj == null) addNew(newInstance);
-
-                            }
-
+                        loadByFolder(ID, obj -> {
+                            if (obj == null) addNew(newInstance);
                         });
                     }
                     break;
                     case MYSQL: {
-                        loadByMySQL(ID, new Callback<T>() {
-                            @Override
-                            public void run(T obj) {
-                                // TODO Auto-generated method stub
-                                if (obj == null) addNew(newInstance);
-
-                            }
-
+                        loadByMySQL(ID, obj -> {
+                            if (obj == null) addNew(newInstance);
                         });
-
                     }
                     break;
                 }
@@ -326,51 +294,47 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     }
 
     private void loadByMySQL(String ID, Callback<T> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                String sql = "SELECT * FROM " + tableName + " WHERE id='" + ID + "';";
+                MySQL.connect();
+                Statement st = MySQL.getConnection().createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.next()) {
+                    Object json = rs.getObject("data");
+                    if (json != null) {
+                        T obj = GKCore.instance.jsonSystem.gson.fromJson(json.toString(), getItemClass());
+                        add(obj);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    String sql = "SELECT * FROM " + tableName + " WHERE id='" + ID + "';";
-                    MySQL.connect();
-                    Statement st = MySQL.getConnection().createStatement();//.createStatement();
-                    ResultSet rs = st.executeQuery(sql);
-                    if (rs.next()) {
-                        Object json = rs.getObject("data");
-                        if (json != null) {
-                            T obj = GKCore.instance.jsonSystem.gson.fromJson(json.toString(), getItemClass());
-                            add(obj);
-
-                            debug("received json: " + json);
-                            //Run the callback
-                            if (callback != null) callback.run(obj);
-                        } else {
-                            if (MySQL.isConnected()) {
-                                debug("received null json when getting: " + ID + " in " + tableName);
-                                if (callback != null) callback.run(null);
-                            } else {
-                                debug("received null json while no sql connection, it is acceptable: ");
-                            }
-
-
-                        }
+                        debug("received json: " + json);
+                        //Run the callback
+                        if (callback != null) callback.run(obj);
                     } else {
-                        //cannot receive anything
                         if (MySQL.isConnected()) {
                             debug("received null json when getting: " + ID + " in " + tableName);
                             if (callback != null) callback.run(null);
                         } else {
                             debug("received null json while no sql connection, it is acceptable: ");
                         }
+
+
                     }
-                    rs.close();
-                    st.close();
-                } catch (Exception e) {
-                    debug("exception found, not running callback");
-                    e.printStackTrace();
+                } else {
+                    //cannot receive anything
+                    if (MySQL.isConnected()) {
+                        debug("received null json when getting: " + ID + " in " + tableName);
+                        if (callback != null) callback.run(null);
+                    } else {
+                        debug("received null json while no sql connection, it is acceptable: ");
+                    }
                 }
+                rs.close();
+                st.close();
+            } catch (Exception e) {
+                debug("exception found, not running callback");
+                e.printStackTrace();
             }
-        }.runTaskAsynchronously(plugin);
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -494,36 +458,34 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         if (storableObject == null) return;
         storableObject.needToSave = false;
         storableObject.saving = true;
-        Runnable br = new Runnable() {
-            public void run() {
-                String id = storableObject.getID();
-                String json = GKCore.instance.jsonSystem.gson.toJson(storableObject, getItemClass());  //return String (no null object)
-                debug("upserted json: " + json);
-                debug("" + ChatColor.GREEN + ChatColor.BOLD + "BUG occurred? Check the @Expose issue!");
-                //MySQL.update("INSERT INTO "+tableName+" (id, data) VALUES ('"+storableObject.getID()+"', '"+json+"')");
-                try {
-                    String sql = "SELECT * FROM " + tableName + " WHERE id='" + id + "';";
-                    MySQL.connect();
-                    Statement st = MySQL.getConnection().createStatement();//.createStatement();
-                    ResultSet rs = st.executeQuery(sql);
-                    if (rs.next()) {
-                        MySQL.update("UPDATE " + tableName + " SET data" + "='" + json + "' WHERE id='" + id + "';");
-                    } else {
-                        MySQL.update("INSERT INTO " + tableName + " VALUES ('" + id + "','" + json + "');");
-                        //SQL.insertData(column + ", " + selected, "'" + data + "', '" + object + "'", table);
-                    }
-                    rs.close();
-                    st.close();
-                    storableObject.saving = false;
-                    if (callback != null) callback.run();
-
-                } catch (Exception exception) {
-                    // empty catch block
-                    storableObject.saving = false;
-                    if (callback != null) callback.run();
-                    System.out.print("Error while saving to MySQL :");
-                    exception.printStackTrace();
+        Runnable br = () -> {
+            String id = storableObject.getID();
+            String json = GKCore.instance.jsonSystem.gson.toJson(storableObject, getItemClass());  //return String (no null object)
+            debug("upserted json: " + json);
+            debug("" + ChatColor.GREEN + ChatColor.BOLD + "BUG occurred? Check the @Expose issue!");
+            //MySQL.update("INSERT INTO "+tableName+" (id, data) VALUES ('"+storableObject.getID()+"', '"+json+"')");
+            try {
+                String sql = "SELECT * FROM " + tableName + " WHERE id='" + id + "';";
+                MySQL.connect();
+                Statement st = MySQL.getConnection().createStatement();//.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.next()) {
+                    MySQL.update("UPDATE " + tableName + " SET data" + "='" + json + "' WHERE id='" + id + "';");
+                } else {
+                    MySQL.update("INSERT INTO " + tableName + " VALUES ('" + id + "','" + json + "');");
+                    //SQL.insertData(column + ", " + selected, "'" + data + "', '" + object + "'", table);
                 }
+                rs.close();
+                st.close();
+                storableObject.saving = false;
+                if (callback != null) callback.run();
+
+            } catch (Exception exception) {
+                // empty catch block
+                storableObject.saving = false;
+                if (callback != null) callback.run();
+                System.out.print("Error while saving to MySQL :");
+                exception.printStackTrace();
             }
         };
         Bukkit.getScheduler().runTaskAsynchronously(plugin, br);

@@ -1,15 +1,18 @@
 package me.GK.core;
 
 import gk.minuskube.inv.InventoryManager;
+import lombok.SneakyThrows;
 import me.GK.core.commands.GKCoreCommands;
 import me.GK.core.containers.ListEditor;
 import me.GK.core.main.Event;
 import me.GK.core.managers.GKPlayerManager;
 import me.GK.core.managers.ItemStackManager;
 import me.GK.core.modules.ConfigSystem;
+import me.GK.core.modules.GKPlayer;
 import me.GK.core.modules.GKPlayerDatabase;
 import me.GK.core.modules.JsonSystem;
 import me.GK.core.modules.MessageSystem;
+import me.GK.core.modules.TextButtonSystem;
 import me.GK.core.modules.Version;
 import me.GK.core.mysql.MYSQLConfig;
 import me.GK.core.mysql.MySQL;
@@ -21,9 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -107,37 +108,20 @@ public class GKCore extends JavaPlugin {
     @SuppressWarnings("deprecation")
     public void initiateDebugSystem() {
         updateDebugModeFromConfig();
-        Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < maxDebugPerFrame; i++) {
-                    sendOldestDebug();
-                }
+        Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            for (int i = 0; i < maxDebugPerFrame; i++) {
+                sendOldestDebug();
             }
         }, 0, 1);
     }
 
+    @SneakyThrows
     public Properties getServerProperties() {
-        BufferedReader is = null;
-        try {
-            is = new BufferedReader(new FileReader("server.properties"));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        BufferedReader is;
+        is = new BufferedReader(new FileReader("server.properties"));
         Properties props = new Properties();
-        try {
-            props.load(is);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            is.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        props.load(is);
+        is.close();
         return props;
     }
 
@@ -153,15 +137,26 @@ public class GKCore extends JavaPlugin {
     public void initiateMySQL() {
         MYSQLConfig.create();
         MySQL.connect();
-        new GKPlayerDatabase().setupMySQL(this, "GKCore_players").finishedLoading = true;
+        new GKPlayerDatabase();
+        GKPlayerDatabase.instance.setupMySQL(this, "GKCore_players").finishedLoading = true;
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                GKPlayerDatabase.instance.load(player.getUniqueId().toString(), (gkp) -> {
+                    if (gkp == null) {
+                        GKPlayerDatabase.instance.addNew(new GKPlayer(player.getUniqueId().toString()));
+                    }
+                });
+            }
+        });
     }
 
     public void initiate() {
         configSystem = new ConfigSystem(this);
         messageSystem = new MessageSystem(this);
+        new TextButtonSystem(this);
         GKCoreCommands.register(this);
         initiateDebugSystem();
-        System.out.print("GKCore verified");
+        System.out.println("GKCore verified");
 
         Bukkit.getScheduler().runTaskAsynchronously(this, this::initiateMySQL);
 

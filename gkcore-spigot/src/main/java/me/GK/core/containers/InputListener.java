@@ -80,7 +80,7 @@ public class InputListener {
         String cancelString = GKCore.instance.messageSystem.get("cancelButton");
         ClickEvent cancelEvent = new ClickEvent(Action.RUN_COMMAND, "cancel");
         String cancelHover = GKCore.instance.messageSystem.get("cancelHover");
-        BaseComponent[] resultLine = TextButtonSystem.generateTextButton(uid, cancelString, cancelEvent, cancelHover);
+        BaseComponent[] resultLine = TextButtonSystem.generateTextButton(cancelString, cancelEvent, cancelHover);
 
         if (latestInput.length() > 0) {//Clonable
             //Clone Button
@@ -91,7 +91,7 @@ public class InputListener {
             String cloneString = GKCore.instance.messageSystem.get("cloneButton");
             ClickEvent cloneEvent = new ClickEvent(Action.SUGGEST_COMMAND, lastInput);
             String cloneHover = GKCore.instance.messageSystem.get("cloneHover");
-            BaseComponent[] cloneButton = TextButtonSystem.generateTextButton(uid, cloneString, cloneEvent, cloneHover);
+            BaseComponent[] cloneButton = TextButtonSystem.generateTextButton(cloneString, cloneEvent, cloneHover);
             resultLine = TextButtonSystem.joinComponent(resultLine, cloneButton);
         }
         getPlayer().spigot().sendMessage(resultLine);

@@ -17,6 +17,10 @@ bukkit {
             description = 'GKPixel commands'
             usage = '/gk <subcommand> [arguments]'
         }
+        gkcallback {
+            description = 'GKPixel callbacks for internal usage'
+            usage = 'You are not supposed to use this on your own'
+        }
     }
 }
 

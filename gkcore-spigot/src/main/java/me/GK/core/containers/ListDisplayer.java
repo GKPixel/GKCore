@@ -173,7 +173,7 @@ public class ListDisplayer {
     }
 
     private void sendDisplayerName(Player player) {
-        player.sendMessage(GKCore.instance.messageSystem.get("editorNameLine").replace("%name%", displayerName));
+        player.sendMessage(Extensions.color(GKCore.instance.messageSystem.get("editorNameLine")).replace("%name%", displayerName));
     }
 
     private void sendCurrentBottomTool() {
@@ -194,9 +194,6 @@ public class ListDisplayer {
     private void sendCurrentPage() {
         Player player = getPlayer();
         List<BaseComponent[]> page = getCurrentPage();
-        //debug("sending page, page item count: "+page.size());
-
-        GKCore.instance.messageSystem.send(getPlayer(), "topSplitter");
         sendDisplayerName(player);
         for (BaseComponent[] line : page) {
             player.spigot().sendMessage(line);
@@ -204,11 +201,7 @@ public class ListDisplayer {
         if (getCurrentTotalPage() > 1) {
             sendCurrentBottomTool();
         }
-
         GKCore.instance.messageSystem.send(getPlayer(), "bottomSplitter");
-        //show the left sign and right sign
-
-
     }
 
     /////////////////////////////////////////////////////////////////////////

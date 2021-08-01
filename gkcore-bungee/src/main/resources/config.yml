@@ -1,2 +1,4 @@
+# Do NOT touch configVersion, used for internal purposes
+configVersion: 0
 debugMode: false
 languages: [ en-US, zh-TW ]

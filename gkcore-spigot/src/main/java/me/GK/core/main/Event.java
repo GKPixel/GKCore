@@ -19,7 +19,11 @@ public class Event implements Listener {
         Player player = event.getPlayer();
         UUID uid = player.getUniqueId();
         GKPlayerManager.addPlayer(uid);
-        GKPlayerDatabase.instance.load(uid.toString());
+        GKPlayerDatabase.instance.load(uid.toString(), (gkp) -> {
+            if (gkp == null) {
+                GKPlayerDatabase.instance.addNew(new me.GK.core.modules.GKPlayer(uid.toString()));
+            }
+        });
     }
 
     @EventHandler

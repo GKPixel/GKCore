@@ -31,18 +31,14 @@ public class ItemStackManager {
     }
 
     public static ItemStack setDisplay(ItemStack item, String displayName) {
-        if (item == null) return item;
+        if (item == null) return null;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
         meta.setDisplayName(displayName);
         item.setItemMeta(meta);
         return item;
     }
-    ////////////////////////////////////////////////////////
 
-
-    ////////////////////////////////////////////////////////
-    //Lore
     public static ItemStack createItem(String name, ArrayList<String> desc, Material mat) {
         ItemStack i = new ItemStack(mat, 1);
         ItemMeta iMeta = i.getItemMeta();
@@ -54,9 +50,9 @@ public class ItemStackManager {
 
     public static List<String> getLore(ItemStack stack) {
         ItemMeta meta = stack.getItemMeta();
-        if (meta == null) return new ArrayList<String>();
+        if (meta == null) return new ArrayList<>();
         List<String> lore = meta.getLore();
-        if (lore == null) return new ArrayList<String>();
+        if (lore == null) return new ArrayList<>();
         return lore;
     }
 
@@ -64,7 +60,7 @@ public class ItemStackManager {
         ItemMeta meta = stack.getItemMeta();
         if (meta == null) return stack;
         List<String> lore = meta.getLore();
-        if (lore == null) lore = new ArrayList<String>();
+        if (lore == null) lore = new ArrayList<>();
         lore.add(str);
         meta.setLore(lore);
         stack.setItemMeta(meta);
