@@ -47,13 +47,19 @@ public class MessageSystem {
         for (String lang : languages) {
             File langFile = new File(String.valueOf(Paths.get(String.valueOf(messagesFolder), lang + ".yml")));
             if ((!langFile.exists()) || overrideMessages) {
-                plugin.saveResource("messages/" + lang + ".yml", overrideMessages);
+                try {
+                    plugin.saveResource("messages/" + lang + ".yml", overrideMessages);
+                } catch (IllegalArgumentException e) {
+                    // use default is not found
+                    langFile = new File(String.valueOf(Paths.get(String.valueOf(messagesFolder), DEFAULT_LANGUAGE + ".yml")));
+                }
             }
             FileConfiguration langConfig = YamlConfiguration.loadConfiguration(langFile);
             langConfig.options().copyDefaults(true);
+            File finalLangFile = langFile;
             message.put(lang, new HashMap<File, FileConfiguration>() {
                 {
-                    put(langFile, langConfig);
+                    put(finalLangFile, langConfig);
                 }
             });
         }
