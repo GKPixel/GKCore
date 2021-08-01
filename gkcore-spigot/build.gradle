@@ -84,3 +84,13 @@ publishing {
 }
 
 tasks.build.dependsOn tasks.shadowJar
+
+//common
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+task copyDocs(type: Copy) {
+    from "build/libs/$project.name-${project.version}.jar"
+    into "${project.GKPluginFolder}/v${project.GKCoreVersion}/spigot"
+}
+tasks.build.finalizedBy(copyDocs)
