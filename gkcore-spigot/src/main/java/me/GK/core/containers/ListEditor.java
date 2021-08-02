@@ -111,6 +111,11 @@ public class ListEditor {
         ////System.out.print(str);
     }
 
+    public ListEditor setTipString(String str) {
+        this.inputTipString = str;
+        return this;
+    }
+
     ////////////////////////////////////////////////////////////
     //Commands callback
     public void startListeningEditInput(int editingLine) {
