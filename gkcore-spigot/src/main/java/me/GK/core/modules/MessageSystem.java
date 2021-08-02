@@ -98,7 +98,7 @@ public class MessageSystem {
         if (result != null) {
             return Extensions.color(result);
         } else {
-            return null;
+            return key;
         }
     }
 
