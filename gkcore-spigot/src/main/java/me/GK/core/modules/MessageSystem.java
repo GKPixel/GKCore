@@ -50,7 +50,7 @@ public class MessageSystem {
                 try {
                     plugin.saveResource("messages/" + lang + ".yml", overrideMessages);
                 } catch (IllegalArgumentException e) {
-                    // use default is not found
+                    // use default if not found
                     langFile = new File(String.valueOf(Paths.get(String.valueOf(messagesFolder), DEFAULT_LANGUAGE + ".yml")));
                 }
             }

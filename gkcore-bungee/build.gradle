@@ -58,4 +58,8 @@ publishing {
     }
 }
 
+jar {
+    archiveFileName = 'GKCore.jar'
+}
+
 tasks.build.dependsOn tasks.shadowJar

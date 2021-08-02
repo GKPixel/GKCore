@@ -83,7 +83,6 @@ public class TextButtonSystem implements CommandExecutor {
                 throw new Exception();
             }
         } catch (Exception e) {
-            e.printStackTrace();
             GKCore.instance.messageSystem.send(sender, "invalidCallback");
         }
         return true;
