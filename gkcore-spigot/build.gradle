@@ -88,3 +88,11 @@ tasks.build.dependsOn tasks.shadowJar
 //common
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
+
+task copyDocs(type: Copy) {
+    if(System.getenv("GKPLUGIN_DIR")!=null) {
+        from "build/libs/$project.name-${project.version}.jar"
+        into "${System.getenv("GKPLUGIN_DIR")}/v${project.GKCoreVersion}/spigot"
+    }
+}
+tasks.build.finalizedBy(copyDocs)
