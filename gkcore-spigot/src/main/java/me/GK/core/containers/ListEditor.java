@@ -189,9 +189,9 @@ public class ListEditor {
 
     private BaseComponent[] getBackSignComponent(Player player) {
         if (this.backCallback == null) {
-            return TextButtonSystem.generateTextButton(backSign, this.backClickEvent, "&cBack");
+            return TextButtonSystem.generateTextButton(Extensions.color(backSign), this.backClickEvent, "&cBack");
         } else {
-            return TextButtonSystem.instance.generateCallbackTextButton(player, this.backCallback, backSign, "&cBack");
+            return TextButtonSystem.instance.generateCallbackTextButton(player, this.backCallback, Extensions.color(backSign), "&cBack");
         }
     }
 
