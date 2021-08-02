@@ -69,7 +69,7 @@ public class TextButtonSystem implements CommandExecutor {
         for (BaseComponent[] component : components) {
             main.addAll(Arrays.asList(component));
         }
-        return (BaseComponent[]) main.toArray();
+        return main.toArray(new BaseComponent[0]);
     }
 
     @Override
