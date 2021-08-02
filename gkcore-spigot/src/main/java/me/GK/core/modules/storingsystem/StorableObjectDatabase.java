@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -189,23 +190,17 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
 
     private void loadAllByFolder(Runnable callback) {
         reset();
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                setupFolder();
-                try {
-                    loadAllInFolder(getFolderName());
-                } catch (IllegalArgumentException | SecurityException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                finishedLoading = true;
-                if (callback != null) callback.run();
-
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            setupFolder();
+            try {
+                loadAllInFolder(getFolderName());
+            } catch (IllegalArgumentException | SecurityException e) {
+                e.printStackTrace();
             }
+            finishedLoading = true;
+            if (callback != null) callback.run();
 
-        }.runTaskAsynchronously(plugin);
+        });
     }
 
     //---MYSQL---
@@ -310,22 +305,25 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
                         //Run the callback
                         if (callback != null) callback.run(obj);
                     } else {
-                        if (MySQL.isConnected()) {
-                            debug("received null json when getting: " + ID + " in " + tableName);
+                        try {
+                            Constructor<?> constructor = getItemClass().getConstructors()[0];
+                            Class<?> c = constructor.getParameters()[0].getType();
+                            T obj = (T) constructor.newInstance(c.cast(ID));
+                            add(obj);
+                            if (callback != null) callback.run(obj);
+                        } catch (ClassCastException e) {
                             if (callback != null) callback.run(null);
-                        } else {
-                            debug("received null json while no sql connection, it is acceptable: ");
                         }
-
-
                     }
                 } else {
-                    //cannot receive anything
-                    if (MySQL.isConnected()) {
-                        debug("received null json when getting: " + ID + " in " + tableName);
+                    try {
+                        Constructor<?> constructor = getItemClass().getConstructors()[0];
+                        Class<?> c = constructor.getParameters()[0].getType();
+                        T obj = (T) constructor.newInstance(c.cast(ID));
+                        add(obj);
+                        if (callback != null) callback.run(obj);
+                    } catch (ClassCastException e) {
                         if (callback != null) callback.run(null);
-                    } else {
-                        debug("received null json while no sql connection, it is acceptable: ");
                     }
                 }
                 rs.close();
