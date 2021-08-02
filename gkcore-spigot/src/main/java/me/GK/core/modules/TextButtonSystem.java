@@ -65,9 +65,8 @@ public class TextButtonSystem implements CommandExecutor {
     }
 
     public static BaseComponent[] joinComponent(BaseComponent[]... components) {
-        List<BaseComponent> main = Arrays.asList(components[0]);
-        List<BaseComponent[]> toJoin = Arrays.asList(components).subList(1, components.length);
-        for (BaseComponent[] component : toJoin) {
+        List<BaseComponent> main = new ArrayList<>();
+        for (BaseComponent[] component : components) {
             main.addAll(Arrays.asList(component));
         }
         return (BaseComponent[]) main.toArray();
