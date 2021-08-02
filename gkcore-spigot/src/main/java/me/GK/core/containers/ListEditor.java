@@ -5,6 +5,7 @@ import me.GK.core.main.Extensions;
 import me.GK.core.modules.TextButtonSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.ArrayUtils;
@@ -27,8 +28,6 @@ import java.util.UUID;
  * You can find updates here https://gist.github.com/DevSrSouza
  */
 public class ListEditor {
-    /////////////////////////////////////////////////////////////////////////
-    //static
     private static final String upSign = "&6&l[▲]";
     private static final String downSign = "&6&l[▼]";
     private static final String addSign = "&a&l[+]";
@@ -40,13 +39,10 @@ public class ListEditor {
     public List<String> currentEditingList = new ArrayList<String>();
     public String editorName = "";
     public String inputTipString = GKCore.instance.messageSystem.get("startListeningInput");
-    public Runnable savingCallback = null;//the saving callback after clicking the text
-    public Runnable backCallback = null;//the callback runnable
+    public Runnable savingCallback = null;
+    public Runnable backCallback = null;
+    public ClickEvent backClickEvent = null;
     public int editingLine = -1;
-    private Runnable onEdit = null;//the editing callback after clicking the text
-    private Runnable onAdd = null;//the editing callback after clicking the add sign
-    private Runnable onRemove = null;//the editing callback after clicking the remove sign
-    private Runnable onBack = null;//the editing callback after clicking the back sign
 
     public ListEditor(UUID uid) {
         this.uid = uid;
@@ -56,14 +52,14 @@ public class ListEditor {
     }
 
     public static ListEditor create(UUID uid, List<String> list, String editorName, String inputTipString, Runnable callback) {
-        if (list == null) list = new ArrayList<String>();
+        if (list == null) list = new ArrayList<>();
         GKPlayer GKP = GKPlayer.fromUUID(uid);
         if (GKP == null) return null;
         GKP.listEditor.resetEvent();
         GKP.listEditor.savingCallback = callback;
         GKP.listEditor.editorName = editorName;
         GKP.listEditor.inputTipString = inputTipString;
-        GKP.listEditor.currentEditingList = new ArrayList<String>(list);
+        GKP.listEditor.currentEditingList = new ArrayList<>(list);
 
         return GKP.listEditor;
     }
@@ -188,22 +184,26 @@ public class ListEditor {
     ///////////////////////////////////////////////////////////
     //get Components
     private BaseComponent[] getRemoveSignComponent(Player player, int lineID) {
-        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.REMOVE, lineID), removeSign, "&c&lRemove");
+        return TextButtonSystem.instance.generateCallbackTextButton(player, () -> removeLine(lineID), removeSign, "&c&lRemove");
     }
 
     private BaseComponent[] getBackSignComponent(Player player) {
-        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.BACK, 0), backSign, "&cBack");
+        if (this.backCallback == null) {
+            return TextButtonSystem.generateTextButton(backSign, this.backClickEvent, "&cBack");
+        } else {
+            return TextButtonSystem.instance.generateCallbackTextButton(player, this.backCallback, backSign, "&cBack");
+        }
     }
 
     private BaseComponent[] getAddSignComponent(Player player, int lineID) {
-        return TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.ADD, lineID), addSign, "&aAdd");
+        return TextButtonSystem.instance.generateCallbackTextButton(player, () -> startListeningEditInput(lineID), addSign, "&aAdd");
     }
 
     private BaseComponent[] getEditLineComponent(Player player, int lineID, String str) {
         BaseComponent[] textLine = TextComponent.fromLegacyText(str);
         BaseComponent[] result = {};
         for (BaseComponent text : textLine) {
-            result = (BaseComponent[]) ArrayUtils.addAll(result, TextButtonSystem.instance.generateCallbackTextButton(player, getDefaultEvent(EditorEvent.EDIT, lineID), text.toLegacyText(), "&eEdit"));
+            result = (BaseComponent[]) ArrayUtils.addAll(result, TextButtonSystem.instance.generateCallbackTextButton(player, () -> startListeningEditInput(lineID), text.toLegacyText(), "&eEdit"));
         }
         return (BaseComponent[]) ArrayUtils.addAll(result, getRemoveSignComponent(player, lineID));
     }
@@ -260,34 +260,17 @@ public class ListEditor {
     }
 
     private void resetEvent() {
-        this.onEdit = null;
-        this.onAdd = null;
-        this.onRemove = null;
-        this.onBack = null;
+        this.backClickEvent = null;
+        this.backCallback = null;
     }
 
     public ListEditor onBack(Runnable event) {
-        this.onBack = event;
+        this.backCallback = event;
         return this;
     }
 
-    private Runnable getDefaultEvent(EditorEvent eventType, int lineID) {
-        switch (eventType) {
-            case ADD:
-            case EDIT:
-                return () -> startListeningEditInput(lineID);
-            case REMOVE:
-                return () -> removeLine(lineID);
-            case BACK:
-                return backCallback;
-        }
-        return null;
-    }
-
-    public enum EditorEvent {
-        EDIT,
-        ADD,
-        REMOVE,
-        BACK
+    public ListEditor onBack(ClickEvent event) {
+        this.backClickEvent = event;
+        return this;
     }
 }
