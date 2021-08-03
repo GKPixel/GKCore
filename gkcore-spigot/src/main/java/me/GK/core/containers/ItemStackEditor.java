@@ -144,7 +144,7 @@ public class ItemStackEditor {
     }
 
     private void sendChangeItemTextButton(Player player) {
-        TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
+        player.spigot().sendMessage(TextButtonSystem.instance.generateCallbackTextButton(player, () -> {
                     GKPlayer GKP = GKPlayer.fromUUID(uid);
                     if (player.getInventory() == null ||
                             player.getInventory().getItemInMainHand() == null ||
@@ -152,8 +152,7 @@ public class ItemStackEditor {
                         return;
                     GKP.itemStackEditor.setItem(player.getInventory().getItemInMainHand());
                 }, GKCore.instance.messageSystem.get(player, "changeItemStack"),
-                GKCore.instance.messageSystem.get(player, "clickToChangeItemStack"));
-
+                GKCore.instance.messageSystem.get(player, "clickToChangeItemStack")));
     }
 
     private void sendGetItemTextButton(Player player) {
@@ -162,7 +161,6 @@ public class ItemStackEditor {
                     GKCore.instance.messageSystem.send(player, "commands.done");
                 }, GKCore.instance.messageSystem.get(player, "clickToGetItemStack"),
                 GKCore.instance.messageSystem.get(player, "clickToGetItemStack"));
-
     }
 
     public ItemStackEditor onBack(Runnable runnable) {
@@ -177,7 +175,6 @@ public class ItemStackEditor {
     }
 
     public void edit(Player player) {
-        GKCore.instance.messageSystem.send(player, "topSplitter");
         sendEditorName(player);
         sendBackButton(player);
         sendDisplayTextButton(player);

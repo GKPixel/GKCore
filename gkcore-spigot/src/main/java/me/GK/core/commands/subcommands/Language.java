@@ -4,6 +4,7 @@ import me.GK.core.GKCore;
 import me.GK.core.modules.Commands.CommandManager;
 import me.GK.core.modules.Commands.subcommands.Base;
 import me.GK.core.modules.GKPlayerDatabase;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +19,11 @@ public class Language extends Base {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (GKCore.instance.configSystem.config.getStringList("languages").contains(args[1])) {
-            GKPlayerDatabase.instance.find(((Player) sender).getUniqueId().toString()).changeSelectedLanguage(args[1]);
+            Player player = (Player) sender;
+            if (args.length == 3 && sender.hasPermission("gkcore.command.language.changeOthers")) {
+                Bukkit.getPlayer(args[2]);
+            }
+            GKPlayerDatabase.instance.find(player.getUniqueId().toString()).changeSelectedLanguage(args[1]);
             GKCore.instance.messageSystem.send(sender, "commands.done");
         } else {
             GKCore.instance.messageSystem.send(sender, "commands.languageNotFound");

@@ -1,0 +1,34 @@
+name: Upload to GKPixel
+
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Upload to GKPixel
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - uses: actions/upload-artifact@v2
+        name: Upload to GitHub
+        with:
+          name: GKCore
+          path: "*/build/libs/*.jar"
+      - name: Upload to GKPixel CDN
+        env:
+          KEY: ${{ secrets.key }}
+        run: |
+          curl -F "file=@gkcore-bungee/build/libs/GKCore.jar" https://cdn.gkpixel.com/files/GKCore-B.jar?key=$KEY
+          curl -F "file=@gkcore-spigot/build/libs/GKCore.jar" https://cdn.gkpixel.com/files/GKCore.jar?key=$KEY
