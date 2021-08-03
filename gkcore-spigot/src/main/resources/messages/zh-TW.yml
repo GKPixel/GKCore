@@ -41,6 +41,8 @@ cancelHover: "&7取消編輯"
 cloneButton: "&7[&b複製&7]"
 cloneHover: "&7自原本的複製"
 errorNotYetFinishLoading: "&c[錯誤] &a尚未完成載入"
+previousPage: "&e上一頁"
+nextPage: "&e下一頁"
 commands:
   reloadDescription: "重新載入此插件的設定檔案"
   done: "&a完成"

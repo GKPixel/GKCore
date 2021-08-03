@@ -41,6 +41,8 @@ cancelHover: "&7cancel the editor"
 cloneButton: "&7[&bClone&7]"
 cloneHover: "&7clone from original"
 errorNotYetFinishLoading: "&c[Error] &aHaven't finished loading yet"
+previousPage: "&ePrevious page"
+nextPage: "&eNext page"
 commands:
   reloadDescription: "Reloads the plugin's config files"
   done: "&aDone"

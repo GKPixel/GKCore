@@ -2,9 +2,9 @@ package me.GK.core.containers;
 
 import me.GK.core.GKCore;
 import me.GK.core.main.Extensions;
+import me.GK.core.modules.TextButtonSystem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -131,28 +131,24 @@ public class ListDisplayer {
 
     ///////////////////////////////////////////////////////////
     //get Components
-    private TextComponent getLeftSignComponent(int pageID, boolean available) {
+    private BaseComponent[] getLeftSignComponent(int pageID, boolean available) {
         TextComponent add = new TextComponent(leftSign);
         if (available) {
             add.setColor(ChatColor.GOLD);
-            add.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk changepage " + (pageID - 1)));
         } else
             add.setColor(ChatColor.GRAY);
         add.setBold(true);
-        setHoverDescription(add, "Previous Page", ChatColor.YELLOW);
-        return add;
+        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> ChangePage(pageID - 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "previousPage"));
     }
 
-    private TextComponent getRightSignComponent(int pageID, boolean available) {
+    private BaseComponent[] getRightSignComponent(int pageID, boolean available) {
         TextComponent add = new TextComponent(rightSign);
         if (available) {
             add.setColor(ChatColor.GOLD);
-            add.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/gk changepage " + (pageID + 1)));
         } else
             add.setColor(ChatColor.GRAY);
         add.setBold(true);
-        setHoverDescription(add, "Next Page", ChatColor.YELLOW);
-        return add;
+        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> ChangePage(pageID + 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "nextPage"));
     }
     /////////////////////////////////////////////////////////////////////////
 
@@ -179,15 +175,18 @@ public class ListDisplayer {
     private void sendCurrentBottomTool() {
         Player player = getPlayer();
         TextComponent line = new TextComponent("");
-        TextComponent leftSign = this.getLeftSignComponent(currentPageID, (currentPageID > 0));
+        BaseComponent[] leftSign = this.getLeftSignComponent(currentPageID, (currentPageID > 0));
         BaseComponent[] pageSign = this.getPageSignComponent(currentPageID, getCurrentTotalPage());
-        TextComponent rightSign = this.getRightSignComponent(currentPageID, ((currentPageID + 1) < getCurrentTotalPage()));
-        line.addExtra(leftSign);
-
+        BaseComponent[] rightSign = this.getRightSignComponent(currentPageID, ((currentPageID + 1) < getCurrentTotalPage()));
+        for (BaseComponent component : leftSign) {
+            line.addExtra(component);
+        }
         for (BaseComponent component : pageSign) {
             line.addExtra(component);
         }
-        line.addExtra(rightSign);
+        for (BaseComponent component : rightSign) {
+            line.addExtra(component);
+        }
         player.spigot().sendMessage(line);
     }
 
