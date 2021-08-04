@@ -48,7 +48,6 @@ public class ConfigSystem {
         for (String key : buttonConfig.getKeys(false)) {
             ItemStack button = buttonConfig.getItemStack(key);
             buttons.put(key, button);
-            System.out.println("loading button: " + key);
         }
     }
 

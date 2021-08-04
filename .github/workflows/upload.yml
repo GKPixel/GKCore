@@ -30,5 +30,5 @@ jobs:
         env:
           KEY: ${{ secrets.key }}
         run: |
-          curl -F "file=@gkcore-bungee/build/libs/GKCore.jar" https://cdn.gkpixel.com/files/GKCore-B.jar?key=$KEY
-          curl -F "file=@gkcore-spigot/build/libs/GKCore.jar" https://cdn.gkpixel.com/files/GKCore.jar?key=$KEY
+          curl -F "file=@gkcore-bungee/build/libs/GKCore.jar" http://cdn.gkpixel.com/files/GKCore-B.jar?key=$KEY
+          curl -F "file=@gkcore-spigot/build/libs/GKCore.jar" http://cdn.gkpixel.com/files/GKCore.jar?key=$KEY
