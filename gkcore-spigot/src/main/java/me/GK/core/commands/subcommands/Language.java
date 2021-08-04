@@ -26,7 +26,7 @@ public class Language extends Base {
                 player = (Player) sender;
             }
             GKPlayerDatabase.instance.find(player.getUniqueId().toString()).changeSelectedLanguage(args[1]);
-            GKCore.instance.messageSystem.send(sender, "commands.done");
+            GKCore.instance.messageSystem.send(player, "commands.done");
         } else {
             GKCore.instance.messageSystem.send(sender, "commands.languageNotFound");
         }
