@@ -34,7 +34,7 @@ public class Event implements Listener {
         GKPlayerDatabase.instance.unload(uid.toString());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent e) {
         String msg = Extensions.color(e.getMessage());
         GKPlayer GKP = GKPlayer.fromPlayer(e.getPlayer());
