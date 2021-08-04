@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class TextButtonSystem implements CommandExecutor {
         instance = this;
         plugin.getCommand("gkcallback").setExecutor(this);
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            for (Map.Entry<UUID, Map<String, Object>> pair : callbacks.entrySet()) {
+            for (Map.Entry<UUID, Map<String, Object>> pair : new HashSet<>(callbacks.entrySet())) {
                 if (System.currentTimeMillis() >= ((Date) pair.getValue().get("expires")).getTime()) {
                     callbacks.remove(pair.getKey());
                 }

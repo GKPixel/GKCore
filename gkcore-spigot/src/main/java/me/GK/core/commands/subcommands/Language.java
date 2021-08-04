@@ -19,9 +19,11 @@ public class Language extends Base {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if (GKCore.instance.configSystem.config.getStringList("languages").contains(args[1])) {
-            Player player = (Player) sender;
+            Player player;
             if (args.length == 3 && sender.hasPermission("gkcore.command.language.changeOthers")) {
                 player = Bukkit.getPlayer(args[2]);
+            } else {
+                player = (Player) sender;
             }
             GKPlayerDatabase.instance.find(player.getUniqueId().toString()).changeSelectedLanguage(args[1]);
             GKCore.instance.messageSystem.send(sender, "commands.done");
