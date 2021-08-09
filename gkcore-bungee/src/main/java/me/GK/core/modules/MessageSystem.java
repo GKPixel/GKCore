@@ -99,7 +99,7 @@ public class MessageSystem {
     }
 
     public String get(String lang, String key) {
-        return (((Configuration) message.get(lang).values().toArray()[0]).getString(key));
+        return Extensions.color(((Configuration) message.get(lang).values().toArray()[0]).getString(key));
     }
 
     public String get(String key) {
