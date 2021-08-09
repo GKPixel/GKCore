@@ -19,7 +19,6 @@ public class JsonSystem {
             .disableHtmlEscaping()
             .setPrettyPrinting()
             .registerTypeHierarchyAdapter(ConfigurationSerializable.class, new ConfigurationSerializableAdapter())
-            //.registerTypeHierarchyAdapter(Pattern.class, new PatternAdaptor())
             .registerTypeHierarchyAdapter(BannerMeta.class, new BannerMetaAdaptor());
     public Gson gson = builder.create();
 

@@ -1,7 +1,6 @@
 package me.GK.core.modules;
 
 import me.GK.core.gui.ButtonEditor;
-import me.GK.core.main.Extensions;
 import me.GK.core.managers.ItemStackManager;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,10 +22,6 @@ public class ConfigSystem {
     public ConfigSystem(Plugin plugin) {
         this.plugin = plugin;
         initiate();
-    }
-
-    public String color(String str) {
-        return Extensions.color(str);
     }
 
     public void initiate() {

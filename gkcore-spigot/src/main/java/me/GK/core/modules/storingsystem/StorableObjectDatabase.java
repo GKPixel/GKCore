@@ -30,17 +30,10 @@ import java.util.HashMap;
 
 public abstract class StorableObjectDatabase<T extends StorableObject> {
     public DatabaseType type = DatabaseType.FOLDER;
-    ///////////////////////////////////////////////////////////////////////////
-    //---GLOBAL Settings---
     public Plugin plugin;
     public String databaseName = "";
-    ///////////////
     public boolean finishedLoading = false;
-    ///////////////////////////////////////////////////////////////////////////
-    //---FOLDER Settings---
     public String folderName = "";
-    ///////////////////////////////////////////////////////////////////////////
-    //---MYSQL Settings---
     public String tableName = "";
     public HashMap<String, T> database = new HashMap<>();
 
