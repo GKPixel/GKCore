@@ -2,3 +2,4 @@
 configVersion: 0
 debugMode: false
 languages: [ en-US, zh-TW ]
+overrideMessages: true

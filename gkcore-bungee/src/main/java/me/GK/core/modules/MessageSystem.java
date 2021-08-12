@@ -44,9 +44,10 @@ public class MessageSystem {
         if (!messagesFolder.exists()) {
             messagesFolder.mkdir();
         }
+        boolean overrideMessages = GKCore.instance.configSystem.config.getBoolean("overrideMessages");
         for (String lang : languages) {
             File langFile = new File(String.valueOf(Paths.get(String.valueOf(messagesFolder), lang + ".yml")));
-            if (!langFile.exists()) {
+            if (!langFile.exists() || overrideMessages) {
                 langFile.createNewFile();
                 InputStream is = plugin.getResourceAsStream("messages/" + lang + ".yml");
                 OutputStream os = new FileOutputStream(langFile);
