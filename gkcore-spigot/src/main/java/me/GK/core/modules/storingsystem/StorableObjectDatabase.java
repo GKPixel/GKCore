@@ -106,13 +106,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         initSaveScheduler();
         return this;
     }
-    ///////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////////////////////
-    //Need to be changed
-    //(Nothing)
-    ///////////////////////////////////////////////////////////////////////////////////
-    //Getting
     public String getFolderName() {
         return folderName;
     }
@@ -128,25 +122,18 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         return (Class<T>) t;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //[Setup]
-    //---FOLDER---
     private void setupFolder() {
-        //System.out.print("setup database folder "+getPlugin().getDataFolder());
         File folder = new File(getPlugin().getDataFolder(), getFolderName());
         if (!folder.exists()) {
             folder.mkdirs();
         }
     }
 
-    //---MYSQL---
     private void setupTable() {
         MySQL.update("create table " + tableName + " (id varchar(255), data longtext) CHARACTER SET utf8 COLLATE utf8_general_ci;");
         debug("setup table");
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //[loadAll]
     public boolean isFinishedLoading() {
         return finishedLoading;
     }
@@ -171,7 +158,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         }
     }
 
-    //---FOLDER---
     private void loadAllInFolder(String folderName) {
         clear();
         File folder = new File(getPlugin().getDataFolder(), folderName);
@@ -192,11 +178,9 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             }
             finishedLoading = true;
             if (callback != null) callback.run();
-
         });
     }
 
-    //---MYSQL---
     private void loadAllByMySQL(Runnable callback) {
         reset();
         setupTable();
@@ -207,6 +191,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             String sql = "SELECT * FROM " + tableName + " WHERE 0='0';";
             st = MySQL.getConnection().createStatement();
             rs = st.executeQuery(sql);
+            System.err.println("[GKCORE SQL DEBUG LOAD ALL] rs = " + rs);
             while (rs.next()) {
                 try {
                     Object json = rs.getObject("data");
@@ -259,35 +244,32 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     ///////////////////////////////////////////////////////////////////////////
 
     public void loadOrAdd(String ID, T newInstance) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                switch (type) {
-                    case FOLDER: {
-                        loadByFolder(ID, obj -> {
-                            if (obj == null) addNew(newInstance);
-                        });
-                    }
-                    break;
-                    case MYSQL: {
-                        loadByMySQL(ID, obj -> {
-                            if (obj == null) addNew(newInstance);
-                        });
-                    }
-                    break;
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            switch (type) {
+                case FOLDER: {
+                    loadByFolder(ID, obj -> {
+                        if (obj == null) addNew(newInstance);
+                    });
                 }
+                break;
+                case MYSQL: {
+                    loadByMySQL(ID, obj -> {
+                        if (obj == null) addNew(newInstance);
+                    });
+                }
+                break;
             }
-        }.runTaskAsynchronously(GKCore.plugin);
-
+        });
     }
 
     private void loadByMySQL(String ID, Callback<T> callback) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             try {
                 String sql = "SELECT * FROM " + tableName + " WHERE id='" + ID + "';";
                 MySQL.connect();
                 Statement st = MySQL.getConnection().createStatement();
                 ResultSet rs = st.executeQuery(sql);
+                System.err.println("[GKCORE SQL DEBUG] rs = " + rs);
                 if (rs.next()) {
                     Object json = rs.getObject("data");
                     if (json != null) {
@@ -330,45 +312,34 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
 
     @SuppressWarnings("unchecked")
     private void loadByFolder(String inputID, Callback<T> callback) {
+        final String ID = inputID.replace(".json", "");
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            setupFolder();
+            String path = getStorableObjectPath(ID);
+            debug("database loading " + ID);
+            File file = new File(path);
+            Class<T> itemClass = getItemClass();
+            if (!file.exists()) {
+                debug("Cannot load storableObject [Reason: cannot find: " + path + "]");
+                if (callback != null) callback.run(null);
+                return;
 
-        new BukkitRunnable() {
-            String ID = inputID;
-
-            @Override
-            public void run() {
-                setupFolder();
-                ID = ID.replace(".json", "");
-                String path = getStorableObjectPath(ID);
-                debug("database loading " + ID);
-                File file = new File(path);
-                Class<T> itemClass = getItemClass();
-                if (!file.exists()) {
-                    debug("Cannot load storableObject [Reason: cannot find: " + path + "]");
-                    if (callback != null) callback.run(null);
-                    return;
-
-                }
-                if (itemClass.isAssignableFrom(StorableObject.class)) {
-                    debug("Cannot load storableObject [Class " + itemClass + " is not a subclass of StorableObject]");
-                    return;
-                }
-                try {
-                    String json = new String(Files.readAllBytes(Paths.get(path)));//reading the file
-                    T newObj = GKCore.instance.jsonSystem.gson.fromJson(json, getItemClass());//convert json string to object
-                    add(newObj);//add into the temp database
-                    if (callback != null) callback.run(newObj);
-                    debug("database successfully loaded " + ID);
-                    return;
-                } catch (IllegalArgumentException | SecurityException | IOException e) {
-                    // TODO Auto-generated catch block
-
-                    e.printStackTrace();
-                    GKCore.debug(ChatColor.GREEN + "try register your abstract class using JsonSystem.registerAbstractClass<MyClass>(MyClass.getClass())");
-                    return;
-                }
             }
-        }.runTaskAsynchronously(plugin);
-
+            if (itemClass.isAssignableFrom(StorableObject.class)) {
+                debug("Cannot load storableObject [Class " + itemClass + " is not a subclass of StorableObject]");
+                return;
+            }
+            try {
+                String json = new String(Files.readAllBytes(Paths.get(path)));//reading the file
+                T newObj = GKCore.instance.jsonSystem.gson.fromJson(json, getItemClass());//convert json string to object
+                add(newObj);//add into the temp database
+                if (callback != null) callback.run(newObj);
+                debug("database successfully loaded " + ID);
+            } catch (IllegalArgumentException | SecurityException | IOException e) {
+                e.printStackTrace();
+                GKCore.debug(ChatColor.GREEN + "try register your abstract class using JsonSystem.registerAbstractClass<MyClass>(MyClass.getClass())");
+            }
+        });
     }
 
     public void unload(String ID) {
@@ -449,7 +420,8 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         if (storableObject == null) return;
         storableObject.needToSave = false;
         storableObject.saving = true;
-        Runnable br = () -> {
+
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             String id = storableObject.getID();
             String json = GKCore.instance.jsonSystem.gson.toJson(storableObject, getItemClass());  //return String (no null object)
             debug("upserted json: " + json);
@@ -478,9 +450,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
                 System.out.print("Error while saving to MySQL :");
                 exception.printStackTrace();
             }
-        };
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, br);
-
+        });
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -575,31 +545,26 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public boolean transfer(CommandSender sender, DatabaseType type) {
         if (this.type == type) {
             if (sender != null) GKCore.instance.messageSystem.send(sender, "databaseTransferFailedBecauseAlreadyIs");
             return false;
         } else {
-            new BukkitRunnable() {
-                public void run() {
-                    loadAll();
-                    setup(type, plugin, databaseName);
-                    int i = 0;
-                    for (String id : database.keySet()) {
-                        StorableObject SO = database.get(id);
-                        SO.save();//save the object to new DB
-                        i++;
-                        sender.sendMessage("database transferring: " + id + "  (" + (float) i / database.keySet().size() * 100 + "%)");
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                loadAll();
+                setup(type, plugin, databaseName);
+                int i = 0;
+                for (String id : database.keySet()) {
+                    StorableObject SO = database.get(id);
+                    SO.save();//save the object to new DB
+                    i++;
+                    sender.sendMessage("database transferring: " + id + "  (" + (float) i / database.keySet().size() * 100 + "%)");
 
-                    }
-                    sender.sendMessage("database transfer FINISHED");
                 }
-            }.runTaskAsynchronously(plugin);
+                sender.sendMessage("database transfer FINISHED");
+            });
             return true;
         }
-
-
     }
 
     public enum DatabaseType {
