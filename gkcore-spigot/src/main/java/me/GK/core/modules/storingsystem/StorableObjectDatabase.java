@@ -191,7 +191,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             String sql = "SELECT * FROM " + tableName + " WHERE 0='0';";
             st = MySQL.getConnection().createStatement();
             rs = st.executeQuery(sql);
-            System.err.println("[GKCORE SQL DEBUG LOAD ALL] rs = " + rs);
             while (rs.next()) {
                 try {
                     Object json = rs.getObject("data");
@@ -269,7 +268,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
                 MySQL.connect();
                 Statement st = MySQL.getConnection().createStatement();
                 ResultSet rs = st.executeQuery(sql);
-                System.err.println("[GKCORE SQL DEBUG] rs = " + rs);
                 if (rs.next()) {
                     Object json = rs.getObject("data");
                     if (json != null) {
