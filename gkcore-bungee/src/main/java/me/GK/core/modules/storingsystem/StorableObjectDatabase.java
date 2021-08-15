@@ -179,9 +179,8 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         reset();
         ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> {
             setupTable();
-            MySQL.connect();
-            Statement st = null;
-            ResultSet rs = null;
+            Statement st;
+            ResultSet rs;
             String sql = "SELECT * FROM " + tableName + " WHERE 0='0';";
             try {
                 st = MySQL.getConnection().createStatement();
@@ -191,6 +190,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             }
             try {
                 rs = st.executeQuery(sql);
+                System.err.println("[GKCORE SQL DEBUG] rs = " + rs);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 return;
@@ -265,9 +265,9 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> {
             try {
                 String sql = "SELECT * FROM " + tableName + " WHERE id='" + ID + "';";
-                MySQL.connect();
-                Statement st = MySQL.getConnection().createStatement();//.createStatement();
+                Statement st = MySQL.getConnection().createStatement();
                 ResultSet rs = st.executeQuery(sql);
+                System.err.println("[GKCORE SQL DEBUG] rs = " + rs);
                 if (rs.next()) {
                     Object json = rs.getObject("data");
                     if (json != null) {
@@ -305,7 +305,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         });
     }
 
-    @SuppressWarnings("unchecked")
     private void loadByFolder(String inputID, Callback<T> callback) {
         final String ID = inputID.replace(".json", "");
         ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> {
@@ -410,7 +409,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         if (callback != null) callback.run();
     }
 
-    @SuppressWarnings("deprecation")
     private void saveByMySQL(T storableObject, Runnable callback) {
         if (storableObject == null) return;
         storableObject.needToSave = false;
@@ -448,7 +446,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     }
 
     //Adds a storableObject
-    @SuppressWarnings("unchecked")
     public void addNew(T storableObject) {
         save(storableObject);
         add(storableObject);
@@ -492,7 +489,6 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
 
 
     //Finds a storableObject
-    @SuppressWarnings("unchecked")
     public T find(String ID) {
         //load(ID);
         if (!isFinishedLoading()) {
