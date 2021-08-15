@@ -169,7 +169,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
 
     private void loadAllByFolder(Runnable callback) {
         reset();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             setupFolder();
             try {
                 loadAllInFolder(getFolderName());
@@ -244,7 +244,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     ///////////////////////////////////////////////////////////////////////////
 
     public void loadOrAdd(String ID, T newInstance) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             switch (type) {
                 case FOLDER: {
                     loadByFolder(ID, obj -> {
@@ -313,7 +313,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
     @SuppressWarnings("unchecked")
     private void loadByFolder(String inputID, Callback<T> callback) {
         final String ID = inputID.replace(".json", "");
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             setupFolder();
             String path = getStorableObjectPath(ID);
             debug("database loading " + ID);
@@ -421,7 +421,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
         storableObject.needToSave = false;
         storableObject.saving = true;
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTask(plugin, () -> {
             String id = storableObject.getID();
             String json = GKCore.instance.jsonSystem.gson.toJson(storableObject, getItemClass());  //return String (no null object)
             debug("upserted json: " + json);
@@ -550,7 +550,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
             if (sender != null) GKCore.instance.messageSystem.send(sender, "databaseTransferFailedBecauseAlreadyIs");
             return false;
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
                 loadAll();
                 setup(type, plugin, databaseName);
                 int i = 0;
