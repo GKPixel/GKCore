@@ -12,6 +12,6 @@ public class GKCoreCommands {
         cmd.commands.add(new Placeholder(plugin, cmd, "placeholder", false));
         cmd.commands.add(new Item(plugin, cmd, "item", false));
         cmd.commands.add(new Language(plugin, cmd, "language", false));
-        cmd.commands.add(new SendTask(plugin, cmd, "sendTask", false));
+        cmd.commands.add(new SendTask(plugin, cmd, "sendtask", false));
     }
 }

@@ -48,6 +48,7 @@ public class CloudNetUtils {
                 if(smallestPlayerAmount == 10000) {
                     finalPlayer.sendMessage(GKCore.getInstance().configSystem.get("cannotFindCloudTask"));
                 }
+                target.sendMessage("finished, found server: "+selectedServerName);
                 sendService(target, selectedServerName);
 
             }

@@ -17,8 +17,8 @@ public class SendTask extends Base {
     @Override
     public void onExecute(CommandSender sender, String[] args) {
         if(args.length > 2){
-            Player target = Bukkit.getPlayer(args[0]);
-            String taskName = args[1];
+            Player target = Bukkit.getPlayer(args[1]);
+            String taskName = args[2];
             CloudNetUtils.sendTask(target, taskName);
             GKCore.instance.messageSystem.send(sender, "commands.done");
         }
