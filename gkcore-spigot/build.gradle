@@ -33,11 +33,13 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven { url = "https://jitpack.io" }
     mavenCentral()
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
     maven { url "https://repo.dmulloy2.net/repository/public/" }
+
 }
 
 compileJava.options.encoding = 'UTF-8'
@@ -52,6 +54,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     testCompileOnly 'org.projectlombok:lombok:1.18.20'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    //CloudNet
+    implementation 'com.github.CloudNetService:CloudNet-v3:3.4.0'
 }
 
 processResources {

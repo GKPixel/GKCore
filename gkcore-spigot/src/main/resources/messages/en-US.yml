@@ -51,4 +51,5 @@ commands:
   itemDescription: "Changes the item on your main hand's name or lore"
   languageDescription: "Changes your language"
   languageNotFound: "&cThe language you want to change to doesn't exist"
+  sendTask: "send a player into a cloudnet task"
 invalidCallback: "&cInvalid command callback, the interaction may have expired, please try again"

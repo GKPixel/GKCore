@@ -1,10 +1,6 @@
 package me.GK.core.commands;
 
-import me.GK.core.commands.subcommands.Item;
-import me.GK.core.commands.subcommands.Language;
-import me.GK.core.commands.subcommands.Placeholder;
-import me.GK.core.commands.subcommands.ReconnectSQL;
-import me.GK.core.commands.subcommands.Reload;
+import me.GK.core.commands.subcommands.*;
 import me.GK.core.modules.Commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,5 +12,6 @@ public class GKCoreCommands {
         cmd.commands.add(new Placeholder(plugin, cmd, "placeholder", false));
         cmd.commands.add(new Item(plugin, cmd, "item", false));
         cmd.commands.add(new Language(plugin, cmd, "language", false));
+        cmd.commands.add(new SendTask(plugin, cmd, "sendTask", false));
     }
 }
