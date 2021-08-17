@@ -1,7 +1,9 @@
 package me.GK.core.commands.subcommands;
 
+import de.dytanic.cloudnet.driver.CloudNetDriver;
+import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
+import de.dytanic.cloudnet.ext.bridge.player.executor.ServerSelectorType;
 import me.GK.core.GKCore;
-import me.GK.core.cloudnet.CloudNetUtils;
 import me.GK.core.modules.Commands.CommandManager;
 import me.GK.core.modules.Commands.subcommands.Base;
 import org.bukkit.Bukkit;
@@ -16,10 +18,11 @@ public class SendTask extends Base {
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
-        if(args.length > 2){
+        if (args.length > 2) {
             Player target = Bukkit.getPlayer(args[1]);
             String taskName = args[2];
-            CloudNetUtils.sendTask(target, taskName);
+            CloudNetDriver.getInstance().getServicesRegistry()
+                    .getFirstService(IPlayerManager.class).getPlayerExecutor(target.getUniqueId()).connectToTask(taskName, ServerSelectorType.LOWEST_PLAYERS);
             GKCore.instance.messageSystem.send(sender, "commands.done");
         }
     }

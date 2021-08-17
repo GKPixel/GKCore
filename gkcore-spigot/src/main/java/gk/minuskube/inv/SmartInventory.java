@@ -27,15 +27,20 @@ public class SmartInventory {
     private SmartInventory parent;
 
     private List<InventoryListener<? extends Event>> listeners;
-    private InventoryManager manager;
+    private final InventoryManager manager;
 
     private SmartInventory(InventoryManager manager) {
         this.manager = manager;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public void updateInv(Player player, String title, int size) throws NoSuchFieldException, SecurityException {
     	/*CraftPlayer cp = (CraftPlayer) player;
     	EntityPlayer ep = (EntityPlayer) cp.getHandle();
-    	
+
     	Field f = ep.getClass().getDeclaredField("containerCounter");
     	f.setAccessible(true);
     	Integer containerCounter;
@@ -68,15 +73,19 @@ public class SmartInventory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-    	
+
     }
-    public Inventory open(Player player) { return open(player, 0); }
+
+    public Inventory open(Player player) {
+        return open(player, 0);
+    }
+
     public Inventory open(Player player, int page) {
         Optional<SmartInventory> oldInv = this.manager.getInventory(player);
-        
+
         /*oldInv.ifPresent(inv -> {
         	InventoryProvider oldProvider = inv.getProvider();
-        	
+
             inv.getListeners().stream()
                     .filter(listener -> listener.getType() == InventoryCloseEvent.class)
                     .forEach(listener -> ((InventoryListener<InventoryCloseEvent>) listener)
@@ -84,21 +93,21 @@ public class SmartInventory {
 
             this.manager.setInventory(player, null);
         });*/
-        if(oldInv.isPresent()) {
-        	SmartInventory old = oldInv.get();
+        if (oldInv.isPresent()) {
+            SmartInventory old = oldInv.get();
             this.manager.setInventory(player, null);
-        	if(old.getRows()==getRows() && old.getColumns()==getColumns() && old.getType()==getType()) {
-        		//use same menu, but change content
-        		try {
-					updateInv(player, title, getRows()*getColumns());
-				} catch (NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        		InventoryContents contents = new InventoryContents.Impl(this, player);
+            if (old.getRows() == getRows() && old.getColumns() == getColumns() && old.getType() == getType()) {
+                //use same menu, but change content
+                try {
+                    updateInv(player, title, getRows() * getColumns());
+                } catch (NoSuchFieldException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (SecurityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                InventoryContents contents = new InventoryContents.Impl(this, player);
                 contents.pagination().page(page);
 
                 this.manager.setContents(player, contents);
@@ -107,17 +116,17 @@ public class SmartInventory {
                         .orElseThrow(() -> new IllegalStateException("No opener found for the inventory type " + type.name()));
                 Inventory handle = opener.update(this, player);
 
-            	//player.sendMessage("using old menu, changing contents");
+                //player.sendMessage("using old menu, changing contents");
                 this.manager.setInventory(player, this);
 
                 return handle;
-        	}
+            }
         }
         {
-        	//player.sendMessage("using new menu, resetting mouse position");
+            //player.sendMessage("using new menu, resetting mouse position");
             //else use a new menu instead
             this.manager.setInventory(player, null);
-        	InventoryContents contents = new InventoryContents.Impl(this, player);
+            InventoryContents contents = new InventoryContents.Impl(this, player);
             contents.pagination().page(page);
 
             this.manager.setContents(player, contents);
@@ -132,7 +141,7 @@ public class SmartInventory {
             return handle;
         }
 
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -148,23 +157,49 @@ public class SmartInventory {
         this.manager.setContents(player, null);
     }
 
-    public String getId() { return id; }
-    public String getTitle() { return title; }
-    public InventoryType getType() { return type; }
-    public int getRows() { return rows; }
-    public int getColumns() { return columns; }
+    public String getId() {
+        return id;
+    }
 
-    public boolean isCloseable() { return closeable; }
-    public void setCloseable(boolean closeable) { this.closeable = closeable; }
+    public String getTitle() {
+        return title;
+    }
 
-    public InventoryProvider getProvider() { return provider; }
-    public Optional<SmartInventory> getParent() { return Optional.ofNullable(parent); }
+    public InventoryType getType() {
+        return type;
+    }
 
-    public InventoryManager getManager() { return manager; }
+    public int getRows() {
+        return rows;
+    }
 
-    List<InventoryListener<? extends Event>> getListeners() { return listeners; }
+    public int getColumns() {
+        return columns;
+    }
 
-    public static Builder builder() { return new Builder(); }
+    public boolean isCloseable() {
+        return closeable;
+    }
+
+    public void setCloseable(boolean closeable) {
+        this.closeable = closeable;
+    }
+
+    public InventoryProvider getProvider() {
+        return provider;
+    }
+
+    public Optional<SmartInventory> getParent() {
+        return Optional.ofNullable(parent);
+    }
+
+    public InventoryManager getManager() {
+        return manager;
+    }
+
+    List<InventoryListener<? extends Event>> getListeners() {
+        return listeners;
+    }
 
     public static final class Builder {
 
@@ -178,9 +213,10 @@ public class SmartInventory {
         private InventoryProvider provider;
         private SmartInventory parent;
 
-        private List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
+        private final List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public Builder id(String id) {
             this.id = id;
@@ -229,12 +265,12 @@ public class SmartInventory {
         }
 
         public SmartInventory build() {
-            if(this.provider == null)
+            if (this.provider == null)
                 throw new IllegalStateException("The provider of the SmartInventory.Builder must be set.");
 
             InventoryManager manager = this.manager != null ? this.manager : GKCore.instance.invManager;
 
-            if(manager == null)
+            if (manager == null)
                 throw new IllegalStateException("The manager of the SmartInventory.Builder must be set, "
                         + "or the SmartInvs should be loaded as a plugin.");
 

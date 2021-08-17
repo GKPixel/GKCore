@@ -1,4 +1,3 @@
-
 package me.GK.core.modules;
 
 public class Version implements Comparable<Version> {
@@ -19,12 +18,15 @@ public class Version implements Comparable<Version> {
     public boolean isSmallerThan(String target) {
         return compareTo(new Version(target)) < 0;
     }
+
     public boolean isSmallerThanOrEquals(String target) {
         return compareTo(new Version(target)) <= 0;
     }
+
     public boolean isGreaterThan(String target) {
         return compareTo(new Version(target)) > 0;
     }
+
     public boolean isGreaterThanOrEquals(String target) {
         return compareTo(new Version(target)) >= 0;
     }

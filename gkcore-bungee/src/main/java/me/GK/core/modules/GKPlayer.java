@@ -11,7 +11,8 @@ public class GKPlayer extends StorableObject {
     public UUID uuid;
     @Expose
     public String selectedLanguage = "en-US";
-    public GKPlayer(String ID){
+
+    public GKPlayer(String ID) {
         this.uuid = UUID.fromString(ID);
     }
 

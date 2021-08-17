@@ -10,11 +10,15 @@ public class SlotPos {
         this.column = column;
     }
 
+    public static SlotPos of(int row, int column) {
+        return new SlotPos(row, column);
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if(this == obj)
+        if (this == obj)
             return true;
-        if(obj == null || getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
 
         SlotPos slotPos = (SlotPos) obj;
@@ -30,11 +34,12 @@ public class SlotPos {
         return result;
     }
 
-    public int getRow() { return row; }
-    public int getColumn() { return column; }
+    public int getRow() {
+        return row;
+    }
 
-    public static SlotPos of(int row, int column) {
-        return new SlotPos(row, column);
+    public int getColumn() {
+        return column;
     }
 
 }

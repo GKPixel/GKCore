@@ -1,12 +1,7 @@
-
 package me.GK.core.modules;
 
 public class Version implements Comparable<Version> {
     public String version;
-
-    public final String get() {
-        return this.version;
-    }
 
     public Version(String version) {
         if (version == null)
@@ -15,22 +10,33 @@ public class Version implements Comparable<Version> {
             throw new IllegalArgumentException("Invalid version format");
         this.version = version;
     }
+
+    public final String get() {
+        return this.version;
+    }
+
     public boolean isSmallerThan(String target) {
-    	return compareTo(new Version(target))<0;
+        return compareTo(new Version(target)) < 0;
     }
+
     public boolean isSmallerThanOrEquals(String target) {
-    	return compareTo(new Version(target))<=0;
+        return compareTo(new Version(target)) <= 0;
     }
+
     public boolean isGreaterThan(String target) {
-    	return compareTo(new Version(target))>0;
+        return compareTo(new Version(target)) > 0;
     }
+
     public boolean isGreaterThanOrEquals(String target) {
-    	return compareTo(new Version(target))>=0;
+        return compareTo(new Version(target)) >= 0;
     }
+
     public boolean isEquals(String target) {
-    	return compareTo(new Version(target))==0;
+        return compareTo(new Version(target)) == 0;
     }
-    @Override public int compareTo(Version that) {
+
+    @Override
+    public int compareTo(Version that) {
         if (that == null)
             return 1;
         String[] thisParts = this.get().replaceAll("-beta[0-9]+", "").split("\\.");
@@ -49,12 +55,13 @@ public class Version implements Comparable<Version> {
         return 0;
     }
 
-    @Override public boolean equals(Object that) {
-        if(this == that)
+    @Override
+    public boolean equals(Object that) {
+        if (this == that)
             return true;
-        if(that == null)
+        if (that == null)
             return false;
-        if(this.getClass() != that.getClass())
+        if (this.getClass() != that.getClass())
             return false;
         return this.compareTo((Version) that) == 0;
     }

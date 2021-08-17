@@ -53,3 +53,4 @@ commands:
   languageNotFound: "&c你欲更改成之語言不存在"
   sendTask: "把玩家傳送到某個CloudNet Task裡面"
 invalidCallback: "&c無效的callback，互動可能已過期，請重新嘗試"
+cannotFindCloudTask: "找不到要將你送入的伺服器"

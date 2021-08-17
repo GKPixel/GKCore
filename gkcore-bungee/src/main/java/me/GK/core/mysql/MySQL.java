@@ -9,8 +9,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class MySQL {
-    private static Connection con;
     private static final boolean sendDebug = GKCore.instance.configSystem.config.getBoolean("debugMode");
+    private static Connection con;
 
     public static void debug(Object obj) {
         if (sendDebug) {

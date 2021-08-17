@@ -50,14 +50,14 @@ public class ButtonEditor implements InventoryProvider {
                     player.closeInventory();
                     ItemStackEditor.create(player, configSystem.buttons.get(buttonID).clone(), buttonID, new Runnable() {
 
-                        @Override
-                        public void run() {
-                            configSystem.setButton(buttonID, ItemStackEditor.getEditingItemStack(player));
-                            player.getInventory().addItem(e.getCursor());
-                            player.setItemOnCursor(null);
-                        }
+                                @Override
+                                public void run() {
+                                    configSystem.setButton(buttonID, ItemStackEditor.getEditingItemStack(player));
+                                    player.getInventory().addItem(e.getCursor());
+                                    player.setItemOnCursor(null);
+                                }
 
-                    })
+                            })
                             .onBack(new Runnable() {
 
                                 @Override
@@ -67,7 +67,7 @@ public class ButtonEditor implements InventoryProvider {
 
                             })
                             .send();
-				}
+                }
 
             }));
         }

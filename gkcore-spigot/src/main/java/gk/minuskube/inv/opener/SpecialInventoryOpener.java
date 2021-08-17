@@ -14,18 +14,6 @@ import java.util.List;
 
 public class SpecialInventoryOpener implements InventoryOpener {
 
-	public Inventory update(SmartInventory inv, Player player) {
-		Preconditions.checkArgument(inv.getColumns() == 9,
-                "The column count for the chest inventory must be 9, found: %s.", inv.getColumns());
-        Preconditions.checkArgument(inv.getRows() >= 1 && inv.getRows() <= 6,
-                "The row count for the chest inventory must be between 1 and 6, found: %s", inv.getRows());
-        InventoryManager manager = inv.getManager();
-        Inventory topInv = player.getOpenInventory().getTopInventory();
-        topInv.setContents(new ItemStack[topInv.getSize()]);
-        fill(topInv, manager.getContents(player).get());
-        return topInv;
-	}
-	
     private static final List<InventoryType> SUPPORTED = ImmutableList.of(
             InventoryType.FURNACE,
             InventoryType.WORKBENCH,
@@ -38,12 +26,24 @@ public class SpecialInventoryOpener implements InventoryOpener {
             InventoryType.HOPPER
     );
 
+    public Inventory update(SmartInventory inv, Player player) {
+        Preconditions.checkArgument(inv.getColumns() == 9,
+                "The column count for the chest inventory must be 9, found: %s.", inv.getColumns());
+        Preconditions.checkArgument(inv.getRows() >= 1 && inv.getRows() <= 6,
+                "The row count for the chest inventory must be between 1 and 6, found: %s", inv.getRows());
+        InventoryManager manager = inv.getManager();
+        Inventory topInv = player.getOpenInventory().getTopInventory();
+        topInv.setContents(new ItemStack[topInv.getSize()]);
+        fill(topInv, manager.getContents(player).get());
+        return topInv;
+    }
+
     @Override
     public Inventory open(SmartInventory inv, Player player) {
         InventoryManager manager = inv.getManager();
         Inventory handle = Bukkit.createInventory(player, inv.getType(), inv.getTitle());
 
-        
+
         fill(handle, manager.getContents(player).get());
 
         player.openInventory(handle);
