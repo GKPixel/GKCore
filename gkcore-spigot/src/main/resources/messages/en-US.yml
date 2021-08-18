@@ -52,5 +52,6 @@ commands:
   languageDescription: "Changes your language"
   languageNotFound: "&cThe language you want to change to doesn't exist"
   sendTask: "send a player into a cloudnet task"
+  applyTemplate: "copy folder in templates to current server (will replace if repeated)"
 invalidCallback: "&cInvalid command callback, the interaction may have expired, please try again"
 cannotFindCloudTask: "Can't find the server to send you to"

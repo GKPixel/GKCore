@@ -52,5 +52,8 @@ commands:
   languageDescription: "更改你的語言"
   languageNotFound: "&c你欲更改成之語言不存在"
   sendTask: "把玩家傳送到某個CloudNet Task裡面"
+  applyTemplate: "複製templates中的文件夾到目前的伺服器中(如重複, 會覆蓋)"
 invalidCallback: "&c無效的callback，互動可能已過期，請重新嘗試"
 cannotFindCloudTask: "找不到要將你送入的伺服器"
+successfullyAppliedTemplate: "&a成功套用並更新範本"
+failedApplyTemplate: "&c套用並更新範本失敗"
