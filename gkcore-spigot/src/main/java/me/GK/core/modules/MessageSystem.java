@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -86,11 +87,13 @@ public class MessageSystem {
     }
 
     public String get(CommandSender sender, String key) {
-        GKPlayer player = GKPlayerDatabase.instance.find(Bukkit.getPlayer(sender.getName()).getUniqueId().toString());
-        if (player == null) {
-            return get(DEFAULT_LANGUAGE, key);
+        //If sender is player
+        if(sender instanceof Player){
+            Player player = (Player) sender;
+            return get(player.getUniqueId(), key);
         }
-        return get(player.selectedLanguage, key);
+        //sender is console, then use default
+        return get(key);
     }
 
     public String get(String lang, String key) {
