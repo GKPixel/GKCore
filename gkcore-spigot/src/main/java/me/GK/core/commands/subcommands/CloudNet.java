@@ -1,5 +1,6 @@
 package me.GK.core.commands.subcommands;
 
+import de.dytanic.cloudnet.common.concurrent.ITask;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
 import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
 import de.dytanic.cloudnet.ext.bridge.player.executor.ServerSelectorType;
@@ -25,12 +26,17 @@ public class CloudNet extends Base {
         }
 
         //send command
-        CloudNetDriver.getInstance().getNodeInfoProvider().sendCommandLineAsync(cloudNetCommand);
+        String[] result = CloudNetDriver.getInstance().getNodeInfoProvider().sendCommandLine(cloudNetCommand);
 
         //success message
         String msg = GKCore.instance.messageSystem.get("cloudNetCommandSent");
         msg = msg.replace("%cmd%", cloudNetCommand);
         sender.sendMessage(msg);
+
+        //console message
+        for(String str : result){
+            sender.sendMessage(str);
+        }
     }
 
     @Override
