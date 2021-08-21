@@ -14,5 +14,6 @@ public class GKCoreCommands {
         cmd.commands.add(new Language(plugin, cmd, "language", false));
         cmd.commands.add(new SendTask(plugin, cmd, "sendtask", false));
         cmd.commands.add(new ApplyTemplate(plugin, cmd, "applytemplate", false));
+        cmd.commands.add(new CloudNet(plugin, cmd, "cloudnet", false));
     }
 }
