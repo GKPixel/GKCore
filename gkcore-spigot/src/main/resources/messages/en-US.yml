@@ -58,4 +58,4 @@ invalidCallback: "&cInvalid command callback, the interaction may have expired, 
 cannotFindCloudTask: "Can't find the server to send you to"
 successfullyAppliedTemplate: "&asuccessfully applied template"
 failedApplyTemplate: "&cfailed while applying template, see console for more information"
-cloudNetCommandSent: "&aCommand has been sent to &dCloudNet: &b%cmd%"
+cloudNetCommandSent: "&aCommand has been sent to CloudNet: &b%cmd%"

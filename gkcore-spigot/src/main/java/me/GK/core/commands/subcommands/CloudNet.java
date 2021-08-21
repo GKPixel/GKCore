@@ -21,11 +21,11 @@ public class CloudNet extends Base {
         //joining the command
         String cloudNetCommand = "";
         for(int i = 1 ; i < args.length ; i++){
-            cloudNetCommand+=args[i];
+            cloudNetCommand+=args[i]+" ";
         }
 
         //send command
-        CloudNetDriver.getInstance().getNodeInfoProvider().sendCommandLine(cloudNetCommand);
+        CloudNetDriver.getInstance().getNodeInfoProvider().sendCommandLineAsync(cloudNetCommand);
 
         //success message
         String msg = GKCore.instance.messageSystem.get("cloudNetCommandSent");
