@@ -1,12 +1,12 @@
 package me.GK.core.containers;
 
+import me.GK.core.main.Extensions;
 import me.GK.core.managers.GKPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class GKPlayer {
     public UUID uid;
@@ -14,7 +14,9 @@ public class GKPlayer {
     public ItemStackEditor itemStackEditor;
     public ListDisplayer listDisplayer;
     public InputListener inputListener;
+    public long lastJoinTime;
     public Map<String, String> data = new HashMap<>();
+    public List<BukkitTask> offlineCancelTaskList = new ArrayList<>();
 
     public GKPlayer(UUID uid) {
         this.uid = uid;
@@ -22,6 +24,7 @@ public class GKPlayer {
         itemStackEditor = new ItemStackEditor(uid);
         listDisplayer = new ListDisplayer(uid);
         inputListener = new InputListener(uid);
+        setLastJoinTime();
     }
 
     public static GKPlayer fromUUID(UUID uid) {
@@ -39,7 +42,36 @@ public class GKPlayer {
         return Bukkit.getPlayer(uid);
     }
 
+    public void cancelTaskWhenOffline(BukkitTask task){
+        offlineCancelTaskList.add(task);
+    }
+
+    public void cancelAllBukkitTasks(){
+        System.out.println("canceld all task for "+uid);
+        for(BukkitTask task : offlineCancelTaskList){
+            task.cancel();
+        }
+        offlineCancelTaskList = new ArrayList();
+    }
+
     public ListEditor GetListEditor() {
         return listEditor;
+    }
+    public long getLastJoinTime(){
+        return lastJoinTime;
+    }
+    public void setLastJoinTime(long lastJoinTime){
+        this.lastJoinTime = lastJoinTime;
+    }
+    public void setLastJoinTime(){
+        setLastJoinTime(Extensions.getCurrentUnixTime());
+    }
+    public long getJoinedSeconds(){
+        return Extensions.getCurrentUnixTime()-getLastJoinTime();
+    }
+    public long getJoinedTicks(){
+        long joinedTicks = getJoinedSeconds()*20;
+        return joinedTicks;
+
     }
 }

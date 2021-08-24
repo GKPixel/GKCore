@@ -2,6 +2,7 @@ package me.GK.core.main;
 
 import me.GK.core.containers.GKPlayer;
 import me.GK.core.managers.GKPlayerManager;
+import me.GK.core.managers.offlinecommand.OfflineCommandManager;
 import me.GK.core.modules.GKPlayerDatabase;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,18 +19,35 @@ public class Event implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uid = player.getUniqueId();
-        GKPlayerManager.addPlayer(uid);
+
+        /////////////////////////////////////////////////////////////////
+        //#region GKPlayer
+        GKPlayer gkplayer = GKPlayerManager.addPlayer(uid);
+        gkplayer.setLastJoinTime(Extensions.getCurrentUnixTime());
         GKPlayerDatabase.instance.load(uid.toString(), (gkp) -> {
             if (gkp == null) {
                 GKPlayerDatabase.instance.addNew(new me.GK.core.modules.GKPlayer(uid.toString()));
             }
         });
+        //#endregion
+        /////////////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////////////
+        //#region Offline commands
+        OfflineCommandManager.runAllAwaitingCommands(player);
+        //#endregion
+        /////////////////////////////////////////////////////////////////
     }
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         UUID uid = player.getUniqueId();
+
+        //cancel all bukkit tasks when offline
+        GKPlayer gkp = GKPlayer.fromPlayer(player);
+        gkp.cancelAllBukkitTasks();
+
         GKPlayerManager.removePlayer(uid);
         GKPlayerDatabase.instance.unload(uid.toString());
     }

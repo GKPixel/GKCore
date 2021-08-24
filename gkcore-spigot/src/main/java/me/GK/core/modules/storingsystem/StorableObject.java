@@ -13,6 +13,9 @@ public abstract class StorableObject {
     }
 
     public void save() {
+        if(!getDatabase().contains(getID())){
+            getDatabase().addNew(this);
+        }
         needToSave = true;
     }
 }

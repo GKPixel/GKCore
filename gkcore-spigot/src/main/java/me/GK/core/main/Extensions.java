@@ -196,9 +196,12 @@ public class Extensions extends JavaPlugin {
 
     ////////////////////////////////////////////////////////
     //Random
-    public int irandom(int min, int max) {
+    public static int irandom(int min, int max) {
         // max++;
         return (int) (Math.floor(min + (Math.random() * (max - min))));
     }
     ////////////////////////////////////////////////////////
+    public static long getCurrentUnixTime(){
+        return System.currentTimeMillis() / 1000L;
+    }
 }

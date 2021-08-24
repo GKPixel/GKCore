@@ -7,6 +7,7 @@ import me.GK.core.containers.ListEditor;
 import me.GK.core.main.Event;
 import me.GK.core.managers.GKPlayerManager;
 import me.GK.core.managers.ItemStackManager;
+import me.GK.core.managers.offlinecommand.OfflineCommandDatabase;
 import me.GK.core.modules.ConfigSystem;
 import me.GK.core.modules.GKPlayer;
 import me.GK.core.modules.GKPlayerDatabase;
@@ -139,6 +140,9 @@ public class GKCore extends JavaPlugin {
         MySQL.connect();
         new GKPlayerDatabase();
         GKPlayerDatabase.instance.setupMySQL(this, "GKCore_players").finishedLoading = true;
+        new OfflineCommandDatabase();
+        OfflineCommandDatabase.instance.setupMySQL(this, "GKCore_offlineCommands").finishedLoading = true;
+
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 GKPlayerDatabase.instance.load(player.getUniqueId().toString(), (gkp) -> {

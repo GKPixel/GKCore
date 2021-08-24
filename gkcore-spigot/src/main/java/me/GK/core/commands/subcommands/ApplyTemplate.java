@@ -1,15 +1,10 @@
 package me.GK.core.commands.subcommands;
 
-import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
-import de.dytanic.cloudnet.ext.bridge.player.executor.ServerSelectorType;
 import me.GK.core.GKCore;
-import me.GK.core.managers.CloudNetFileManager;
+import me.GK.core.managers.cloudnet.CloudNetFileManager;
 import me.GK.core.modules.Commands.CommandManager;
 import me.GK.core.modules.Commands.subcommands.Base;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ApplyTemplate extends Base {

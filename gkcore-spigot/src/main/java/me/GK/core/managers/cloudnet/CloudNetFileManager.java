@@ -1,4 +1,4 @@
-package me.GK.core.managers;
+package me.GK.core.managers.cloudnet;
 
 import me.GK.core.GKCore;
 import org.bukkit.Bukkit;

@@ -16,9 +16,10 @@ public class GKPlayerManager {
         }
     }
 
-    public static void addPlayer(UUID uid) {
+    public static GKPlayer addPlayer(UUID uid) {
         GKPlayer gkPlayer = GKPlayer.fromUUID(uid);
         playerList.put(uid, gkPlayer);
+        return gkPlayer;
     }
 
     public static void removePlayer(UUID uid) {
