@@ -33,6 +33,9 @@ public class OfflineCommandManager{
         OfflineCommandDatabase.instance.load(player.getUniqueId().toString(), (result)->{
             if(result == null){
                 System.out.println("Cannot find player offline command data: "+player.getName());
+                //create a new data
+                OfflineCommandData newData = new OfflineCommandData(player.getUniqueId());
+                OfflineCommandDatabase.instance.addNew(newData);
                 return;
             }
             System.out.println("finished loading offline command: "+player.getName());
