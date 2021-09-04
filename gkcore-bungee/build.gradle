@@ -35,6 +35,10 @@ processResources {
     }
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     repositories {
         maven {
@@ -47,6 +51,9 @@ publishing {
             publications {
                 gpr(MavenPublication) {
                     from(components.java)
+                    artifact sourceJar {
+                        classifier "sources"
+                    }
                     pom.with {
                         groupId 'me.gk'
                         artifactId 'gkcore-bungee'

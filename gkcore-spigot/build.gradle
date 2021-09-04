@@ -71,7 +71,6 @@ processResources {
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
-
 }
 
 publishing {
@@ -87,9 +86,7 @@ publishing {
                 gpr(MavenPublication) {
                     from(components.java)
                     artifact sourceJar {
-
                         classifier "sources"
-                      
                     }
                     pom.with {
                         groupId 'me.gk'
