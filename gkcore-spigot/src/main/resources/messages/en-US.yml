@@ -46,6 +46,8 @@ nextPage: "&eNext page"
 commands:
   reloadDescription: "Reloads the plugin's config files"
   done: "&aDone"
+  missingArgument: "&cYou are missing some required arguments to execute this command"
+  invalidPlayer: "&cThe player you provided was invalid"
   reconnectSQLDescription: "(Re)connects the plugin's SQL system"
   placeholderDescription: "Sends the output of a placeholder"
   itemDescription: "Changes the item on your main hand's name or lore"

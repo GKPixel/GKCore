@@ -2,6 +2,7 @@ package me.GK.core.modules.Commands.subcommands;
 
 import com.google.common.collect.ImmutableList;
 import me.GK.core.modules.Commands.CommandManager;
+import me.GK.core.modules.Commands.InvalidArgumentException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,7 +16,7 @@ public abstract class Base {
     private final String name;
     private final boolean hidden;
 
-    protected Base(JavaPlugin plugin, CommandManager cmd, String name, boolean hidden) {
+    public Base(JavaPlugin plugin, CommandManager cmd, String name, boolean hidden) {
         this.plugin = plugin;
         this.cmd = cmd;
 
@@ -56,7 +57,7 @@ public abstract class Base {
      * @param sender The command sender
      * @param args   Command arguments
      */
-    public abstract void onExecute(CommandSender sender, String[] args);
+    public abstract void onExecute(CommandSender sender, String[] args) throws InvalidArgumentException;
 
     /**
      * A function that returns the description of the command

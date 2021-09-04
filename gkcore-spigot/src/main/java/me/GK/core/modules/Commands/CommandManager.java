@@ -1,13 +1,16 @@
 package me.GK.core.modules.Commands;
 
 import com.google.common.collect.ImmutableList;
+import me.GK.core.GKCore;
 import me.GK.core.main.Extensions;
 import me.GK.core.modules.Commands.subcommands.Base;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
@@ -72,6 +75,29 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return returnList;
     }
 
+    public static String getArgument(String[] args, int index, CommandSender sender) throws InvalidArgumentException {
+        if (args.length < (index + 1)) {
+            if (sender != null) {
+                GKCore.instance.messageSystem.send(sender, "commands.missingArgument");
+            }
+            throw new InvalidArgumentException();
+        } else {
+            return args[index];
+        }
+    }
+
+    public static Player getArgumentPlayer(String[] args, int index, CommandSender sender) throws InvalidArgumentException {
+        String result = getArgument(args, index, sender);
+        if (result != null) {
+            if (Bukkit.getPlayer(result) == null) {
+                GKCore.instance.messageSystem.send(sender, "commands.invalidPlayer");
+            } else {
+                return Bukkit.getPlayer(result);
+            }
+        }
+        throw new InvalidArgumentException();
+    }
+
     public JavaPlugin getPlugin() {
         return plugin;
     }
@@ -103,7 +129,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if (args[0].equalsIgnoreCase(command.getName())) {
                     if (command.canExecute(sender, args)) {
                         command.recordUsage(commandUsage);
-                        command.onExecute(sender, args);
+                        try {
+                            command.onExecute(sender, args);
+                        } catch (InvalidArgumentException ignored) {
+
+                        }
                         return true;
                     } else {
                         return false;

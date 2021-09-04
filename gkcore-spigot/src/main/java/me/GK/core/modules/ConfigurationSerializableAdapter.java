@@ -1,6 +1,5 @@
 package me.GK.core.modules;
 
-//TODO add your package name here
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

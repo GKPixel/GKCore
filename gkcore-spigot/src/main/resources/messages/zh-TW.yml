@@ -46,6 +46,8 @@ nextPage: "&e下一頁"
 commands:
   reloadDescription: "重新載入此插件的設定檔案"
   done: "&a完成"
+  missingArgument: "&c你少給了一些對於執行此指令必須的變數"
+  invalidPlayer: "&c你指定的玩家是無效的"
   reconnectSQLDescription: "(重新)連接插件的SQL系統"
   placeholderDescription: "預覽一個placeholder的輸出"
   itemDescription: "改變手上物品的名稱或說明"
