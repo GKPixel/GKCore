@@ -1,15 +1,10 @@
 package me.GK.core.commands.subcommands;
 
-import de.dytanic.cloudnet.common.concurrent.ITask;
 import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
-import de.dytanic.cloudnet.ext.bridge.player.executor.ServerSelectorType;
 import me.GK.core.GKCore;
 import me.GK.core.modules.Commands.CommandManager;
 import me.GK.core.modules.Commands.subcommands.Base;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CloudNet extends Base {
@@ -21,8 +16,8 @@ public class CloudNet extends Base {
     public void onExecute(CommandSender sender, String[] args) {
         //joining the command
         String cloudNetCommand = "";
-        for(int i = 1 ; i < args.length ; i++){
-            cloudNetCommand+=args[i]+" ";
+        for (int i = 1; i < args.length; i++) {
+            cloudNetCommand += args[i] + " ";
         }
 
         //send command
@@ -34,7 +29,7 @@ public class CloudNet extends Base {
         sender.sendMessage(msg);
 
         //console message
-        for(String str : result){
+        for (String str : result) {
             sender.sendMessage(str);
         }
     }

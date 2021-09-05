@@ -200,8 +200,9 @@ public class Extensions extends JavaPlugin {
         // max++;
         return (int) (Math.floor(min + (Math.random() * (max - min))));
     }
+
     ////////////////////////////////////////////////////////
-    public static long getCurrentUnixTime(){
+    public static long getCurrentUnixTime() {
         return System.currentTimeMillis() / 1000L;
     }
 }

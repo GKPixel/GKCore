@@ -6,7 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class GKPlayer {
     public UUID uid;
@@ -42,13 +46,13 @@ public class GKPlayer {
         return Bukkit.getPlayer(uid);
     }
 
-    public void cancelTaskWhenOffline(BukkitTask task){
+    public void cancelTaskWhenOffline(BukkitTask task) {
         offlineCancelTaskList.add(task);
     }
 
-    public void cancelAllBukkitTasks(){
-        System.out.println("canceld all task for "+uid);
-        for(BukkitTask task : offlineCancelTaskList){
+    public void cancelAllBukkitTasks() {
+        System.out.println("canceld all task for " + uid);
+        for (BukkitTask task : offlineCancelTaskList) {
             task.cancel();
         }
         offlineCancelTaskList = new ArrayList();
@@ -57,20 +61,25 @@ public class GKPlayer {
     public ListEditor GetListEditor() {
         return listEditor;
     }
-    public long getLastJoinTime(){
+
+    public long getLastJoinTime() {
         return lastJoinTime;
     }
-    public void setLastJoinTime(long lastJoinTime){
+
+    public void setLastJoinTime(long lastJoinTime) {
         this.lastJoinTime = lastJoinTime;
     }
-    public void setLastJoinTime(){
+
+    public void setLastJoinTime() {
         setLastJoinTime(Extensions.getCurrentUnixTime());
     }
-    public long getJoinedSeconds(){
-        return Extensions.getCurrentUnixTime()-getLastJoinTime();
+
+    public long getJoinedSeconds() {
+        return Extensions.getCurrentUnixTime() - getLastJoinTime();
     }
-    public long getJoinedTicks(){
-        long joinedTicks = getJoinedSeconds()*20;
+
+    public long getJoinedTicks() {
+        long joinedTicks = getJoinedSeconds() * 20;
         return joinedTicks;
 
     }

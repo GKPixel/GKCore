@@ -3,7 +3,6 @@ package me.GK.core.modules;
 import lombok.SneakyThrows;
 import me.GK.core.GKCore;
 import me.GK.core.main.Extensions;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -88,7 +87,7 @@ public class MessageSystem {
 
     public String get(CommandSender sender, String key) {
         //If sender is player
-        if(sender instanceof Player){
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             return get(player.getUniqueId(), key);
         }
@@ -113,8 +112,8 @@ public class MessageSystem {
         return ((FileConfiguration) message.get(lang).values().toArray()[0]).contains(key);
     }
 
-    public void send(CommandSender player, String key) {
-        player.sendMessage(Extensions.color(get(Bukkit.getPlayer(player.getName()).getUniqueId(), key)));
+    public void send(CommandSender sender, String key) {
+        sender.sendMessage(Extensions.color(get(sender, key)));
     }
 
     @SneakyThrows

@@ -1,6 +1,14 @@
 package me.GK.core.commands;
 
-import me.GK.core.commands.subcommands.*;
+import me.GK.core.commands.subcommands.ApplyTemplate;
+import me.GK.core.commands.subcommands.CloudNet;
+import me.GK.core.commands.subcommands.Item;
+import me.GK.core.commands.subcommands.Language;
+import me.GK.core.commands.subcommands.Placeholder;
+import me.GK.core.commands.subcommands.ReconnectSQL;
+import me.GK.core.commands.subcommands.Reload;
+import me.GK.core.commands.subcommands.RunOfflineCommand;
+import me.GK.core.commands.subcommands.SendTask;
 import me.GK.core.modules.Commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

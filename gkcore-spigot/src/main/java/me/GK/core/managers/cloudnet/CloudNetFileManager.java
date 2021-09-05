@@ -4,7 +4,13 @@ import me.GK.core.GKCore;
 import org.bukkit.Bukkit;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.CopyOption;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class CloudNetFileManager {
@@ -28,10 +34,11 @@ public class CloudNetFileManager {
 
     /**
      * to copy folder from template folder to current server
+     *
      * @param templatePath example: Center/minigame_system, GKPM/default
      */
-    public static void applyTemplate(String templatePath){
-        String fromPath = "../../../local/templates/"+templatePath;
+    public static void applyTemplate(String templatePath) {
+        String fromPath = "../../../local/templates/" + templatePath;
         String toPath = "./";
         Path from = Paths.get(fromPath);
         Path to = Paths.get(toPath);

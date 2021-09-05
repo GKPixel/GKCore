@@ -1,7 +1,6 @@
 package me.GK.core.mysql;
 
 import me.GK.core.GKCore;
-import me.GK.core.modules.storingsystem.StorableObjectDatabase;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

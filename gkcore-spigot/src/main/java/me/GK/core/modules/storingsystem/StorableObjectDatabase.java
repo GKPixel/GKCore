@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -298,7 +297,7 @@ public abstract class StorableObjectDatabase<T extends StorableObject> {
                         if (callback != null) callback.run(obj);
                     } catch (ClassCastException e) {
                         if (callback != null) callback.run(null);
-                    } catch (ArrayIndexOutOfBoundsException e){
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         if (callback != null) callback.run(null);
                     }
                 }

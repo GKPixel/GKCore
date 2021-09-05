@@ -20,7 +20,7 @@ public class RunOfflineCommand extends Base {
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
-        if(args.length<=3){
+        if (args.length <= 3) {
             return;
         }
         String targetName = args[1];
@@ -28,23 +28,23 @@ public class RunOfflineCommand extends Base {
 
         //joining the command
         String offlineCommand = "";
-        for(int i = 3 ; i < args.length ; i++){
-            offlineCommand+=args[i]+" ";
+        for (int i = 3; i < args.length; i++) {
+            offlineCommand += args[i] + " ";
         }
         //send command
         String cmd = offlineCommand;
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(targetName);
-        if(offlinePlayer==null){
+        if (offlinePlayer == null) {
             GKCore.instance.messageSystem.send(sender, "cannotFindPlayer");
         }
         UUID uuid = offlinePlayer.getUniqueId();
-        OfflineCommandDatabase.instance.load(uuid.toString(), (result)->{
+        OfflineCommandDatabase.instance.load(uuid.toString(), (result) -> {
             OfflineCommandData data = new OfflineCommandData(uuid);//empty data
-            if(result != null){
+            if (result != null) {
                 data = (OfflineCommandData) result;//fetched data
             }
-            System.out.println("finished fetching offline command: "+targetName);
-            System.out.println("adding command for player: "+targetName);
+            System.out.println("finished fetching offline command: " + targetName);
+            System.out.println("adding command for player: " + targetName);
             data.addAwaitingCommand(delay, cmd);
         });
         String[] result = CloudNetDriver.getInstance().getNodeInfoProvider().sendCommandLine(offlineCommand);
@@ -56,7 +56,7 @@ public class RunOfflineCommand extends Base {
         sender.sendMessage(msg);
 
         //console message
-        for(String str : result){
+        for (String str : result) {
             sender.sendMessage(str);
         }
     }

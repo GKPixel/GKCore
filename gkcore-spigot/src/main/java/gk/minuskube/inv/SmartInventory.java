@@ -17,17 +17,15 @@ import java.util.Optional;
 @SuppressWarnings("unchecked")
 public class SmartInventory {
 
+    private final InventoryManager manager;
     private String id;
     private String title;
     private InventoryType type;
     private int rows, columns;
     private boolean closeable;
-
     private InventoryProvider provider;
     private SmartInventory parent;
-
     private List<InventoryListener<? extends Event>> listeners;
-    private final InventoryManager manager;
 
     private SmartInventory(InventoryManager manager) {
         this.manager = manager;
@@ -203,17 +201,15 @@ public class SmartInventory {
 
     public static final class Builder {
 
+        private final List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
         private String id = "unknown";
         private String title = "";
         private InventoryType type = InventoryType.CHEST;
         private int rows = 6, columns = 9;
         private boolean closeable = true;
-
         private InventoryManager manager;
         private InventoryProvider provider;
         private SmartInventory parent;
-
-        private final List<InventoryListener<? extends Event>> listeners = new ArrayList<>();
 
         private Builder() {
         }

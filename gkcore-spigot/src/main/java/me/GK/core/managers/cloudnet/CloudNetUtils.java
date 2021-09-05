@@ -6,7 +6,7 @@ import de.dytanic.cloudnet.driver.service.ServiceId;
 import de.dytanic.cloudnet.driver.service.ServiceInfoSnapshot;
 
 public class CloudNetUtils {
-    public static boolean hasCloudNet(){
+    public static boolean hasCloudNet() {
         try {
             Class.forName("de.dytanic.cloudnet.driver.CloudNetDriver");
             return true;
@@ -15,10 +15,12 @@ public class CloudNetUtils {
             return false;
         }
     }
-    public static String getCurrentServiceName(){
+
+    public static String getCurrentServiceName() {
         return CloudNetDriver.getInstance().getComponentName();
     }
-    public static ServiceId getCurrentServiceDetails(){
+
+    public static ServiceId getCurrentServiceDetails() {
         //getting service name
         String serviceName = CloudNetDriver.getInstance().getComponentName();
 
@@ -28,15 +30,15 @@ public class CloudNetUtils {
 
         //getting service info snapshot from service provider
         ServiceInfoSnapshot snapShot = provider.getServiceInfoSnapshot();
-        if(snapShot == null) return null;
+        if (snapShot == null) return null;
 
         //getting service details
         return snapShot.getServiceId();
     }
 
-    public static String getCurrentTaskName(){
+    public static String getCurrentTaskName() {
         ServiceId serviceDetails = getCurrentServiceDetails();
-        if(serviceDetails==null) return null;
+        if (serviceDetails == null) return null;
         return serviceDetails.getTaskName();
     }
 }
