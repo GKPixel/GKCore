@@ -17,7 +17,6 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
-
     mavenCentral()
 }
 
@@ -29,15 +28,9 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        expand 'version': project.version
-    }
-}
-
 task sourceJar(type: Jar) {
+    archiveFileName = "GKCore-source.jar"
     from sourceSets.main.allJava
-    from sourceSets.main.output, configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 publishing {

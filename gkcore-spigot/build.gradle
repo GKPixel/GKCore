@@ -24,6 +24,11 @@ bukkit {
     }
 }
 
+configurations {
+    provided
+    implementation.extendsFrom(provided)
+}
+
 repositories {
     maven {
         name = 'spigotmc-repo'
@@ -48,30 +53,22 @@ repositories {
 compileJava.options.encoding = 'UTF-8'
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
-    compile 'org.objenesis:objenesis:3.2'
-    compileOnly 'me.clip:placeholderapi:2.10.9'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
-    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    implementation 'org.objenesis:objenesis:3.2'
+    implementation 'me.clip:placeholderapi:2.10.9'
+    implementation group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
+    implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     //CloudNet
     implementation 'com.github.CloudNetService:CloudNet-v3:3.4.0'
-    implementation name: 'cloudnet-bridge'
-}
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        expand 'version': project.version
-    }
+    provided name: 'cloudnet-bridge'
 }
 
 task sourceJar(type: Jar) {
+    archiveFileName = "GKCore-source.jar"
     from sourceSets.main.allJava
-    from sourceSets.main.output, configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    from configurations.provided.asFileTree.files.collect { zipTree(it) }
 }
 
 publishing {
@@ -85,7 +82,7 @@ publishing {
             }
             publications {
                 gpr(MavenPublication) {
-                    from(components.java)
+                    from components.java
                     artifact sourceJar {
                         classifier "sources"
                     }
@@ -93,6 +90,13 @@ publishing {
                         groupId 'me.gk'
                         artifactId 'gkcore-spigot'
                         version project.version
+                    }
+                    pom.withXml {
+                        asNode().dependencies.dependency.each { dep ->
+                            if(dep.artifactId.last().value().last() in ["cloudnet-bridge"]) {
+                                assert dep.parent().remove(dep)
+                            }
+                        }
                     }
                 }
             }

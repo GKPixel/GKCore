@@ -12,7 +12,6 @@ group = 'me.GK'
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'maven'
 
     group = project.group
     version = project.version
