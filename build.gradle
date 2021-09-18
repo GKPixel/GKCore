@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-group = 'me.GK'
+group = 'com.gkpixel'
 
 subprojects {
     apply plugin: 'java'

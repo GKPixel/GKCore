@@ -6,7 +6,7 @@ plugins {
 bukkit {
     name = "GKCore"
     version = project.version
-    main = "me.GK.core.GKCore"
+    main = "com.gkpixel.core.GKCore"
     description = "A core library for all the plugins on the server GKPixel"
     softDepend = ["MySQL"]
     authors = ["G7", "RobotHanzo"]
@@ -42,7 +42,8 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url "https://repo.dmulloy2.net/repository/public/" }
+    maven { url = 'https://repo.dmulloy2.net/repository/public/' }
+    maven { url = 'https://maven.gkpixel.com/repository/cloudnet/' }
 
     flatDir {
         dirs 'libs'
@@ -54,14 +55,14 @@ compileJava.options.encoding = 'UTF-8'
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     implementation 'org.objenesis:objenesis:3.2'
-    implementation 'me.clip:placeholderapi:2.10.9'
+    implementation 'me.clip:placeholderapi:2.10.10'
     implementation group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     //CloudNet
-    implementation 'com.github.CloudNetService:CloudNet-v3:3.4.0'
-    provided group: 'libs', name: 'cloudnet-bridge'
+    implementation 'de.dytanic.cloudnet:cloudnet-driver:3.4.0-RELEASE'
+    implementation 'de.dytanic.cloudnet:cloudnet-bridge:3.4.0-RELEASE'
 }
 
 task sourceJar(type: Jar) {
@@ -73,21 +74,21 @@ task sourceJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackageRegistry"
-            url = "https://maven.pkg.github.com/GKPixel/GKCore"
+            name = "NexusRepoManager"
+            url = "https://maven.gkpixel.com/repository/maven-releases/"
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = "admin"
+                password = System.getenv("NEXUS_PASSWORD")
             }
             publications {
-                gpr(MavenPublication) {
+                maven(MavenPublication) {
                     from components.java
                     artifact sourceJar {
                         classifier "sources"
                     }
                     pom.with {
-                        groupId 'me.gk'
-                        artifactId 'gkcore-spigot'
+                        groupId 'com.gkpixel'
+                        artifactId 'GKCoreSpigot'
                         version project.version
                     }
                     pom.withXml {

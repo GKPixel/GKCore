@@ -7,7 +7,7 @@ plugins {
 bungee {
     name = "GKCore"
     version = project.version
-    main = "me.GK.core.GKCore"
+    main = "com.gkpixel.core.GKCore"
     description = "A core library for all the plugins on the server GKPixel"
     author = "RobotHanzo"
 }
@@ -24,8 +24,6 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.16-R0.4'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 task sourceJar(type: Jar) {
@@ -36,21 +34,21 @@ task sourceJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackageRegistry"
-            url = "https://maven.pkg.github.com/GKPixel/GKCore"
+            name = "NexusRepoManager"
+            url = "https://maven.gkpixel.com/repository/maven-releases/"
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = "admin"
+                password = System.getenv("NEXUS_PASSWORD")
             }
             publications {
-                gpr(MavenPublication) {
+                maven(MavenPublication) {
                     from(components.java)
                     artifact sourceJar {
                         classifier "sources"
                     }
                     pom.with {
-                        groupId 'me.gk'
-                        artifactId 'gkcore-bungee'
+                        groupId 'com.gkpixel'
+                        artifactId 'GKCoreBungee'
                         version project.version
                     }
                 }

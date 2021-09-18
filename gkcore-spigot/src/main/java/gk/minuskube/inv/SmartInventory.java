@@ -1,9 +1,9 @@
 package gk.minuskube.inv;
 
+import com.gkpixel.core.GKCore;
 import gk.minuskube.inv.content.InventoryContents;
 import gk.minuskube.inv.content.InventoryProvider;
 import gk.minuskube.inv.opener.InventoryOpener;
-import me.GK.core.GKCore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryCloseEvent;
