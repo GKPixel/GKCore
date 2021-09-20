@@ -24,9 +24,5 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         run: ./gradlew publish
-      - uses: actions/upload-artifact@v2
-        name: Upload result
-        with:
-          name: GKCore
-          path: "*/build/libs/*.jar"

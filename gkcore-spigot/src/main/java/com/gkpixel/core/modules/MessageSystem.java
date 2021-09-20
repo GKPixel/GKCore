@@ -2,6 +2,7 @@ package com.gkpixel.core.modules;
 
 import com.gkpixel.core.GKCore;
 import com.gkpixel.core.main.Extensions;
+import com.gkpixel.core.utils.Tuple;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -108,12 +109,23 @@ public class MessageSystem {
         return get(DEFAULT_LANGUAGE, key);
     }
 
+    public String replaceAll(String target, Tuple... replacements) {
+        for (Tuple replacement : replacements) {
+            target = target.replaceAll(replacement.a.toString(), replacement.b.toString());
+        }
+        return target;
+    }
+
     public boolean contains(String lang, String key) {
         return ((FileConfiguration) message.get(lang).values().toArray()[0]).contains(key);
     }
 
     public void send(CommandSender sender, String key) {
-        sender.sendMessage(Extensions.color(get(sender, key)));
+        sender.sendMessage(get(sender, key));
+    }
+
+    public void send(CommandSender sender, String key, Tuple... replacements) {
+        sender.sendMessage(replaceAll(get(sender, key), replacements));
     }
 
     @SneakyThrows
