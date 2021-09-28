@@ -25,7 +25,7 @@ public class MYSQLConfig {
         MYSQLConfig.set(password, "", true);
         MYSQLConfig.set(database, "", true);
         MYSQLConfig.set(port, "3306", true);
-        MYSQLConfig.set(ssl, true, true);
+        MYSQLConfig.set(ssl, false, true);
     }
 
     public static void reload() {
