@@ -2,11 +2,7 @@ package com.gkpixel.core.mysql;
 
 import com.gkpixel.core.GKCore;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class MySQL {
     private static final boolean sendDebug = GKCore.instance.configSystem.config.getBoolean("debugMode");
@@ -31,8 +27,10 @@ public class MySQL {
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=" + MYSQLConfig.getSSL(), user, password);
             GKCore.debug(GKCore.instance.messageSystem.get("SQLConnected"));
-        } catch (Exception e) {
-            GKCore.debug(GKCore.instance.messageSystem.get("SQLConnectError") + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
 
