@@ -1,14 +1,6 @@
 package com.gkpixel.core.commands;
 
-import com.gkpixel.core.commands.subcommands.ApplyTemplate;
-import com.gkpixel.core.commands.subcommands.CloudNet;
-import com.gkpixel.core.commands.subcommands.Item;
-import com.gkpixel.core.commands.subcommands.Language;
-import com.gkpixel.core.commands.subcommands.Placeholder;
-import com.gkpixel.core.commands.subcommands.ReconnectSQL;
-import com.gkpixel.core.commands.subcommands.Reload;
-import com.gkpixel.core.commands.subcommands.RunOfflineCommand;
-import com.gkpixel.core.commands.subcommands.SendTask;
+import com.gkpixel.core.commands.subcommands.*;
 import com.gkpixel.core.modules.Commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,5 +16,6 @@ public class GKCoreCommands {
         cmd.commands.add(new ApplyTemplate(plugin, cmd, "applytemplate", false));
         cmd.commands.add(new CloudNet(plugin, cmd, "cloudnet", false));
         cmd.commands.add(new RunOfflineCommand(plugin, cmd, "runofflinecommand", false));
+        cmd.commands.add(new RunCommandWithInput(plugin, cmd, "runcommandwithinput", false));
     }
 }
