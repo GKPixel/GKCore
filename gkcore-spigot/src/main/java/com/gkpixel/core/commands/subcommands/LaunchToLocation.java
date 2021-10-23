@@ -39,7 +39,7 @@ public class LaunchToLocation extends Base {
         Location targetLoc = new Location(player.getWorld(), targetVector.getX(),
                 targetVector.getY() + targetOffsetY, targetVector.getZ());
 
-        LivingEntity p1 = (LivingEntity) sender;
+        LivingEntity p1 = player;
         double level = -Double.parseDouble(levelString);
         Vector dir = GKPhysics.vector3_difference(p1.getLocation().toVector(), targetLoc.toVector());
 
