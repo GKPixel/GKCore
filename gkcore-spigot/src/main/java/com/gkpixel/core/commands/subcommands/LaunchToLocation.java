@@ -33,7 +33,7 @@ public class LaunchToLocation extends Base {
         String levelString = args[3];
 
         float targetOffsetY = 0;
-        if (args.length > 3) {
+        if (args.length > 4) {
             targetOffsetY = Float.parseFloat(args[4]);
         }
         Location targetLoc = new Location(player.getWorld(), targetVector.getX(),
