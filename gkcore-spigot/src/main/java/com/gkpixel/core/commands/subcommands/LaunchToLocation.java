@@ -22,18 +22,19 @@ public class LaunchToLocation extends Base {
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
         if(args.length < 3){
             sender.sendMessage("Should be at least 3 arguments");
             return;
         }
-        String locString = args[1];
+        String playerName= args[1];
+        Player player = Bukkit.getPlayer(playerName);
+        String locString = args[2];
         Vector targetVector = GKPhysics.LocationVectorFromString(locString);
-        String levelString = args[2];
+        String levelString = args[3];
 
         float targetOffsetY = 0;
         if (args.length > 3) {
-            targetOffsetY = Float.parseFloat(args[3]);
+            targetOffsetY = Float.parseFloat(args[4]);
         }
         Location targetLoc = new Location(player.getWorld(), targetVector.getX(),
                 targetVector.getY() + targetOffsetY, targetVector.getZ());
