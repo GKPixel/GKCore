@@ -17,5 +17,6 @@ public class GKCoreCommands {
         cmd.commands.add(new CloudNet(plugin, cmd, "cloudnet", false));
         cmd.commands.add(new RunOfflineCommand(plugin, cmd, "runofflinecommand", false));
         cmd.commands.add(new RunCommandWithInput(plugin, cmd, "runcommandwithinput", false));
+        cmd.commands.add(new LaunchToLocation(plugin, cmd, "launchtolocation", false));
     }
 }
