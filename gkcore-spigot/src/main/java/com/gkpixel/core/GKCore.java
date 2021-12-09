@@ -99,7 +99,24 @@ public class GKCore extends JavaPlugin {
     }
 
     public static String setPlaceholders(Player player, String str) {
-        return PlaceholderAPI.setBracketPlaceholders(player, str);
+        //find the inner brackets, only replace the inner one
+        int startBracketIndex = -1;
+        int endBracketIndex = -1;
+        for(int i = 0 ; i < str.length() ; i++){
+            char c = str.charAt(i);
+            if(c=='{'){
+                startBracketIndex = i;
+            }else if(c=='}'){
+                //start replacing
+                endBracketIndex = i;
+                String part1 = str.substring(0, startBracketIndex);
+                String part2 = str.substring(startBracketIndex, endBracketIndex+1);
+                part2 = PlaceholderAPI.setBracketPlaceholders(player, part2);
+                String part3 = str.substring(endBracketIndex+1, str.length());
+                return part1+part2+part3;
+            }
+        }
+        return str;
     }
 
     public void updateDebugModeFromConfig() {

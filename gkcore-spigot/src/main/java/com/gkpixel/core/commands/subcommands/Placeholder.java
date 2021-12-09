@@ -28,7 +28,10 @@ public class Placeholder extends Base {
             target = (Player) sender;
             placeholderID = args[1];
         }
-        String placeholderResult = PlaceholderAPI.setBracketPlaceholders(target, placeholderID);
+        String placeholderResult = GKCore.setPlaceholders(target, placeholderID);
+        for(int i = 0 ; i < 3 ; i++){
+            placeholderResult = GKCore.setPlaceholders(target, placeholderResult);
+        }
         if (placeholderResult == null || placeholderResult.equals(placeholderID)) {
             GKCore.instance.messageSystem.send(sender, "useBracketWithPlaceholder");
         }
