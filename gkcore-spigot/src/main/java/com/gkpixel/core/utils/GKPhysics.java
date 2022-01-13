@@ -113,9 +113,12 @@ public class GKPhysics {
 
     public static Vector LocationVectorFromString(String s) {
         final String[] parts = s.split("=");
-        final double x = Double.parseDouble(parts[3].replace(",y", ""));
-        final double y = Double.parseDouble(parts[4].replace(",z", ""));
-        final double z = Double.parseDouble(parts[5].replace(",pitch", ""));
+        for(int i = 0 ; i < parts.length ; i++){
+            Bukkit.broadcastMessage(i+": "+parts[i]);
+        }
+        final double x = Double.parseDouble(parts[2].replace(",y", ""));
+        final double y = Double.parseDouble(parts[3].replace(",z", ""));
+        final double z = Double.parseDouble(parts[4].replace(",pitch", ""));
         return new Vector(x, y, z);
     }
 

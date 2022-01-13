@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -71,12 +73,57 @@ public class Event implements Listener {
     }
 
     @EventHandler
-    public void onEntityHurt(EntityDamageByEntityEvent event){
+    public void onEntityHurt(EntityDamageEvent event){
         Entity entity = event.getEntity();
         if(entity instanceof Player){
             Player player = (Player)entity;
+            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
             PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
+            if(effect==null) return;
+            if(effect.getAmplifier() > 127){
+                //slow falling
+                double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
+                player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+                new BukkitRunnable(){
 
+                    @Override
+                    public void run() {
+                        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
+                    }
+                }.runTaskLater(GKCore.instance, 1);
+            }
+        }
+    }
+    @EventHandler
+    public void onEntityHurt2(EntityDamageByBlockEvent event){
+        Entity entity = event.getEntity();
+        if(entity instanceof Player){
+            Player player = (Player)entity;
+            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
+            PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
+            if(effect==null) return;
+            if(effect.getAmplifier() > 127){
+                //slow falling
+                double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
+                player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+                new BukkitRunnable(){
+
+                    @Override
+                    public void run() {
+                        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
+                    }
+                }.runTaskLater(GKCore.instance, 1);
+            }
+        }
+    }
+    @EventHandler
+    public void onEntityHurt3(EntityDamageByEntityEvent event){
+        Entity entity = event.getEntity();
+        if(entity instanceof Player){
+            Player player = (Player)entity;
+            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
+            PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
+            if(effect==null) return;
             if(effect.getAmplifier() > 127){
                 //slow falling
                 double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
