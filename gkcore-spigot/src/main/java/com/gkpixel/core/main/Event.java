@@ -127,14 +127,16 @@ public class Event implements Listener {
             if(effect.getAmplifier() > 127){
                 //slow falling
                 double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
-                player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
-                new BukkitRunnable(){
+                if(originalValue<1.0) {
+                    player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
+                    new BukkitRunnable() {
 
-                    @Override
-                    public void run() {
-                        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
-                    }
-                }.runTaskLater(GKCore.instance, 1);
+                        @Override
+                        public void run() {
+                            player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
+                        }
+                    }.runTaskLater(GKCore.instance, 2);
+                }
             }
         }
     }
