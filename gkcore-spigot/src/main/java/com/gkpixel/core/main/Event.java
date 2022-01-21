@@ -5,6 +5,7 @@ import com.gkpixel.core.containers.GKPlayer;
 import com.gkpixel.core.managers.GKPlayerManager;
 import com.gkpixel.core.managers.offlinecommand.OfflineCommandManager;
 import com.gkpixel.core.modules.GKPlayerDatabase;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -71,63 +72,21 @@ public class Event implements Listener {
             e.setCancelled(true);
         }
     }
-
-    @EventHandler
-    public void onEntityHurt(EntityDamageEvent event){
-        Entity entity = event.getEntity();
+    public void fixLevitationBug(Entity entity){
         if(entity instanceof Player){
             Player player = (Player)entity;
             if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
+            //player.sendMessage("has potion");
             PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
             if(effect==null) return;
+            //player.sendMessage("has potion effect");
             if(effect.getAmplifier() > 127){
+                //player.sendMessage("has potion effect > 127");
                 //slow falling
                 double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
-                player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
-                new BukkitRunnable(){
-
-                    @Override
-                    public void run() {
-                        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
-                    }
-                }.runTaskLater(GKCore.instance, 1);
-            }
-        }
-    }
-    @EventHandler
-    public void onEntityHurt2(EntityDamageByBlockEvent event){
-        Entity entity = event.getEntity();
-        if(entity instanceof Player){
-            Player player = (Player)entity;
-            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
-            PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
-            if(effect==null) return;
-            if(effect.getAmplifier() > 127){
-                //slow falling
-                double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
-                player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
-                new BukkitRunnable(){
-
-                    @Override
-                    public void run() {
-                        player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(originalValue);
-                    }
-                }.runTaskLater(GKCore.instance, 1);
-            }
-        }
-    }
-    @EventHandler
-    public void onEntityHurt3(EntityDamageByEntityEvent event){
-        Entity entity = event.getEntity();
-        if(entity instanceof Player){
-            Player player = (Player)entity;
-            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
-            PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
-            if(effect==null) return;
-            if(effect.getAmplifier() > 127){
-                //slow falling
-                double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
+                //player.sendMessage("original value: "+originalValue);
                 if(originalValue<1.0) {
+                    //player.sendMessage("original value: < 1.0");
                     player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
                     new BukkitRunnable() {
 
@@ -140,4 +99,23 @@ public class Event implements Listener {
             }
         }
     }
+    @EventHandler
+    public void onEntityHurt(EntityDamageEvent event){
+        if(event.getEntity() instanceof Player)
+        //Bukkit.broadcastMessage("on entity hurt");
+        fixLevitationBug(event.getEntity());
+    }
+    @EventHandler
+    public void onEntityHurt2(EntityDamageByBlockEvent event){
+        if(event.getEntity() instanceof Player)
+        //Bukkit.broadcastMessage("on entity hurt 2");
+        fixLevitationBug(event.getEntity());
+    }
+    @EventHandler
+    public void onEntityHurt3(EntityDamageByEntityEvent event){
+        if(event.getEntity() instanceof Player)
+        //Bukkit.broadcastMessage("on entity hurt 3");
+        fixLevitationBug(event.getEntity());
+    }
+
 }
