@@ -101,21 +101,21 @@ public class Event implements Listener {
     }
     @EventHandler
     public void onEntityHurt(EntityDamageEvent event){
-        if(event.getEntity() instanceof Player)
+        i//f(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt");
-        fixLevitationBug(event.getEntity());
+        //fixLevitationBug(event.getEntity());
     }
     @EventHandler
     public void onEntityHurt2(EntityDamageByBlockEvent event){
-        if(event.getEntity() instanceof Player)
+        //if(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt 2");
-        fixLevitationBug(event.getEntity());
+        //fixLevitationBug(event.getEntity());
     }
     @EventHandler
     public void onEntityHurt3(EntityDamageByEntityEvent event){
-        if(event.getEntity() instanceof Player)
+        //if(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt 3");
-        fixLevitationBug(event.getEntity());
+        //fixLevitationBug(event.getEntity());
     }
 
 }
