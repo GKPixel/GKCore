@@ -101,7 +101,7 @@ public class Event implements Listener {
     }
     @EventHandler
     public void onEntityHurt(EntityDamageEvent event){
-        i//f(event.getEntity() instanceof Player)
+        //f(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt");
         //fixLevitationBug(event.getEntity());
     }
