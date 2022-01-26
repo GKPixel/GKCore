@@ -58,7 +58,7 @@ public class Extensions extends JavaPlugin {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.getServer().getConsoleSender().sendMessage(cmd);
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
             }
         }.runTask(GKCore.instance);
     }
