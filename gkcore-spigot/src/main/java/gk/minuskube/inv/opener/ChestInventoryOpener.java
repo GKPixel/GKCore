@@ -1,5 +1,6 @@
 package gk.minuskube.inv.opener;
 
+import com.gkpixel.core.GKCore;
 import com.google.common.base.Preconditions;
 import gk.minuskube.inv.InventoryManager;
 import gk.minuskube.inv.SmartInventory;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChestInventoryOpener implements InventoryOpener {
 
@@ -35,7 +37,12 @@ public class ChestInventoryOpener implements InventoryOpener {
 
 
         fill(handle, manager.getContents(player).get());
-        player.openInventory(handle);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.openInventory(handle);
+            }
+        }.runTask(GKCore.instance);
         return handle;
     }
 
