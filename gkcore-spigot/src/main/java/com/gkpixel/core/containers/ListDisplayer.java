@@ -122,11 +122,15 @@ public class ListDisplayer {
 
     ///////////////////////////////////////////////////////////
     //Command callback
-    public void ChangePage(int pageID) {
+    public void changePage(int pageID) {
         if (pageID < currentDisplayingList.size()) {
             currentPageID = pageID;
         }
         sendCurrentPage();
+    }
+    public void changePageToViewLine(int lineID){
+        int pageID = (lineID/linePerPage);
+        changePage(pageID);
     }
 
     ///////////////////////////////////////////////////////////
@@ -138,7 +142,7 @@ public class ListDisplayer {
         } else
             add.setColor(ChatColor.GRAY);
         add.setBold(true);
-        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> ChangePage(pageID - 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "previousPage"));
+        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> changePage(pageID - 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "previousPage"));
     }
 
     private BaseComponent[] getRightSignComponent(int pageID, boolean available) {
@@ -148,7 +152,7 @@ public class ListDisplayer {
         } else
             add.setColor(ChatColor.GRAY);
         add.setBold(true);
-        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> ChangePage(pageID + 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "nextPage"));
+        return TextButtonSystem.instance.generateCallbackTextButton(getPlayer(), () -> changePage(pageID + 1), add.toLegacyText(), GKCore.instance.messageSystem.get(getPlayer(), "nextPage"));
     }
     /////////////////////////////////////////////////////////////////////////
 

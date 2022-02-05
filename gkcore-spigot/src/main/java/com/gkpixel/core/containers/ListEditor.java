@@ -127,12 +127,15 @@ public class ListEditor {
                     //save current list
                     savingCallback.run();
                     send();
+                    GKP.listDisplayer.changePageToViewLine(editingLine);
                 })
                 .send();
         this.editingLine = editingLine;
     }
 
     public void listGoUp(int editingLine) {
+        GKPlayer GKP = GKPlayer.fromUUID(uid);
+        if (GKP == null) return;
         debug("received go up command");
         if (editingLine - 1 >= 0) {
             String current = currentEditingList.get(editingLine);
@@ -142,10 +145,13 @@ public class ListEditor {
         }
         savingCallback.run();
         send();
+        GKP.listDisplayer.changePageToViewLine(editingLine);
     }
     ///////////////////////////////////////////////////////////
 
     public void listGoDown(int editingLine) {
+        GKPlayer GKP = GKPlayer.fromUUID(uid);
+        if (GKP == null) return;
         debug("received go down command");
         int length = currentEditingList.size();
         if (editingLine + 1 < length) {
@@ -156,9 +162,12 @@ public class ListEditor {
         }
         savingCallback.run();
         send();
+        GKP.listDisplayer.changePageToViewLine(editingLine);
     }
 
     public void removeLine(int editingLine) {
+        GKPlayer GKP = GKPlayer.fromUUID(uid);
+        if (GKP == null) return;
         debug("received go down command");
         int length = currentEditingList.size();
         if (editingLine < length) {
@@ -166,6 +175,7 @@ public class ListEditor {
         }
         savingCallback.run();
         send();
+        GKP.listDisplayer.changePageToViewLine(editingLine);
     }
 
     private void setHoverDescription(BaseComponent component, String str, ChatColor color) {
