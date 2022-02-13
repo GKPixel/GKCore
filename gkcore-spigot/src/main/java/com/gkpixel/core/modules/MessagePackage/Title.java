@@ -3,7 +3,8 @@ package com.gkpixel.core.modules.MessagePackage;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Represents a title that appears at the center of the screen.
@@ -59,7 +60,11 @@ public class Title {
 
     static JSONObject convert(String text) {
         JSONObject json = new JSONObject();
-        json.put("text", text);
+        try {
+            json.put("text", text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return json;
     }
 
@@ -82,13 +87,13 @@ public class Title {
             Object timesPacket = clsPacketPlayOutTitle.getConstructor(int.class, int.class, int.class).newInstance(fadeIn, stay, fadeOut);
             playerConnection.getClass().getMethod("sendPacket", clsPacket).invoke(playerConnection, timesPacket);
             // Play the title packet
-            if (title != null && !title.isEmpty()) {
+            if (title != null) {
                 Object titleComponent = clsChatSerializer.getMethod("a", String.class).invoke(null, title.toString());
                 Object titlePacket = clsPacketPlayOutTitle.getConstructor(clsEnumTitleAction, clsIChatBaseComponent).newInstance(clsEnumTitleAction.getField("TITLE").get(null), titleComponent);
                 playerConnection.getClass().getMethod("sendPacket", clsPacket).invoke(playerConnection, titlePacket);
             }
             // Play the subtitle packet
-            if (subtitle != null && !subtitle.isEmpty()) {
+            if (subtitle != null) {
                 Object subtitleComponent = clsChatSerializer.getMethod("a", String.class).invoke(null, subtitle.toString());
                 Object subtitlePacket = clsPacketPlayOutTitle.getConstructor(clsEnumTitleAction, clsIChatBaseComponent).newInstance(clsEnumTitleAction.getField("SUBTITLE").get(null), subtitleComponent);
                 playerConnection.getClass().getMethod("sendPacket", clsPacket).invoke(playerConnection, subtitlePacket);
