@@ -12,10 +12,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
@@ -331,6 +328,7 @@ public class JsonItemStack {
                             }
                         });
                     }
+
                     for (String clazz : BYPASS_CLASS) {
                         if (meta.getClass().getSimpleName().equals(clazz)) {
                             return itemStack;
@@ -340,6 +338,7 @@ public class JsonItemStack {
                     JsonElement extrametaElement = metaJson.get("extra-meta");
 
                     if (true) {
+
                         try {
                             JsonObject extraJson = null;//extrametaElement.getAsJsonObject();
                             if (meta instanceof SkullMeta) {
@@ -983,7 +982,7 @@ class BannerMetaAdaptor implements JsonSerializer<BannerMeta>, JsonDeserializer<
     public BannerMeta deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
         //GKCore.G7_log("test 2" + json.toString());
-        ItemStack itemStack = new ItemStack(Material.BANNER, 1);
+        ItemStack itemStack = new ItemStack(Material.WHITE_BANNER, 1);
         BannerMeta meta = (BannerMeta) itemStack.getItemMeta();
         JsonObject metaJson = json.getAsJsonObject();
 
@@ -1130,7 +1129,7 @@ class ItemMetaAdaptor implements JsonSerializer<ItemMeta>, JsonDeserializer<Item
     @Override
     public ItemMeta deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        ItemStack itemStack = new ItemStack(Material.BANNER);
+        ItemStack itemStack = new ItemStack(Material.WHITE_BANNER);
         BannerMeta meta = (BannerMeta) itemStack.getItemMeta();
         JsonObject metaJson = json.getAsJsonObject();
         JsonElement displaynameElement = metaJson.get("display-name");
