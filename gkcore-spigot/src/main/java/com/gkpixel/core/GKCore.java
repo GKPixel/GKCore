@@ -1,5 +1,7 @@
 package com.gkpixel.core;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.gkpixel.core.commands.GKCoreCommands;
 import com.gkpixel.core.containers.ListEditor;
 import com.gkpixel.core.main.Event;
@@ -40,6 +42,7 @@ public class GKCore extends JavaPlugin {
     public static Player G7 = Bukkit.getPlayer("hiIamG7");
     public static Version version;
     private static ConsoleCommandSender consoleSender;
+    public ProtocolManager protocolManager;
     public JsonSystem jsonSystem = JsonSystem.create();
     public ConfigSystem configSystem;
     public MessageSystem messageSystem;
@@ -170,23 +173,34 @@ public class GKCore extends JavaPlugin {
             }
         });
     }
-
+    public void initProtocolLib(){
+        protocolManager = ProtocolLibrary.getProtocolManager();
+    }
     public void initiate() {
         configSystem = new ConfigSystem(this);
         messageSystem = new MessageSystem(this);
         new TextButtonSystem(this);
         GKCoreCommands.register(this);
-        initiateDebugSystem();
         System.out.println("GKCore verified");
 
+        //Init debug system
+        initiateDebugSystem();
+
+        //InitiateMySQL
         Bukkit.getScheduler().runTaskAsynchronously(this, this::initiateMySQL);
 
+        //Init smart inv
         initiateSmartInvs();
 
+        //Iniit player manager
         com.gkpixel.core.managers.GKPlayerManager.addAllPlayers();
         Bukkit.getPluginManager().registerEvents(new Event(), this);
 
+        //Init List editor
         ListEditor.initiate();
+
+        //init protocollib
+        initProtocolLib();
 
     }
 
