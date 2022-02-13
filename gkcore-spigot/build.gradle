@@ -8,7 +8,7 @@ bukkit {
     version = project.version
     main = "com.gkpixel.core.GKCore"
     description = "A core library for all the plugins on the server GKPixel"
-    softDepend = ["MySQL"]
+    softDepend = ["MySQL", "ProtocolLib"]
     authors = ["G7", "RobotHanzo"]
     prefix = "GKCore"
     commands {
@@ -38,12 +38,15 @@ repositories {
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
     maven { url = 'https://repo.dmulloy2.net/repository/public/' }
     maven { url = 'https://maven.gkpixel.com/repository/cloudnet/' }
+
 }
 
 compileJava.options.encoding = 'UTF-8'
 
 dependencies {
+    implementation 'org.json:json:20090211'
     implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     implementation 'org.objenesis:objenesis:3.2'
     implementation 'me.clip:placeholderapi:2.10.10'
     implementation group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.7.0"
