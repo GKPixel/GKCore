@@ -4,6 +4,7 @@ import com.gkpixel.core.GKCore;
 import gk.minuskube.inv.content.InventoryContents;
 import gk.minuskube.inv.content.InventoryProvider;
 import gk.minuskube.inv.opener.InventoryOpener;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -95,6 +96,7 @@ public class SmartInventory {
             SmartInventory old = oldInv.get();
             this.manager.setInventory(player, null);
             if (old.getRows() == getRows() && old.getColumns() == getColumns() && old.getType() == getType()) {
+                Bukkit.broadcastMessage("update old");
                 //use same menu, but change content
                 try {
                     updateInv(player, title, getRows() * getColumns());
@@ -121,8 +123,10 @@ public class SmartInventory {
             }
         }
         {
+            Bukkit.broadcastMessage("using new");
             //player.sendMessage("using new menu, resetting mouse position");
             //else use a new menu instead
+            player.closeInventory();
             this.manager.setInventory(player, null);
             InventoryContents contents = new InventoryContents.Impl(this, player);
             contents.pagination().page(page);
