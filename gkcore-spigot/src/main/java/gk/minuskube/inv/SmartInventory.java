@@ -123,7 +123,6 @@ public class SmartInventory {
             }
         }
         {
-            Bukkit.broadcastMessage("using new");
             //player.sendMessage("using new menu, resetting mouse position");
             //else use a new menu instead
             player.closeInventory();
