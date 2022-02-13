@@ -10,6 +10,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,6 @@ public class SmartInventory {
             SmartInventory old = oldInv.get();
             this.manager.setInventory(player, null);
             if (old.getRows() == getRows() && old.getColumns() == getColumns() && old.getType() == getType()) {
-                Bukkit.broadcastMessage("update old");
                 //use same menu, but change content
                 try {
                     updateInv(player, title, getRows() * getColumns());
