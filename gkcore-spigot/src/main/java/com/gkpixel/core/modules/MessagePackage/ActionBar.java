@@ -3,7 +3,7 @@ package com.gkpixel.core.modules.MessagePackage;
 import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 /**
  * Represents a message displayed above the hotbar.
@@ -39,7 +39,6 @@ public class ActionBar {
      */
     public ActionBar(JSONObject json) {
         Preconditions.checkNotNull(json);
-        Preconditions.checkArgument(!json.isEmpty());
         this.json = json;
     }
 
@@ -115,7 +114,6 @@ public class ActionBar {
      */
     public void setJsonText(JSONObject json) {
         Preconditions.checkNotNull(json);
-        Preconditions.checkArgument(!json.isEmpty());
         this.json = json;
     }
 
