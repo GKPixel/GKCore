@@ -29,7 +29,7 @@ public class Placeholder extends Base {
             placeholderID = args[1];
         }
         String placeholderResult = GKCore.setPlaceholders(target, placeholderID);
-        for(int i = 0 ; i < 3 ; i++){
+        for (int i = 0; i < 3; i++) {
             placeholderResult = GKCore.setPlaceholders(target, placeholderResult);
         }
         if (placeholderResult == null || placeholderResult.equals(placeholderID)) {

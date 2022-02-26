@@ -128,8 +128,9 @@ public class ListDisplayer {
         }
         sendCurrentPage();
     }
-    public void changePageToViewLine(int lineID){
-        int pageID = (lineID/linePerPage);
+
+    public void changePageToViewLine(int lineID) {
+        int pageID = (lineID / linePerPage);
         changePage(pageID);
     }
 

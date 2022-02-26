@@ -5,7 +5,6 @@ import com.gkpixel.core.containers.GKPlayer;
 import com.gkpixel.core.managers.GKPlayerManager;
 import com.gkpixel.core.managers.offlinecommand.OfflineCommandManager;
 import com.gkpixel.core.modules.GKPlayerDatabase;
-import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,7 +20,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -72,20 +70,21 @@ public class Event implements Listener {
             e.setCancelled(true);
         }
     }
-    public void fixLevitationBug(Entity entity){
-        if(entity instanceof Player){
-            Player player = (Player)entity;
-            if(!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
+
+    public void fixLevitationBug(Entity entity) {
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
+            if (!player.hasPotionEffect(PotionEffectType.LEVITATION)) return;
             //player.sendMessage("has potion");
             PotionEffect effect = player.getPotionEffect(PotionEffectType.LEVITATION);
-            if(effect==null) return;
+            if (effect == null) return;
             //player.sendMessage("has potion effect");
-            if(effect.getAmplifier() > 127){
+            if (effect.getAmplifier() > 127) {
                 //player.sendMessage("has potion effect > 127");
                 //slow falling
                 double originalValue = player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
                 //player.sendMessage("original value: "+originalValue);
-                if(originalValue<1.0) {
+                if (originalValue < 1.0) {
                     //player.sendMessage("original value: < 1.0");
                     player.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).setBaseValue(1.0);
                     new BukkitRunnable() {
@@ -99,20 +98,23 @@ public class Event implements Listener {
             }
         }
     }
+
     @EventHandler
-    public void onEntityHurt(EntityDamageEvent event){
+    public void onEntityHurt(EntityDamageEvent event) {
         //f(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt");
         //fixLevitationBug(event.getEntity());
     }
+
     @EventHandler
-    public void onEntityHurt2(EntityDamageByBlockEvent event){
+    public void onEntityHurt2(EntityDamageByBlockEvent event) {
         //if(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt 2");
         //fixLevitationBug(event.getEntity());
     }
+
     @EventHandler
-    public void onEntityHurt3(EntityDamageByEntityEvent event){
+    public void onEntityHurt3(EntityDamageByEntityEvent event) {
         //if(event.getEntity() instanceof Player)
         //Bukkit.broadcastMessage("on entity hurt 3");
         //fixLevitationBug(event.getEntity());

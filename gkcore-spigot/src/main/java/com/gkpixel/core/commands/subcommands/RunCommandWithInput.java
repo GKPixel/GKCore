@@ -5,7 +5,6 @@ import com.gkpixel.core.containers.InputListener;
 import com.gkpixel.core.main.Extensions;
 import com.gkpixel.core.modules.Commands.CommandManager;
 import com.gkpixel.core.modules.Commands.subcommands.Base;
-import com.gkpixel.core.modules.GKPlayerDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

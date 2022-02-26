@@ -105,18 +105,18 @@ public class GKCore extends JavaPlugin {
         //find the inner brackets, only replace the inner one
         int startBracketIndex = -1;
         int endBracketIndex = -1;
-        for(int i = 0 ; i < str.length() ; i++){
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if(c=='{'){
+            if (c == '{') {
                 startBracketIndex = i;
-            }else if(c=='}'){
+            } else if (c == '}') {
                 //start replacing
                 endBracketIndex = i;
                 String part1 = str.substring(0, startBracketIndex);
-                String part2 = str.substring(startBracketIndex, endBracketIndex+1);
+                String part2 = str.substring(startBracketIndex, endBracketIndex + 1);
                 part2 = PlaceholderAPI.setBracketPlaceholders(player, part2);
-                String part3 = str.substring(endBracketIndex+1, str.length());
-                return part1+part2+part3;
+                String part3 = str.substring(endBracketIndex + 1);
+                return part1 + part2 + part3;
             }
         }
         return str;
@@ -173,9 +173,11 @@ public class GKCore extends JavaPlugin {
             }
         });
     }
-    public void initProtocolLib(){
+
+    public void initProtocolLib() {
         protocolManager = ProtocolLibrary.getProtocolManager();
     }
+
     public void initiate() {
         configSystem = new ConfigSystem(this);
         messageSystem = new MessageSystem(this);

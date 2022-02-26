@@ -2,7 +2,12 @@ package com.gkpixel.core.mysql;
 
 import com.gkpixel.core.GKCore;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MySQL {
     private static final boolean sendDebug = GKCore.instance.configSystem.config.getBoolean("debugMode");

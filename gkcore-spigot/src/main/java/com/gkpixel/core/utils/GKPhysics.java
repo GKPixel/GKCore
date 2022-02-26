@@ -1,10 +1,8 @@
 package com.gkpixel.core.utils;
 
-import com.gkpixel.core.managers.GKPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 public class GKPhysics {

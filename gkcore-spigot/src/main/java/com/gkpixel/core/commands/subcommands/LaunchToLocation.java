@@ -4,9 +4,6 @@ import com.gkpixel.core.GKCore;
 import com.gkpixel.core.modules.Commands.CommandManager;
 import com.gkpixel.core.modules.Commands.subcommands.Base;
 import com.gkpixel.core.utils.GKPhysics;
-import de.dytanic.cloudnet.driver.CloudNetDriver;
-import de.dytanic.cloudnet.ext.bridge.player.IPlayerManager;
-import de.dytanic.cloudnet.ext.bridge.player.executor.ServerSelectorType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -22,11 +19,11 @@ public class LaunchToLocation extends Base {
 
     @Override
     public void onExecute(CommandSender sender, String[] args) {
-        if(args.length < 3){
+        if (args.length < 3) {
             sender.sendMessage("Should be at least 3 arguments");
             return;
         }
-        String playerName= args[1];
+        String playerName = args[1];
         Player player = Bukkit.getPlayer(playerName);
         String locString = args[2];
         Vector targetVector = GKPhysics.LocationVectorFromString(locString);

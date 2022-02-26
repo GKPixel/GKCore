@@ -10,12 +10,15 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -67,21 +70,21 @@ public class ConfigurationSerializableAdapter implements JsonSerializer<Configur
         map.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(src.getClass()));
 
         Map<String, Object> serialized = new HashMap<>(src.serialize());
-        if(serialized.containsKey("display-name")){
+        if (serialized.containsKey("display-name")) {
             String displayName = serialized.get("display-name").toString();
             BaseComponent[] components = ComponentSerializer.parse(displayName);
             String text = BaseComponent.toLegacyText(components);
-            serialized.put("display-name", (Object) text);
+            serialized.put("display-name", text);
         }
-        if(serialized.containsKey("lore")){
+        if (serialized.containsKey("lore")) {
             List<String> list = new ArrayList<String>((List<String>) serialized.get("lore"));
-            for(int i = 0 ; i < list.size() ; i++){
+            for (int i = 0; i < list.size(); i++) {
                 String line = list.get(i);
                 BaseComponent[] components = ComponentSerializer.parse(line);
                 String text = BaseComponent.toLegacyText(components);
                 list.set(i, text);
             }
-            serialized.put("lore", (Object) list);
+            serialized.put("lore", list);
         }
         map.putAll(serialized);
 

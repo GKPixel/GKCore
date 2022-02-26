@@ -1,6 +1,16 @@
 package com.gkpixel.core.commands;
 
-import com.gkpixel.core.commands.subcommands.*;
+import com.gkpixel.core.commands.subcommands.ApplyTemplate;
+import com.gkpixel.core.commands.subcommands.CloudNet;
+import com.gkpixel.core.commands.subcommands.Item;
+import com.gkpixel.core.commands.subcommands.Language;
+import com.gkpixel.core.commands.subcommands.LaunchToLocation;
+import com.gkpixel.core.commands.subcommands.Placeholder;
+import com.gkpixel.core.commands.subcommands.ReconnectSQL;
+import com.gkpixel.core.commands.subcommands.Reload;
+import com.gkpixel.core.commands.subcommands.RunCommandWithInput;
+import com.gkpixel.core.commands.subcommands.RunOfflineCommand;
+import com.gkpixel.core.commands.subcommands.SendTask;
 import com.gkpixel.core.modules.Commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
